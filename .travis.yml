@@ -8,4 +8,3 @@ after_success:
   - sh src/travis/addServer.sh
   - python src/travis/addServer.py
   - mvn deploy --settings target/settings.xml
-
