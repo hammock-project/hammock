@@ -1,0 +1,2 @@
+ws.ament.hammock.core.impl.ClassScannerExtension
+org.jboss.resteasy.cdi.ResteasyCdiExtension

@@ -16,17 +16,19 @@
  *  limitations under the License.
  */
 
-package ws.ament.hammock.core.annotations;
+package ws.ament.hammock.test;
 
-import javax.enterprise.util.AnnotationLiteral;
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
-/**
- * Created with IntelliJ IDEA.
- * User: johndament
- * Date: 2/25/14
- * Time: 9:15 PM
- * To change this template use File | Settings | File Templates.
- */
-public class ApplicationConfigLiteral extends AnnotationLiteral<ApplicationConfig> implements ApplicationConfig {
-    public static final ApplicationConfig INSTANCE = new ApplicationConfigLiteral();
+@Path("/echo")
+@RequestScoped
+public class EchoResource {
+    @GET
+    @Produces("text/plain")
+    public String greet() {
+        return "hello";
+    }
 }
