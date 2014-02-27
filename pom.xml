@@ -24,6 +24,23 @@
     <packaging>jar</packaging>
     <url>https://github.com/johnament/hammock/wiki/Hammock</url>
     <version>0.0.1-SNAPSHOT</version>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <developerConnection>scm:git:git@github.com:johnament/hammock.git</developerConnection>
+        <url>https://github.com/johnament/hammock</url>
+        <connection>scm:git:https://github.com/johnament/hammock.git</connection>
+    </scm>
     <dependencyManagement>
         <dependencies>
             <dependency>
