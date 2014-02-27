@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.test;
 
+import org.apache.log4j.BasicConfigurator;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -38,8 +39,9 @@ import javax.ws.rs.client.ClientBuilder;
 public class LaunchTest {
     @Deployment
     public static JavaArchive createArchive() {
+        BasicConfigurator.configure();
         return ShrinkWrap.create(JavaArchive.class,LaunchTest.class.getSimpleName()+".jar")
-                .addPackages(true,WebServerLauncher.class.getPackage())
+                .addPackages(true, WebServerLauncher.class.getPackage())
                 .addAsManifestResource(new StringAsset("ws.ament.hammock.core.impl.ClassScannerExtension\n" +
                         "org.jboss.resteasy.cdi.ResteasyCdiExtension"),"services/javax.enterprise.inject.spi.Extension")
                 .addAsManifestResource(new StringAsset("\n" +
