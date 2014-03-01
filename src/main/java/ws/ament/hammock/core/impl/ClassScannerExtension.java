@@ -18,6 +18,8 @@
 
 package ws.ament.hammock.core.impl;
 
+import ws.ament.hammock.core.annotations.ManagementResource;
+
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
@@ -28,20 +30,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- * User: johndament
- * Date: 2/26/14
- * Time: 7:44 PM
- * To change this template use File | Settings | File Templates.
+ * You can leverage the ClassScannerExtension to do lookup of paths, providers in your JAR Files that are bean archives.
+ *
+ * This makes the lookup of resources much easier, and done during deployment.
  */
 public class ClassScannerExtension implements Extension{
-    private Set<Class> resources = new HashSet<Class>();
-    private Set<Class> providers = new HashSet<Class>();
+    private Set<Class> resources = new HashSet<>();
+    private Set<Class> providers = new HashSet<>();
+    private Set<Class> managementResources = new HashSet<>();
+    private Set<Class> managementProviders = new HashSet<>();
     public void watchPaths(@Observes @WithAnnotations(Path.class)ProcessAnnotatedType pat) {
-        this.resources.add(pat.getAnnotatedType().getJavaClass());
+        if(pat.getAnnotatedType().getJavaClass().isAnnotationPresent(ManagementResource.class)) {
+            this.managementResources.add(pat.getAnnotatedType().getJavaClass());
+        }
+        else {
+            this.resources.add(pat.getAnnotatedType().getJavaClass());
+        }
     }
     public void watchProviders(@Observes @WithAnnotations(Provider.class) ProcessAnnotatedType pat) {
-        this.providers.add(pat.getAnnotatedType().getJavaClass());
+        if(pat.getAnnotatedType().getJavaClass().isAnnotationPresent(ManagementResource.class)) {
+            this.managementProviders.add(pat.getAnnotatedType().getJavaClass());
+        }
+        else {
+            this.providers.add(pat.getAnnotatedType().getJavaClass());
+        }
     }
 
     public Set<Class> getResources() {
@@ -50,5 +62,13 @@ public class ClassScannerExtension implements Extension{
 
     public Set<Class> getProviders() {
         return providers;
+    }
+
+    public Set<Class> getManagementResources() {
+        return managementResources;
+    }
+
+    public Set<Class> getManagementProviders() {
+        return managementProviders;
     }
 }

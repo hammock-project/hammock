@@ -27,11 +27,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: johndament
- * Date: 2/25/14
- * Time: 8:57 PM
- * To change this template use File | Settings | File Templates.
+ * A servlet request listener that starts a request context within the scope of a thread.
+ *
+ * A simplified format of the weld servlet approach, withouth dealing with all of the things needed for full blown app requirements.
+ *
+ * Based on DeltaSpike's Container Control paradigm.
+ *
  */
 public class CDIListener implements ServletRequestListener {
     @Override
@@ -41,6 +42,8 @@ public class CDIListener implements ServletRequestListener {
         requestContext.invalidate();
         requestContext.deactivate();
         requestContext.dissociate(requestMap);
+        servletRequestEvent.getServletRequest().setAttribute("cdiRequestContext",null);
+        servletRequestEvent.getServletRequest().setAttribute("cdiRequestMap",null);
     }
 
     @Override

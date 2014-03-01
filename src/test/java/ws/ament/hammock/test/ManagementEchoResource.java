@@ -16,19 +16,22 @@
  *  limitations under the License.
  */
 
-package ws.ament.hammock.core.impl;
+package ws.ament.hammock.test;
 
-import org.jboss.resteasy.cdi.CdiInjectorFactory;
+import ws.ament.hammock.core.annotations.ManagementResource;
 
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
-/**
- * An extension of the {@see CdiInjectorFactory} that statically loads the bean manager without additional look ups.
- */
-public class Cdi11InjectorFactory extends CdiInjectorFactory{
-    @Override
-    protected BeanManager lookupBeanManager() {
-        return CDI.current().getBeanManager();
+@Path("/echom")
+@RequestScoped
+@ManagementResource
+public class ManagementEchoResource {
+    @GET
+    @Produces("text/plain")
+    public String greet() {
+        return "management";
     }
 }

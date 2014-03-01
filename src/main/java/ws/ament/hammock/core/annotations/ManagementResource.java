@@ -16,19 +16,18 @@
  *  limitations under the License.
  */
 
-package ws.ament.hammock.core.impl;
+package ws.ament.hammock.core.annotations;
 
-import org.jboss.resteasy.cdi.CdiInjectorFactory;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * An extension of the {@see CdiInjectorFactory} that statically loads the bean manager without additional look ups.
+ * Classes annotated ManagementResource will be differentiated from application resources
  */
-public class Cdi11InjectorFactory extends CdiInjectorFactory{
-    @Override
-    protected BeanManager lookupBeanManager() {
-        return CDI.current().getBeanManager();
-    }
+@Retention(RUNTIME)
+@Target({TYPE})
+public @interface ManagementResource {
 }

@@ -30,9 +30,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.core.WebServerLauncher;
 import ws.ament.hammock.core.annotations.ApplicationConfig;
+import ws.ament.hammock.core.annotations.ManagementConfig;
 
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 
 @RunWith(Arquillian.class)
@@ -51,18 +53,52 @@ public class LaunchTest {
                         "\t\thttp://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd\"\n" +
                         "       bean-discovery-mode=\"all\">\n" +
                         "</beans>"),"beans.xml")
-                .addClasses(ApplicationConfigBean.class,EchoResource.class);
+                .addClasses(ApplicationConfigBean.class,EchoResource.class,
+                        ManagementConfigBean.class,ManagementEchoResource.class);
     }
 
     @Inject
     @ApplicationConfig
     private ApplicationConfigBean applicationConfigBean;
 
+    @Inject
+    @ManagementConfig
+    private ManagementConfigBean mgmtConfigBean;
+
     @Test
-    public void testGet() {
+    public void testGetApp() throws InterruptedException {
         CDI.current().getBeanManager().fireEvent(new ContainerInitialized());
         String value = ClientBuilder.newClient().target("http://localhost:"+applicationConfigBean.getPort()).path("/api/echo")
                 .request().get(String.class);
         Assert.assertEquals("hello", value);
+    }
+
+    @Test
+    public void testGetMgmt() throws InterruptedException {
+        CDI.current().getBeanManager().fireEvent(new ContainerInitialized());
+        String value = ClientBuilder.newClient().target("http://localhost:"+mgmtConfigBean.getPort()).path("/mgmt/echom")
+                .request().get(String.class);
+        Assert.assertEquals("management", value);
+    }
+
+    @Test
+    public void testGetWrongPaths() throws InterruptedException {
+        CDI.current().getBeanManager().fireEvent(new ContainerInitialized());
+        try {
+            String value = ClientBuilder.newClient().target("http://localhost:"+applicationConfigBean.getPort()).path("/api/echom")
+                    .request().get(String.class);
+            Assert.fail("Request was processed");
+        }
+        catch (WebApplicationException e) {
+            Assert.assertEquals(404,e.getResponse().getStatus());
+        }
+        try {
+            String value = ClientBuilder.newClient().target("http://localhost:"+mgmtConfigBean.getPort()).path("/mgmt/echo")
+                    .request().get(String.class);
+            Assert.fail("Request was processed");
+        }
+        catch (WebApplicationException e) {
+            Assert.assertEquals(404,e.getResponse().getStatus());
+        }
     }
 }

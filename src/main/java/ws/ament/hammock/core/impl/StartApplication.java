@@ -50,7 +50,7 @@ public class StartApplication {
         this.webServerLauncher.start(appConfig);
     }
 
-    public void watch(@Observes ContainerInitialized containerInitialized) {
+    void watch(@Observes ContainerInitialized containerInitialized) {
 
     }
 

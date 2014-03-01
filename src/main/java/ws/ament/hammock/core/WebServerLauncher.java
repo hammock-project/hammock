@@ -33,11 +33,7 @@ import ws.ament.hammock.core.impl.CDIListener;
 import javax.servlet.ServletException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: johndament
- * Date: 2/25/14
- * Time: 8:55 PM
- * To change this template use File | Settings | File Templates.
+ * A launching confiugration application that deploys undertow as a running server.
  */
 public class WebServerLauncher {
     private Undertow undertow;
@@ -53,6 +49,7 @@ public class WebServerLauncher {
                 .setAsyncSupported(true)
                 .setLoadOnStartup(1)
                 .addMapping("/*");
+
         DeploymentInfo di = new DeploymentInfo()
                 .addListener(listener)
                 .setContextPath(webServerConfiguration.getContextRoot())

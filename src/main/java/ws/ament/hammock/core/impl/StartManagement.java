@@ -56,7 +56,7 @@ public class StartManagement {
 
     }
 
-    public void watch(@Observes ContainerInitialized containerInitialized) {
+    void watch(@Observes ContainerInitialized containerInitialized) {
 
     }
 

@@ -20,11 +20,39 @@ package ws.ament.hammock.core.api;
 
 import java.util.Collection;
 
-
+/**
+ * Represents configuration information for a webserver.
+ *
+ */
 public interface WebServerConfiguration {
+    /**
+     * The port to listen on
+     *
+     * @return
+     */
     public int getPort();
+
+    /**
+     * Context root
+     * @return
+     */
     public String getContextRoot();
+
+    /**
+     * The list of provider classes to register.
+     * @return
+     */
     public Collection<Class> getProviderClasses();
+
+    /**
+     * The list of resource classes to load.
+     * @return
+     */
     public Collection<Class> getResourceClasses();
+
+    /**
+     * The bind address this server.
+     * @return
+     */
     public String getBindAddress();
 }
