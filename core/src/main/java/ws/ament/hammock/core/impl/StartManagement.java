@@ -39,7 +39,7 @@ import javax.enterprise.inject.spi.CDI;
 @ApplicationScoped
 public class StartManagement {
     private WebServerLauncher webServerLauncher = null;
-    private final Logger logger = LoggerFactory.getLogger(StartApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(StartManagement.class);
     @PostConstruct
     public void init() {
         Instance<WebServerConfiguration> webServerConfigurationInstance = CDI.current().select(WebServerConfiguration.class,
