@@ -62,7 +62,6 @@ public class WebServerLauncher {
         Undertow server = null;
         try {
             server = Undertow.builder()
-                    .addHttpsListener()
                     .addHttpListener(webServerConfiguration.getPort(), webServerConfiguration.getBindAddress())
                     .setHandler(deploymentManager.start())
                     .build();
