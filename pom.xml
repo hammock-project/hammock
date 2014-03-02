@@ -22,7 +22,7 @@
     <groupId>ws.ament.hammock</groupId>
     <artifactId>hammock</artifactId>
     <packaging>pom</packaging>
-    <url>https://github.com/johnament/hammock/wiki/Hammock</url>
+    <url>https://github.com/johnament/hammock/wiki</url>
     <version>0.0.2-SNAPSHOT</version>
     <parent>
         <groupId>org.sonatype.oss</groupId>
