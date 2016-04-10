@@ -18,35 +18,49 @@
 
 package ws.ament.hammock.web.undertow;
 
+import io.undertow.Handlers;
 import io.undertow.Undertow;
+import io.undertow.server.HttpHandler;
+import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.server.handlers.resource.PathResourceManager;
+import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletInfo;
-import ws.ament.hammock.web.spi.CDIListener;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
+import org.jboss.weld.environment.servlet.Listener;
+import org.jboss.weld.environment.servlet.WeldServletLifecycle;
+import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServer;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import static io.undertow.Handlers.path;
+import static io.undertow.Handlers.resource;
 import static io.undertow.servlet.Servlets.listener;
 
 @ApplicationScoped
-public class UndertowWebServer implements WebServer {
-    private Set<ServletInfo> servlets = new HashSet<>();
-    private Map<String, Object> servletContextAttributes = new HashMap<>();
+public class UndertowWebServer extends AbstractWebServer {
     @Inject
     private Function<ServletDescriptor, ServletInfo> mapper;
+    @Inject
+    private BeanManager beanManager;
+    private Set<ServletInfo> servlets = new HashSet<>();
     private Undertow undertow;
-    private static int count = 0;
 
     @Override
     public void addServlet(ServletDescriptor servletDescriptor) {
@@ -54,38 +68,30 @@ public class UndertowWebServer implements WebServer {
     }
 
     @Override
-    public void addServletContextAttribute(String name, Object value) {
-        servletContextAttributes.put(name, value);
-    }
-
-    @Override
     public void start() {
         DeploymentInfo di = new DeploymentInfo()
                 .setContextPath("/")
                 .setDeploymentName("Undertow")
-                .setClassIntrospecter(CDIClassIntrospecter.INSTANCE)
-                .setClassLoader(ClassLoader.getSystemClassLoader());
+                .setResourceManager(new ClassPathResourceManager(getClass().getClassLoader()))
+                .setClassLoader(ClassLoader.getSystemClassLoader())
+                .addListener(listener(Listener.class));
 
-        di.addListener(listener(CDIListener.class));
+        getServletContextAttributes().forEach(di::addServletContextAttribute);
 
-        servletContextAttributes.forEach(di::addServletContextAttribute);
-
-        servlets.forEach(s -> {
-            try {
-                s.setInstanceFactory(CDIClassIntrospecter.INSTANCE.createInstanceFactory(s.getServletClass()));
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            di.addServlet(s);
-        });
+        servlets.forEach(di::addServlet);
 
         DeploymentManager deploymentManager = Servlets.defaultContainer().addDeployment(di);
         deploymentManager.deploy();
         try {
+            HttpHandler servletHandler = deploymentManager.start();
+            ResourceHandler resourceHandler = resource(new PathResourceManager(Paths.get(getFilePath()), 100))
+                    .setDirectoryListingEnabled(true);
+            PathHandler path = path(Handlers.redirect("/"))
+                    .addPrefixPath("/", servletHandler)
+                    .addPrefixPath("/resource", resourceHandler);
             this.undertow = Undertow.builder()
-                    // TODO yikes
-                    .addHttpListener(8080, "0.0.0.0")
-                    .setHandler(deploymentManager.start())
+                    .addHttpListener(getPort(), "0.0.0.0")
+                    .setHandler(path)
                     .build();
             this.undertow.start();
         } catch (ServletException e) {

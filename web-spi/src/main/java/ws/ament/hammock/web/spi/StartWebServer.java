@@ -18,16 +18,17 @@
 
 package ws.ament.hammock.web.spi;
 
-import org.jboss.weld.environment.se.events.ContainerInitialized;
+import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import java.util.StringJoiner;
 
@@ -41,6 +42,8 @@ import java.util.StringJoiner;
 public class StartWebServer {
     private WebServer webServer;
     private final Logger logger = LoggerFactory.getLogger(StartWebServer.class);
+    @Inject
+    private BeanManager beanManager;
 
     @Inject
     private Instance<WebServer> webServerInstance;
@@ -53,13 +56,16 @@ public class StartWebServer {
 
     @PostConstruct
     public void init() {
-        this.webServer = resolveWebServer();
+        WebServer webServer = resolveWebServer();
 
+        webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
         servletDescriptors.forEach(webServer::addServlet);
 
         servletContextAttributeProviders.forEach(s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
 
-        this.webServer.start();
+        webServer.start();
+
+        this.webServer = webServer;
     }
 
     private WebServer resolveWebServer() {
@@ -74,7 +80,7 @@ public class StartWebServer {
         return webServerInstance.get();
     }
 
-    void watch(@Observes ContainerInitialized containerInitialized) {
+    void watch(@Observes @Initialized(ApplicationScoped.class) Object initialized) {
 
     }
 

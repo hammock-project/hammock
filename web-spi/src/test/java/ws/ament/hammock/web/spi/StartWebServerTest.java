@@ -26,7 +26,7 @@ import org.junit.rules.TestName;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.assertj.core.api.StrictAssertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StartWebServerTest {
     private static final String NO_WEBSERVERS = "No web server implementations found on the classpath";

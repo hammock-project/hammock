@@ -45,19 +45,22 @@
         <connection>scm:git:https://github.com/johnament/hammock.git</connection>
     </scm>
     <properties>
-        <weld.version>2.3.1.Final</weld.version>
-        <resteasy.version>3.0.13.Final</resteasy.version>
-        <arquillian.version>1.1.10.Final</arquillian.version>
-        <undertow.version>1.3.6.Final</undertow.version>
+        <weld.version>2.3.3.Final</weld.version>
+        <resteasy.version>3.0.14.Final</resteasy.version>
+        <arquillian.version>1.1.11.Final</arquillian.version>
+        <undertow.version>1.3.21.Final</undertow.version>
+        <jetty.version>9.3.8.v20160314</jetty.version>
         <arquillian.weld.version>1.0.0.CR9</arquillian.weld.version>
         <slf4j.version>1.7.13</slf4j.version>
         <junit.version>4.12</junit.version>
         <tamaya.version>0.1-incubating</tamaya.version>
+        <assertj.version>3.4.1</assertj.version>
     </properties>
     <modules>
         <module>core</module>
         <module>web-spi</module>
         <module>web-undertow</module>
+        <module>web-jetty</module>
         <module>rest-resteasy</module>
     </modules>
     <dependencyManagement>
@@ -71,7 +74,12 @@
             </dependency>
             <dependency>
                 <groupId>org.jboss.weld.se</groupId>
-                <artifactId>weld-se</artifactId>
+                <artifactId>weld-se-core</artifactId>
+                <version>${weld.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.servlet</groupId>
+                <artifactId>weld-servlet-core</artifactId>
                 <version>${weld.version}</version>
             </dependency>
             <dependency>
@@ -88,6 +96,32 @@
                 <groupId>io.undertow</groupId>
                 <artifactId>undertow-servlet</artifactId>
                 <version>${undertow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-servlets</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-webapp</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>websocket-server</artifactId>
+                <version>${jetty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>javax-websocket-server-impl</artifactId>
+                <version>${jetty.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-jndi</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
@@ -130,8 +164,13 @@
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>3.1.0</version>
+                <version>${assertj.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tamaya</groupId>
+                <artifactId>tamaya-core</artifactId>
+                <version>${tamaya.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
