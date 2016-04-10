@@ -57,7 +57,7 @@ public abstract class AbstractWebServer implements WebServer {
     }
 
     protected int getPort() {
-        return getConfiguration().getInteger("webserver.port").orElse(8080);
+        return getConfiguration().getOrDefault("webserver.port", Integer.class, 8080);
     }
 
     protected String getFilePath() {

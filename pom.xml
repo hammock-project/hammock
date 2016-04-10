@@ -35,6 +35,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <repositories>
+        <repository>
+            <id>asf-snapshots</id>
+            <url>https://repository.apache.org/content/groups/snapshots/</url>
+        </repository>
+    </repositories>
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/johnament/hammock/issues</url>
@@ -53,7 +59,7 @@
         <arquillian.weld.version>1.0.0.CR9</arquillian.weld.version>
         <slf4j.version>1.7.13</slf4j.version>
         <junit.version>4.12</junit.version>
-        <tamaya.version>0.1-incubating</tamaya.version>
+        <tamaya.version>0.2-incubating-SNAPSHOT</tamaya.version>
         <assertj.version>3.4.1</assertj.version>
         <commons-io.version>2.4</commons-io.version>
     </properties>
@@ -156,12 +162,6 @@
                 <groupId>org.apache.tamaya</groupId>
                 <artifactId>tamaya-core</artifactId>
                 <version>${tamaya.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.arquillian.</groupId>
-                        <artifactId>arquillian-bom</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
