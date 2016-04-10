@@ -35,12 +35,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <repositories>
-        <repository>
-            <id>maven-central</id>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
-    </repositories>
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/johnament/hammock/issues</url>
@@ -162,6 +156,12 @@
                 <groupId>org.apache.tamaya</groupId>
                 <artifactId>tamaya-core</artifactId>
                 <version>${tamaya.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jboss.arquillian.</groupId>
+                        <artifactId>arquillian-bom</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
