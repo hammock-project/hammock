@@ -55,6 +55,7 @@
         <junit.version>4.12</junit.version>
         <tamaya.version>0.1-incubating</tamaya.version>
         <assertj.version>3.4.1</assertj.version>
+        <commons-io.version>2.4</commons-io.version>
     </properties>
     <modules>
         <module>core</module>
@@ -108,22 +109,6 @@
                 <version>${jetty.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.eclipse.jetty.websocket</groupId>
-                <artifactId>websocket-server</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty.websocket</groupId>
-                <artifactId>javax-websocket-server-impl</artifactId>
-                <version>${jetty.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-jndi</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-cdi</artifactId>
                 <version>${resteasy.version}</version>
@@ -171,6 +156,12 @@
                 <groupId>org.apache.tamaya</groupId>
                 <artifactId>tamaya-core</artifactId>
                 <version>${tamaya.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
