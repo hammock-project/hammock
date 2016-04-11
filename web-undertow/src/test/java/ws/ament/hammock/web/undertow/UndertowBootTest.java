@@ -24,6 +24,7 @@ import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -34,6 +35,7 @@ public class UndertowBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
+                .extensions(new UndertowWebSocketExtension())
                 .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class)
                 .initialize()) {
             UndertowWebServer undertowWebServer = weldContainer.select(UndertowWebServer.class).get();

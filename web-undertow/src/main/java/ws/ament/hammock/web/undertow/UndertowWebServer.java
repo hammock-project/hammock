@@ -29,6 +29,7 @@ import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletInfo;
+import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.Listener;
@@ -36,6 +37,7 @@ import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServer;
+import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
@@ -43,6 +45,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -57,6 +60,8 @@ import static io.undertow.servlet.Servlets.listener;
 public class UndertowWebServer extends AbstractWebServer {
     @Inject
     private Function<ServletDescriptor, ServletInfo> mapper;
+    @Inject
+    private UndertowWebSocketExtension extension;
     @Inject
     private BeanManager beanManager;
     private Set<ServletInfo> servlets = new HashSet<>();
@@ -75,6 +80,13 @@ public class UndertowWebServer extends AbstractWebServer {
                 .setResourceManager(new ClassPathResourceManager(getClass().getClassLoader()))
                 .setClassLoader(ClassLoader.getSystemClassLoader())
                 .addListener(listener(Listener.class));
+
+        Collection<Class<?>> endpoints = extension.getEndpointClasses();
+        if(!endpoints.isEmpty()) {
+            WebSocketDeploymentInfo webSocketDeploymentInfo = new WebSocketDeploymentInfo();
+            endpoints.forEach(webSocketDeploymentInfo::addEndpoint);
+            di.addServletContextAttribute(WebSocketDeploymentInfo.ATTRIBUTE_NAME, webSocketDeploymentInfo);
+        }
 
         getServletContextAttributes().forEach(di::addServletContextAttribute);
 
