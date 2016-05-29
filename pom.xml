@@ -63,6 +63,7 @@
         <module>web-undertow</module>
         <module>web-jetty</module>
         <module>rest-resteasy</module>
+        <module>security-spi</module>
     </modules>
     <dependencyManagement>
         <dependencies>
