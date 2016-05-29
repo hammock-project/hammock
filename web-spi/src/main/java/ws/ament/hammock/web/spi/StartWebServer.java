@@ -35,8 +35,6 @@ import java.util.StringJoiner;
 /**
  * A component that starts a standard application server component.
  *
- * Looks for a {@see WebServerConfiguration} that is annotated {@see ApplicationConfig}
- *
  */
 @ApplicationScoped
 public class StartWebServer {
