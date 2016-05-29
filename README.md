@@ -2,7 +2,7 @@ Hammock
 =======
 
 [![Build Status](https://travis-ci.org/johnament/hammock.png)](https://travis-ci.org/johnament/hammock)
-[Maven Central](https://maven-badges.herokuapp.com/maven-central/ws.ament.hammock/hammock/badge.png?style=plastic)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ws.ament.hammock/hammock/badge.png?style=plastic)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
 
 _Building Microservices so easily you're laying in a Hammock!_
 
@@ -78,3 +78,20 @@ You'll likely want to create an executable JAR.  Just shade in all dependencies 
 ### Configuration
 
 Configuration is provided via Apache Tamaya.  The default configuration uses port 8080 for your webserver and /tmp for your static file directory.  You'll likely want to configure those for your project.
+
+### Security
+
+Basic security support is available.  Two CDI interceptors are in use, one for verifying a user is logged in and another for verifying roles.  To make use of security, you'll need to implement the `Identity` interface and make it a bean to represent the user currently be acted upon, usually of `RequestScope`.  
+* `@LoggedIn` annotate a class or method, and an interceptor will check that the user is logged in for this method invocation.
+* `@HasAllRoles()` annotate a class or method, and an interceptor will check that the current identity has all of the roles defined.
+
+To add the security runtime to your app, just include this dependency.
+
+```xml
+<dependency>
+    <groupId>ws.ament.hammock</groupId>
+    <artifactId>security-spi</artifactId>
+    <version>0.0.3</version>
+</dependency>
+```
+
