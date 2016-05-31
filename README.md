@@ -2,7 +2,8 @@ Hammock
 =======
 
 [![Build Status](https://travis-ci.org/johnament/hammock.png)](https://travis-ci.org/johnament/hammock)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ws.ament.hammock/hammock/badge.png?style=plastic)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ws.ament.hammock/hammock/badge.png?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
+[![Dependency Status](https://www.versioneye.com/user/projects/574cdc006497d90039ac460e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/574cdc006497d90039ac460e)
 
 _Building Microservices so easily you're laying in a Hammock!_
 
