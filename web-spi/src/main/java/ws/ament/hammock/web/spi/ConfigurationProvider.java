@@ -16,30 +16,17 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.base;
+package ws.ament.hammock.web.spi;
 
-import org.apache.tamaya.core.propertysource.BasePropertySource;
+import ws.ament.hammock.core.config.ConfigurationBootstrap;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.HashMap;
-import java.util.Map;
+import javax.enterprise.inject.Produces;
 
-@ApplicationScoped
-public class DefaultProperties extends BasePropertySource {
-    public DefaultProperties() {
-        super(-10);
-    }
-
-    @Override
-    public String getName() {
-        return "hammock-default";
-    }
-
-    @Override
-    public Map<String, String> getProperties() {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("webserver.port", "8080");
-        properties.put("file.dir", "/tmp");
-        return properties;
+public class ConfigurationProvider {
+    @Produces
+    @ApplicationScoped
+    public WebServerConfiguration webServerConfiguration(ConfigurationBootstrap configurationBootstrap) {
+        return configurationBootstrap.populate(new WebServerConfiguration());
     }
 }

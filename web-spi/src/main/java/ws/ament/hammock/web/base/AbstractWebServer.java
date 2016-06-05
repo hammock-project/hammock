@@ -18,10 +18,9 @@
 
 package ws.ament.hammock.web.base;
 
-import org.apache.tamaya.Configuration;
-import org.apache.tamaya.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServer;
+import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +31,11 @@ import java.util.Map;
 public abstract class AbstractWebServer implements WebServer {
     private final List<ServletDescriptor> servletDescriptors = new ArrayList<>();
     private final Map<String, Object> servletContextAttributes = new HashMap<>();
-    private final Configuration configuration = ConfigurationProvider.getConfiguration();
+    private final WebServerConfiguration webServerConfiguration;
+
+    protected AbstractWebServer(WebServerConfiguration webServerConfiguration) {
+        this.webServerConfiguration = webServerConfiguration;
+    }
 
     @Override
     public void addServlet(ServletDescriptor servletDescriptor) {
@@ -44,10 +47,6 @@ public abstract class AbstractWebServer implements WebServer {
         servletContextAttributes.put(name, value);
     }
 
-    protected Configuration getConfiguration() {
-        return configuration;
-    }
-
     protected List<ServletDescriptor> getServletDescriptors() {
         return Collections.unmodifiableList(servletDescriptors);
     }
@@ -56,11 +55,7 @@ public abstract class AbstractWebServer implements WebServer {
         return Collections.unmodifiableMap(servletContextAttributes);
     }
 
-    protected int getPort() {
-        return getConfiguration().getOrDefault("webserver.port", Integer.class, 8080);
-    }
-
-    protected String getFilePath() {
-        return getConfiguration().get("file.dir");
+    public WebServerConfiguration getWebServerConfiguration() {
+        return webServerConfiguration;
     }
 }

@@ -56,6 +56,7 @@
         <tamaya.version>0.2-incubating</tamaya.version>
         <assertj.version>3.4.1</assertj.version>
         <commons-io.version>2.5</commons-io.version>
+        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
     </properties>
     <modules>
         <module>core</module>
@@ -163,10 +164,26 @@
                 <version>${tamaya.version}</version>
             </dependency>
             <dependency>
+                <groupId>ws.ament.hammock</groupId>
+                <artifactId>hammock-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tamaya.ext</groupId>
+                <artifactId>tamaya-injection</artifactId>
+                <version>${tamaya.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

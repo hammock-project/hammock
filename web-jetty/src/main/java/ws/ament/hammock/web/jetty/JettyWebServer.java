@@ -23,19 +23,25 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.jboss.weld.environment.servlet.Listener;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.Map;
 
 @ApplicationScoped
 public class JettyWebServer extends AbstractWebServer {
     private Server jetty;
+    @Inject
+    public JettyWebServer(WebServerConfiguration webServerConfiguration) {
+        super(webServerConfiguration);
+    }
 
     @Override
     public void start() {
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
-        context.setResourceBase(getFilePath());
+        context.setResourceBase(getWebServerConfiguration().getFileDir());
         context.addEventListener(new Listener());
 
         for(Map.Entry<String, Object> attribute : getServletContextAttributes().entrySet()) {
@@ -49,7 +55,7 @@ public class JettyWebServer extends AbstractWebServer {
         }
 
         try {
-            Server server = new Server(getPort());
+            Server server = new Server(getWebServerConfiguration().getWebserverPort());
             server.setHandler(context);
             server.start();
             jetty = server;

@@ -33,6 +33,7 @@ import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import org.jboss.weld.environment.servlet.Listener;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebServerConfiguration;
 import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
 import javax.annotation.PreDestroy;
@@ -60,6 +61,11 @@ public class UndertowWebServer extends AbstractWebServer {
     private BeanManager beanManager;
     private Set<ServletInfo> servlets = new HashSet<>();
     private Undertow undertow;
+
+    @Inject
+    public UndertowWebServer(WebServerConfiguration webServerConfiguration) {
+        super(webServerConfiguration);
+    }
 
     @Override
     public void addServlet(ServletDescriptor servletDescriptor) {
@@ -90,13 +96,13 @@ public class UndertowWebServer extends AbstractWebServer {
         deploymentManager.deploy();
         try {
             HttpHandler servletHandler = deploymentManager.start();
-            ResourceHandler resourceHandler = resource(new PathResourceManager(Paths.get(getFilePath()), 100))
+            ResourceHandler resourceHandler = resource(new PathResourceManager(Paths.get(getWebServerConfiguration().getFileDir()), 100))
                     .setDirectoryListingEnabled(true);
             PathHandler path = path(Handlers.redirect("/"))
                     .addPrefixPath("/", servletHandler)
                     .addPrefixPath("/resource", resourceHandler);
             this.undertow = Undertow.builder()
-                    .addHttpListener(getPort(), "0.0.0.0")
+                    .addHttpListener(getWebServerConfiguration().getWebserverPort(), "0.0.0.0")
                     .setHandler(path)
                     .build();
             this.undertow.start();

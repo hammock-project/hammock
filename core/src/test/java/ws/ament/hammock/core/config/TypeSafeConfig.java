@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 John D. Ament
+ * Copyright 2016 John D. Ament
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,15 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.spi;
+package ws.ament.hammock.core.config;
 
 import org.apache.tamaya.inject.api.Config;
 
-public class WebServerConfiguration {
-    @Config("webserver.port")
-    private int webserverPort;
+public class TypeSafeConfig {
+    @Config("populated.value")
+    private String populatedValue;
 
-    @Config("file.dir")
-    private String fileDir;
-
-    public int getWebserverPort() {
-        return webserverPort;
-    }
-
-    public String getFileDir() {
-        return fileDir;
+    public String getPopulatedValue() {
+        return populatedValue;
     }
 }

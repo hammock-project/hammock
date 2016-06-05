@@ -23,6 +23,9 @@ import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
+import ws.ament.hammock.core.config.ConfigurationBootstrap;
+import ws.ament.hammock.web.base.DefaultProperties;
+import ws.ament.hammock.web.spi.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
@@ -36,7 +39,8 @@ public class UndertowBootTest {
     public void shouldBootWebServer() throws Exception {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .extensions(new UndertowWebSocketExtension())
-                .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class)
+                .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,
+                        ConfigurationProvider.class, ConfigurationBootstrap.class, DefaultProperties.class)
                 .initialize()) {
             UndertowWebServer undertowWebServer = weldContainer.select(UndertowWebServer.class).get();
             undertowWebServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
