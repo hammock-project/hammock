@@ -22,7 +22,6 @@ import javax.enterprise.util.AnnotationLiteral;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import java.util.Map;
 
 public class ServletDescriptor extends AnnotationLiteral<WebServlet> implements WebServlet{
 
