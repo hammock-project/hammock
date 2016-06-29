@@ -30,7 +30,7 @@ public class ServletDescriptor extends AnnotationLiteral<WebServlet> implements 
     private final String[] value;
     private final String[] urlPatterns;
     private final int loadOnStartup;
-    private final WebInitParam[] initParams;
+    private final transient WebInitParam[] initParams;
     private final boolean asyncSupported;
     private final Class<? extends HttpServlet> servletClass;
 
