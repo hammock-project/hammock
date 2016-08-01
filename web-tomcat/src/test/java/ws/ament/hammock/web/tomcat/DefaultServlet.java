@@ -16,30 +16,25 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.base;
-
-import org.apache.tamaya.core.propertysource.BasePropertySource;
+package ws.ament.hammock.web.tomcat;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.HashMap;
-import java.util.Map;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @ApplicationScoped
-public class DefaultProperties extends BasePropertySource {
-    public DefaultProperties() {
-        super(-10);
-    }
+@WebServlet("/*")
+public class DefaultServlet extends HttpServlet {
+    @Inject
+    private MessageProvider messageProvider;
 
     @Override
-    public String getName() {
-        return "hammock-default";
-    }
-
-    @Override
-    public Map<String, String> getProperties() {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("webserver.port", "8080");
-        properties.put("file.dir", "/tmp");
-        return properties;
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.getWriter().println(messageProvider.getMessage());
     }
 }

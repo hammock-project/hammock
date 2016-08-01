@@ -24,7 +24,6 @@ import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
 import ws.ament.hammock.core.config.ConfigurationBootstrap;
-import ws.ament.hammock.web.base.DefaultProperties;
 import ws.ament.hammock.web.spi.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 
@@ -38,7 +37,7 @@ public class JettyBootTest {
     public void shouldBootWebServer() throws Exception {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .beanClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        ConfigurationProvider.class, ConfigurationBootstrap.class, DefaultProperties.class)
+                        ConfigurationProvider.class, ConfigurationBootstrap.class)
                 .initialize()) {
             JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
             webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());

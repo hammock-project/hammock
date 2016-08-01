@@ -46,7 +46,10 @@ public class ConfigurationBootstrap {
     @PostConstruct
     public void init() {
         List<PropertySource> propertySourceList = new ArrayList<>();
-        discoveredPropertySources.forEach(propertySourceList::add);
+        discoveredPropertySources.forEach(dps -> {
+            System.out.println("Adding "+dps);
+            propertySourceList.add(dps);
+        });
         ConfigurationContext configurationContext = ConfigurationProvider.getConfigurationContextBuilder()
                 .addPropertySources(propertySourceList)
                 .build();

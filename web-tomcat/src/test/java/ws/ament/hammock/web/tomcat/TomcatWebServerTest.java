@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 John D. Ament
+ * Copyright 2016 John D. Ament
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,36 +16,36 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.undertow;
+package ws.ament.hammock.web.tomcat;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
-import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
 import ws.ament.hammock.core.config.ConfigurationBootstrap;
 import ws.ament.hammock.web.spi.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
-import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
+import javax.servlet.annotation.WebInitParam;
 import java.io.InputStream;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UndertowBootTest {
+/**
+ * Created by johnament on 7/2/16.
+ */
+public class TomcatWebServerTest {
     @Test
     public void shouldBootWebServer() throws Exception {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
-                .extensions(new UndertowWebSocketExtension())
-                .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        ConfigurationProvider.class, ConfigurationBootstrap.class)
+                .beanClasses(TomcatWebServer.class, DefaultServlet.class, MessageProvider.class,
+                        ConfigurationProvider.class, ConfigurationBootstrap.class, TestServletProducer.class)
                 .initialize()) {
-            UndertowWebServer undertowWebServer = weldContainer.select(UndertowWebServer.class).get();
-            undertowWebServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
-            undertowWebServer.addServlet(new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class));
-            undertowWebServer.start();
-
+            TomcatWebServer tomcat = weldContainer.select(TomcatWebServer.class).get();
+            tomcat.addServlet(new ServletDescriptor("Default",new String[]{"/*"},new String[]{"/*"},1,new WebInitParam[]{}, true, DefaultServlet.class));
+            tomcat.start();
+            Thread.sleep(10000);
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();
                 assertThat(data).isEqualTo(MessageProvider.DATA);

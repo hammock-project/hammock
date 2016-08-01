@@ -23,6 +23,7 @@ import ws.ament.hammock.core.config.ConfigurationBootstrap;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
+@ApplicationScoped
 public class ConfigurationProvider {
     @Produces
     @ApplicationScoped

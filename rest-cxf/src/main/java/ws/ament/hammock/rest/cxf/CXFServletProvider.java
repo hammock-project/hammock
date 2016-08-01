@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 John D. Ament
+ * Copyright 2016 John D. Ament
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,18 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.spi;
+package ws.ament.hammock.rest.cxf;
 
-import org.apache.tamaya.inject.api.Config;
+import org.apache.cxf.cdi.CXFCdiServlet;
+import ws.ament.hammock.web.spi.ServletDescriptor;
 
-public class WebServerConfiguration {
-    @Config(value="webserver.port",defaultValue = "8080")
-    private int webserverPort;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 
-    @Config(value = "file.dir", defaultValue = "/tmp")
-    private String fileDir;
-
-    public int getWebserverPort() {
-        return webserverPort;
-    }
-
-    public String getFileDir() {
-        return fileDir;
+@ApplicationScoped
+public class CXFServletProvider {
+    @Produces
+    public ServletDescriptor cxfServlet() {
+        return new ServletDescriptor("CXF",null, new String[]{"/*"},1,null,true,CXFCdiServlet.class);
     }
 }

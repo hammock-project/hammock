@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.web.undertow.websocket;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
@@ -27,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+@ApplicationScoped
 public class UndertowWebSocketExtension implements Extension {
     private final Collection<Class<?>> endpointClasses = new HashSet<>();
     public void findWebSocketServers(@Observes @WithAnnotations(ServerEndpoint.class)ProcessAnnotatedType<?> pat) {
