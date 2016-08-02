@@ -68,6 +68,7 @@
         <module>rest-resteasy</module>
         <module>rest-cxf</module>
         <module>security-spi</module>
+        <module>dist-microprofile</module>
     </modules>
     <dependencyManagement>
         <dependencies>
