@@ -37,12 +37,12 @@
     </licenses>
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/johnament/hammock/issues</url>
+        <url>https://github.com/hammock-project/hammock/issues</url>
     </issueManagement>
     <scm>
-        <developerConnection>scm:git:git@github.com:johnament/hammock.git</developerConnection>
-        <url>https://github.com/johnament/hammock</url>
-        <connection>scm:git:https://github.com/johnament/hammock.git</connection>
+        <developerConnection>scm:git:git@github.com:hammock-project/hammock.git</developerConnection>
+        <url>https://github.com/hammock-project/hammock</url>
+        <connection>scm:git:https://github.com/hammock-project/hammock.git</connection>
     </scm>
     <properties>
         <weld.version>2.3.5.Final</weld.version>
@@ -65,6 +65,7 @@
         <module>web-undertow</module>
         <module>web-jetty</module>
         <!--<module>web-tomcat</module>-->
+        <module>util-cxf-shaded</module>
         <module>rest-resteasy</module>
         <module>rest-cxf</module>
         <module>security-spi</module>
