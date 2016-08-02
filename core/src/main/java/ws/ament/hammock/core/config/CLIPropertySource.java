@@ -63,7 +63,7 @@ public class CLIPropertySource extends BasePropertySource {
         if(argsProp!=null){
             CLIPropertySource.args = argsProp.split("\\s");
         }
-        Map<String,String> result = null;
+        Map<String,String> result;
         if(CLIPropertySource.args==null){
             result = Collections.emptyMap();
         }else{
