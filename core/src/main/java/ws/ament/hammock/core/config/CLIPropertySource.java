@@ -76,7 +76,7 @@ public class CLIPropertySource extends BasePropertySource {
             for(String arg:CLIPropertySource.args){
                 if(arg.startsWith("--")){
                     arg = arg.substring(2);
-                    int index = arg.indexOf("=");
+                    int index = arg.indexOf('=');
                     if(index>0){
                         key = arg.substring(0,index).trim();
                         result.put(prefix+key, arg.substring(index+1).trim());
@@ -84,7 +84,7 @@ public class CLIPropertySource extends BasePropertySource {
                     }else{
                         result.put(prefix+arg, arg);
                     }
-                }else if(arg.startsWith("-")){
+                }else if(arg.charAt(0) == '-'){
                     key = arg.substring(1);
                 }else{
                     if(key!=null){
