@@ -215,15 +215,66 @@
 
     <build>
         <defaultGoal>clean verify</defaultGoal>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.7.201606060606</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.eluder.coveralls</groupId>
+                    <artifactId>coveralls-maven-plugin</artifactId>
+                    <version>4.2.0</version>
+                    <configuration>
+                        <jacocoReports>
+                            <jacocoReport>${project.basedir}/impl/target/site/jacoco/jacoco.xml</jacocoReport>
+                        </jacocoReports>
+                        <coverallsFile>${project.basedir}/impl/target/coveralls.json</coverallsFile>
+                        <sourceDirectories>
+                            <sourceDirectory>${project.basedir}/impl/src/main/java</sourceDirectory>
+                        </sourceDirectories>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.5.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>jacoco</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                                <configuration>
+                                    <destFile>${project.basedir}/../core/target/jacoco.exec</destFile>
+                                    <append>true</append>
+                                    <includes>
+                                        <include>ws.ament.hammock.*</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
