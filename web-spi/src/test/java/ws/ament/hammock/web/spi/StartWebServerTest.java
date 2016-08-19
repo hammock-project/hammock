@@ -24,31 +24,30 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+import javax.enterprise.inject.spi.DeploymentException;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StartWebServerTest {
     private static final String NO_WEBSERVERS = "No web server implementations found on the classpath";
-    private static final String WEBSERVERS = "Multiple web server implementations found on the classpath \\[WebServer(A|B),WebServer(A|B)\\]";
+    private static final String WEBSERVERS = "Multiple web server implementations found on the classpath";
     @Rule
     public TestName testName = new TestName();
     @Test
     public void shouldNotFindImpls() {
         assertThatThrownBy(() -> {
-            new Weld(testName.getMethodName()).addBeanClass(StartWebServer.class).initialize();
-        }).hasMessageContaining("WELD-000049").isInstanceOf(WeldException.class)
-                .hasCauseInstanceOf(InvocationTargetException.class).matches(t -> NO_WEBSERVERS.equals(t.getCause().getCause().getMessage()));
+            new Weld(testName.getMethodName()).addExtension(new StartWebServer()).initialize();
+        }).isInstanceOf(DeploymentException.class)
+                .hasMessageContaining(NO_WEBSERVERS);
     }
 
     @Test
     public void shouldFindTooMany() {
         assertThatThrownBy(() -> {
-            new Weld(testName.getMethodName()).beanClasses(StartWebServer.class, WebServerA.class, WebServerB.class).initialize();
-        }).hasMessageContaining("WELD-000049").isInstanceOf(WeldException.class)
-                .hasCauseInstanceOf(InvocationTargetException.class).matches(
-                t -> t.getCause().getCause().getMessage()
-                        .matches(WEBSERVERS));
+            new Weld(testName.getMethodName()).addExtension(new StartWebServer()).beanClasses(WebServerA.class, WebServerB.class).initialize();
+        }).isInstanceOf(DeploymentException.class)
+                .hasMessageContaining(WEBSERVERS);
     }
 
     public static class WebServerA implements WebServer {

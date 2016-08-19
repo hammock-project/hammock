@@ -22,70 +22,73 @@ import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
+import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.AfterDeploymentValidation;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
+import javax.enterprise.inject.spi.Extension;
+import java.util.Collection;
+import java.util.Set;
 import java.util.StringJoiner;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * A component that starts a standard application server component.
  *
  */
-@ApplicationScoped
-public class StartWebServer {
+public class StartWebServer implements Extension {
     private WebServer webServer;
     private final Logger logger = LoggerFactory.getLogger(StartWebServer.class);
-    @Inject
-    private BeanManager beanManager;
 
-    @Inject
-    private Instance<WebServer> webServerInstance;
-
-    @Inject
-    private Instance<ServletDescriptor> servletDescriptors;
-
-    @Inject
-    private Instance<ServletContextAttributeProvider> servletContextAttributeProviders;
-
-    @PostConstruct
-    public void init() {
-        logger.info("Post Construct called");
-        WebServer webServer = resolveWebServer();
+    void init(@Observes AfterDeploymentValidation afterDeploymentValidation, BeanManager beanManager) {
+        WebServer webServer = resolveWebServer(beanManager);
 
         webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
-        servletDescriptors.forEach(webServer::addServlet);
-
-        servletContextAttributeProviders.forEach(s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
-
+        getServletDescriptors(beanManager).forEach(webServer::addServlet);
+        getServletContextAttributeProviders(beanManager)
+                .forEach(s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
         webServer.start();
 
         this.webServer = webServer;
-    }
-
-    private WebServer resolveWebServer() {
-        if(webServerInstance.isAmbiguous()) {
-            StringJoiner foundInstances = new StringJoiner(",","[","]");
-            webServerInstance.iterator().forEachRemaining(ws -> foundInstances.add(ws.toString()));
-            throw new RuntimeException("Multiple web server implementations found on the classpath "+foundInstances);
-        }
-        if(webServerInstance.isUnsatisfied()) {
-            throw new RuntimeException("No web server implementations found on the classpath");
-        }
-        return webServerInstance.get();
-    }
-
-    public void watch(@Observes @Initialized(ApplicationScoped.class) Object initialized) {
-        logger.info("App Scope Initialized");
     }
 
     @PreDestroy
     public void shutdown() {
         logger.info("Shutting down Application listener");
         this.webServer.stop();
+    }
+
+    private WebServer resolveWebServer(BeanManager beanManager) {
+        Set<Bean<?>> beans = beanManager.getBeans(WebServer.class);
+        if(beans.size() > 1) {
+            StringJoiner foundInstances = new StringJoiner(",","[","]");
+            beans.iterator().forEachRemaining(ws -> foundInstances.add(ws.toString()));
+            throw new RuntimeException("Multiple web server implementations found on the classpath "+foundInstances);
+        }
+        if(beans.isEmpty()) {
+            throw new RuntimeException("No web server implementations found on the classpath");
+        }
+        Bean<?> bean = beanManager.resolve(beans);
+        CreationalContext<?> creationalContext = beanManager.createCreationalContext(bean);
+        return (WebServer) beanManager.getReference(bean, WebServer.class, creationalContext);
+    }
+
+    private Collection<ServletDescriptor> getServletDescriptors(BeanManager beanManager) {
+        Set<Bean<?>> beans = beanManager.getBeans(ServletDescriptor.class);
+        return beans.stream().map(bean -> {
+            CreationalContext<?> creationalContext = beanManager.createCreationalContext(bean);
+            return (ServletDescriptor) beanManager.getReference(bean, ServletDescriptor.class, creationalContext);
+        }).collect(toList());
+    }
+
+    private Collection<ServletContextAttributeProvider> getServletContextAttributeProviders(BeanManager beanManager) {
+        Set<Bean<?>> beans = beanManager.getBeans(ServletContextAttributeProvider.class);
+        return beans.stream().map(bean -> {
+            CreationalContext<?> creationalContext = beanManager.createCreationalContext(bean);
+            return (ServletContextAttributeProvider) beanManager.getReference(bean, ServletContextAttributeProvider.class, creationalContext);
+        }).collect(toList());
     }
 }
