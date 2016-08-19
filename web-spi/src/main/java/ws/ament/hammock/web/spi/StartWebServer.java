@@ -54,6 +54,7 @@ public class StartWebServer {
 
     @PostConstruct
     public void init() {
+        logger.info("Post Construct called");
         WebServer webServer = resolveWebServer();
 
         webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
@@ -78,8 +79,8 @@ public class StartWebServer {
         return webServerInstance.get();
     }
 
-    void watch(@Observes @Initialized(ApplicationScoped.class) Object initialized) {
-
+    public void watch(@Observes @Initialized(ApplicationScoped.class) Object initialized) {
+        logger.info("App Scope Initialized");
     }
 
     @PreDestroy

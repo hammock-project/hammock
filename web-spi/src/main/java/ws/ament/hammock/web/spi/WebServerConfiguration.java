@@ -20,6 +20,9 @@ package ws.ament.hammock.web.spi;
 
 import org.apache.tamaya.inject.api.Config;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class WebServerConfiguration {
     @Config(value="webserver.port",defaultValue = "8080")
     private int webserverPort;
