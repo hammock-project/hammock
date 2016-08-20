@@ -22,11 +22,11 @@
     <artifactId>hammock-core</artifactId>
     <packaging>jar</packaging>
     <url>https://github.com/johnament/hammock/wiki/Hammock</url>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <parent>
         <groupId>ws.ament.hammock</groupId>
         <artifactId>hammock</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <dependencies>
