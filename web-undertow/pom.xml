@@ -50,10 +50,6 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.tamaya</groupId>
-            <artifactId>tamaya-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>

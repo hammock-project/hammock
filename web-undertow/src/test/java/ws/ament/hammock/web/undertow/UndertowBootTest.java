@@ -21,7 +21,6 @@ package ws.ament.hammock.web.undertow;
 import org.apache.commons.io.IOUtils;
 import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
-import org.apache.log4j.BasicConfigurator;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
@@ -38,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UndertowBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
-        BasicConfigurator.configure();
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .extensions(new UndertowWebSocketExtension(), new ConfigurationExtension())
                 .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,
