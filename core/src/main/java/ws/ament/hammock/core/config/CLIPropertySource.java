@@ -18,20 +18,19 @@
 
 package ws.ament.hammock.core.config;
 
-import org.apache.tamaya.core.propertysource.BasePropertySource;
+import org.apache.deltaspike.core.impl.config.PropertiesConfigSource;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * PropertySource that allows to add the programs main arguments as configuration entries. Unix syntax using '--' and
  * '-' params is supported.
  */
-@ApplicationScoped
-public class CLIPropertySource extends BasePropertySource {
+public class CLIPropertySource extends PropertiesConfigSource {
 
     /** The original main arguments. */
     private static String[] args = new String[0];
@@ -48,7 +47,9 @@ public class CLIPropertySource extends BasePropertySource {
     /**
      * Creates a new instance.
      */
-    public CLIPropertySource(){}
+    public CLIPropertySource(Properties cliProps){
+        super(cliProps);
+    }
 
     /**
      * Configure the main arguments, herby parsing and mapping the main arguments into
@@ -100,7 +101,7 @@ public class CLIPropertySource extends BasePropertySource {
     }
 
     @Override
-    public Map<String, String> getProperties() {
-        return Collections.unmodifiableMap(mainArgs);
+    public String getConfigName() {
+        return "cli";
     }
 }

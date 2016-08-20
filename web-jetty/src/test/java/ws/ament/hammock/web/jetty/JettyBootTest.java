@@ -19,13 +19,14 @@
 package ws.ament.hammock.web.jetty;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
+import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
-import ws.ament.hammock.core.config.ConfigurationBootstrap;
-import ws.ament.hammock.web.spi.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -36,8 +37,9 @@ public class JettyBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
+                .extensions(new ConfigurationExtension())
                 .beanClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        ConfigurationProvider.class, ConfigurationBootstrap.class)
+                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
                 .initialize()) {
             JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
             webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());

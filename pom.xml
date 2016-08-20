@@ -53,11 +53,11 @@
         <arquillian.weld.version>1.0.0.CR9</arquillian.weld.version>
         <slf4j.version>1.7.21</slf4j.version>
         <junit.version>4.12</junit.version>
-        <tamaya.version>0.2-incubating</tamaya.version>
+        <deltaspike.version>1.7.1</deltaspike.version>
         <assertj.version>3.4.1</assertj.version>
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <tomcat.version>8.5.3</tomcat.version>
+        <tomcat.version>8.0.30</tomcat.version>
     </properties>
     <modules>
         <module>core</module>
@@ -164,9 +164,14 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.apache.tamaya</groupId>
-                <artifactId>tamaya-core</artifactId>
-                <version>${tamaya.version}</version>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-api</artifactId>
+                <version>${deltaspike.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-impl</artifactId>
+                <version>${deltaspike.version}</version>
             </dependency>
             <dependency>
                 <groupId>ws.ament.hammock</groupId>

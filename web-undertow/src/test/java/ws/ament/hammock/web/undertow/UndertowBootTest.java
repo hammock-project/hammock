@@ -19,13 +19,15 @@
 package ws.ament.hammock.web.undertow;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
+import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
+import org.apache.log4j.BasicConfigurator;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
-import ws.ament.hammock.core.config.ConfigurationBootstrap;
-import ws.ament.hammock.web.spi.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebServerConfiguration;
 import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
 import java.io.InputStream;
@@ -36,10 +38,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UndertowBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
+        BasicConfigurator.configure();
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
-                .extensions(new UndertowWebSocketExtension())
+                .extensions(new UndertowWebSocketExtension(), new ConfigurationExtension())
                 .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        ConfigurationProvider.class, ConfigurationBootstrap.class)
+                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
                 .initialize()) {
             UndertowWebServer undertowWebServer = weldContainer.select(UndertowWebServer.class).get();
             undertowWebServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());

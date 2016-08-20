@@ -39,12 +39,14 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.tamaya</groupId>
-            <artifactId>tamaya-core</artifactId>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-api</artifactId>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.tamaya.ext</groupId>
-            <artifactId>tamaya-injection</artifactId>
+            <groupId>org.apache.deltaspike.core</groupId>
+            <artifactId>deltaspike-core-impl</artifactId>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

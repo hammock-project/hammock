@@ -18,16 +18,19 @@
 
 package ws.ament.hammock.web.spi;
 
-import org.apache.tamaya.inject.api.Config;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 
-import javax.enterprise.inject.Vetoed;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
-@Vetoed
+@ApplicationScoped
 public class WebServerConfiguration {
-    @Config(value="webserver.port",defaultValue = "8080")
+    @Inject
+    @ConfigProperty(name="webserver.port",defaultValue = "8080")
     private int webserverPort;
 
-    @Config(value = "file.dir", defaultValue = "/tmp")
+    @Inject
+    @ConfigProperty(name="file.dir",defaultValue = "/tmp")
     private String fileDir;
 
     public int getWebserverPort() {
