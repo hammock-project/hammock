@@ -53,18 +53,18 @@
         <!-- test dependencies -->
         <dependency>
             <groupId>ws.ament.hammock</groupId>
+            <artifactId>test-arquillian</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ws.ament.hammock</groupId>
             <artifactId>web-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>web-undertow</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ws.ament.hammock</groupId>
-            <artifactId>test-arquillian</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
