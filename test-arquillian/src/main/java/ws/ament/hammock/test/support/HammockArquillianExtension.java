@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.test.support;
 
+import org.jboss.arquillian.container.test.impl.enricher.resource.URIResourceProvider;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
@@ -27,6 +28,6 @@ public class HammockArquillianExtension implements LoadableExtension {
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder
                 .service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class)
-                .service(ResourceProvider.class, HammockURIProvider.class);
+                .override(ResourceProvider.class, URIResourceProvider.class, HammockURIProvider.class);
     }
 }
