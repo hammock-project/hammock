@@ -18,24 +18,24 @@
 
 package ws.ament.hammock.test.support;
 
-import org.jboss.arquillian.container.test.impl.enricher.resource.OperatesOnDeploymentAwareProvider;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.inject.spi.CDI;
 import java.lang.annotation.Annotation;
 import java.net.URI;
 
-public class HammockURIProvider extends OperatesOnDeploymentAwareProvider {
+public class HammockURIProvider implements ResourceProvider {
     @Override
-    public Object doLookup(ArquillianResource arquillianResource, Annotation... annotations) {
+    public Object lookup(ArquillianResource arquillianResource, Annotation... annotations) {
         WebServerConfiguration webServerConfiguration = CDI.current().select(WebServerConfiguration.class).get();
-        return URI.create("http://localhost:"+webServerConfiguration.getWebserverPort());
+        return URI.create("http://localhost:" + webServerConfiguration.getWebserverPort());
     }
 
     @Override
-    public boolean canProvide(Class<?> type)
-    {
+    public boolean canProvide(Class<?> type) {
         return type.isAssignableFrom(URI.class);
     }
+
 }
