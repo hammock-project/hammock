@@ -20,12 +20,15 @@ package ws.ament.hammock.metrics.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.metrics.MetricsConfig;
 import ws.ament.hammock.metrics.MetricsServletProvider;
+
+import java.net.URI;
 
 import static io.restassured.RestAssured.get;
 
@@ -36,7 +39,8 @@ public class MetricsServletTest {
         return ShrinkWrap.create(JavaArchive.class).addClasses(MetricsConfig.class, MetricsServletProvider.class);
     }
 
-    private String uri = "http://localhost:8080";
+    @ArquillianResource
+    private URI uri;
 
     @Test
     public void shouldHaveContentInMetrics() throws Exception {
