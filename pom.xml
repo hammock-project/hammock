@@ -71,6 +71,7 @@
         <module>security-spi</module>
         <module>dist-microprofile</module>
         <module>test-arquillian</module>
+        <module>util-metrics</module>
     </modules>
     <dependencyManagement>
         <dependencies>

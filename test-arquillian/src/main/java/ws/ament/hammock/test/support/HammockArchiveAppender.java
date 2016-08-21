@@ -32,6 +32,7 @@ public class HammockArchiveAppender implements ApplicationArchiveProcessor {
     public void process(Archive<?> archive, TestClass testClass) {
         archive.as(JavaArchive.class)
                 .addPackages(true, "ws.ament.hammock", "org.apache.deltaspike")
+                .addPackage("io.astefanutti.metrics.cdi")
                 .addAsManifestResource(BEANS_XML, "beans.xml");
     }
 }
