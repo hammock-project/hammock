@@ -18,86 +18,72 @@
 
 package ws.ament.hammock.core.config;
 
-import org.apache.deltaspike.core.impl.config.PropertiesConfigSource;
+import org.apache.deltaspike.core.impl.config.MapConfigSource;
+import org.apache.deltaspike.core.spi.config.ConfigSource;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
 
 /**
  * PropertySource that allows to add the programs main arguments as configuration entries. Unix syntax using '--' and
  * '-' params is supported.
  */
-public class CLIPropertySource extends PropertiesConfigSource {
-
-    /** The original main arguments. */
-    private static String[] args = new String[0];
-
-    /** The map of parsed main arguments. */
-    private static Map<String,String> mainArgs;
-
-    /** Initializes the initial state. */
-    static{
-        initMainArgs(args);
-    }
-
+public class CLIPropertySource extends MapConfigSource {
 
     /**
      * Creates a new instance.
      */
-    public CLIPropertySource(Properties cliProps){
+    private CLIPropertySource(Map<String, String> cliProps) {
         super(cliProps);
     }
 
     /**
      * Configure the main arguments, herby parsing and mapping the main arguments into
      * configuration properties.
-     * @param args the main arguments, not null.
+     *
      * @returns the parsed main arguments as key/value pairs.
      */
-    private static void initMainArgs(String... args){
-        CLIPropertySource.args = Objects.requireNonNull(args);
-        // TODO is there a way to figure out the args?
+    public static ConfigSource parseMainArgs() {
         String argsProp = System.getProperty("main.args");
-        if(argsProp!=null){
-            CLIPropertySource.args = argsProp.split("\\s");
+        String[] args = null;
+        if (argsProp != null) {
+            args = argsProp.split("\\s");
         }
-        Map<String,String> result;
-        if(CLIPropertySource.args==null){
+        Map<String, String> result;
+        if (args == null) {
             result = Collections.emptyMap();
-        }else{
+        } else {
             result = new HashMap<>();
             String prefix = System.getProperty("main.args.prefix");
-            if(prefix==null){
-                prefix="";
+            if (prefix == null) {
+                prefix = "";
             }
             String key = null;
-            for(String arg:CLIPropertySource.args){
-                if(arg.startsWith("--")){
+            for (String arg : args) {
+                if (arg.startsWith("--")) {
                     arg = arg.substring(2);
                     int index = arg.indexOf('=');
-                    if(index>0){
-                        key = arg.substring(0,index).trim();
-                        result.put(prefix+key, arg.substring(index+1).trim());
+                    if (index > 0) {
+                        key = arg.substring(0, index).trim();
+                        result.put(prefix + key, arg.substring(index + 1).trim());
                         key = null;
-                    }else{
-                        result.put(prefix+arg, arg);
+                    } else {
+                        result.put(prefix + arg, arg);
                     }
-                }else if(arg.charAt(0) == '-'){
+                } else if (arg.charAt(0) == '-') {
                     key = arg.substring(1);
-                }else{
-                    if(key!=null){
-                        result.put(prefix+key, arg);
+                } else {
+                    if (key != null) {
+                        result.put(prefix + key, arg);
                         key = null;
-                    }else{
-                        result.put(prefix+arg, arg);
+                    } else {
+                        result.put(prefix + arg, arg);
                     }
                 }
             }
         }
-        CLIPropertySource.mainArgs = Collections.unmodifiableMap(result);
+        return new CLIPropertySource(result);
     }
 
     @Override
