@@ -70,6 +70,7 @@
         <module>rest-cxf</module>
         <module>security-spi</module>
         <module>dist-microprofile</module>
+        <module>test-arquillian</module>
     </modules>
     <dependencyManagement>
         <dependencies>

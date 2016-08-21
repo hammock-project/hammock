@@ -106,7 +106,6 @@ public class UndertowWebServer extends AbstractWebServer {
                     .setHandler(path)
                     .build();
             this.undertow.start();
-            System.out.println("Undertow started...");
         } catch (ServletException e) {
             throw new RuntimeException("Unable to start server", e);
         }
