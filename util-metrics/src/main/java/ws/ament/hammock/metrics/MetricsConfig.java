@@ -29,7 +29,7 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class MetricsConfig {
     @Inject
-    @ConfigProperty(name="metrics.uri.patterns",defaultValue = "/metrics/*")
+    @ConfigProperty(name="metrics.uri",defaultValue = "/metrics/*")
     private String baseUri;
 
     @Inject

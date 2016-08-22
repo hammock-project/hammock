@@ -45,7 +45,7 @@ public class CLIPropertySource extends MapConfigSource {
      * @returns the parsed main arguments as key/value pairs.
      */
     public static ConfigSource parseMainArgs() {
-        String argsProp = System.getProperty("main.args");
+        String argsProp = System.getProperty("sun.java.command");
         String[] args = null;
         if (argsProp != null) {
             args = argsProp.split("\\s");

@@ -26,14 +26,14 @@ import static org.junit.Assert.assertEquals;
 public class HammockConfigSourceProviderTest {
     @Test
     public void shouldCreateTwoConfigSourcesWhenPropertyConfigured() {
-        System.setProperty("main.args","--hammock.external.config=src/test/resources/testing.properties");
+        System.setProperty("sun.java.command","somejar.jar --hammock.external.config=src/test/resources/testing.properties");
         HammockConfigSourceProvider hammockConfigSourceProvider = new HammockConfigSourceProvider();
         assertEquals(2,hammockConfigSourceProvider.getConfigSources().size());
     }
 
     @Test
     public void shouldOnlyCreateOneConfigSource() {
-        System.setProperty("main.args","--cli=true");
+        System.setProperty("sun.java.command","--cli=true");
         HammockConfigSourceProvider hammockConfigSourceProvider = new HammockConfigSourceProvider();
         assertEquals(1,hammockConfigSourceProvider.getConfigSources().size());
     }

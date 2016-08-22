@@ -27,7 +27,7 @@ public class CLIPropertySourceTest {
 
     @Test
     public void shouldReadPropertiesFromDefinedLocation() {
-        System.setProperty("main.args","--key=value -s j");
+        System.setProperty("sun.java.command","somejar.jar --key=value -s j");
         ConfigSource cliPropertySource = CLIPropertySource.parseMainArgs();
         String key = cliPropertySource.getPropertyValue("key");
         assertEquals(key, "value");
