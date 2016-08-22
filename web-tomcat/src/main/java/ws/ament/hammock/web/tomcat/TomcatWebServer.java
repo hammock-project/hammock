@@ -22,24 +22,17 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
 import org.apache.tomcat.util.scan.StandardJarScanner;
-import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.bootstrap.api.helpers.RegistrySingletonProvider;
+import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.Listener;
-import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Set;
 
 @ApplicationScoped
 public class TomcatWebServer extends AbstractWebServer{
@@ -58,6 +51,8 @@ public class TomcatWebServer extends AbstractWebServer{
 
         ((StandardJarScanner) ctx.getJarScanner()).setScanAllDirectories(true);
         StandardContext standardContext = (StandardContext)ctx;
+        WeldContainer weldContainer = WeldContainer.instance(RegistrySingletonProvider.STATIC_INSTANCE);
+        ctx.getServletContext().setAttribute(Listener.CONTAINER_ATTRIBUTE_NAME, weldContainer);
 //        standardContext.setatt(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, container.getBeanManager());
         standardContext.addApplicationListener(Listener.class.getName());
         getServletDescriptors().forEach(servletDescriptor -> {

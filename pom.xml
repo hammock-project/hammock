@@ -73,7 +73,7 @@
         <module>web-spi</module>
         <module>web-undertow</module>
         <module>web-jetty</module>
-        <!--<module>web-tomcat</module>-->
+        <module>web-tomcat</module>
         <module>util-cxf-shaded</module>
         <module>rest-resteasy</module>
         <module>rest-cxf</module>

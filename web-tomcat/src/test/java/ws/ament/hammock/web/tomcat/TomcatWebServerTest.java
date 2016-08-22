@@ -19,12 +19,13 @@
 package ws.ament.hammock.web.tomcat;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
+import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.Test;
-import ws.ament.hammock.core.config.ConfigurationBootstrap;
-import ws.ament.hammock.web.spi.ConfigurationProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.servlet.annotation.WebInitParam;
 import java.io.InputStream;
@@ -32,20 +33,18 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by johnament on 7/2/16.
- */
 public class TomcatWebServerTest {
     @Test
     public void shouldBootWebServer() throws Exception {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
+                .extensions(new ConfigurationExtension())
                 .beanClasses(TomcatWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        ConfigurationProvider.class, ConfigurationBootstrap.class, TestServletProducer.class)
+                        TestServletProducer.class,
+                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
                 .initialize()) {
             TomcatWebServer tomcat = weldContainer.select(TomcatWebServer.class).get();
             tomcat.addServlet(new ServletDescriptor("Default",new String[]{"/*"},new String[]{"/*"},1,new WebInitParam[]{}, true, DefaultServlet.class));
             tomcat.start();
-            Thread.sleep(10000);
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();
                 assertThat(data).isEqualTo(MessageProvider.DATA);
