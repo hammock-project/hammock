@@ -23,7 +23,7 @@ Both containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-undertow</artifactId>
-    <version>0.0.3</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ Both containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-jetty</artifactId>
-    <version>0.0.3</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -43,7 +43,17 @@ Next, you'll want to add a REST Runtime to your application.  The default is to 
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>rest-resteasy</artifactId>
-    <version>0.0.3</version>
+    <version>0.1.0</version>
+</dependency>
+```
+
+But you can also use CXF
+
+```xml
+<dependency>
+    <groupId>ws.ament.hammock</groupId>
+    <artifactId>rest-resteasy</artifactId>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -92,7 +102,7 @@ To add the security runtime to your app, just include this dependency.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>security-spi</artifactId>
-    <version>0.0.3</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
