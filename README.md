@@ -9,6 +9,8 @@ _Building Microservices so easily you're laying in a Hammock!_
 
 Hammock is a simple to use framework for bootstrapping CDI, launching a web server and being able to deploy REST APIs.  It takes a best practice approach to creating a runtime for you, so that you can focus on the important stuff.
 
+Read through some of the basics to get started, or view the [wiki](https://github.com/hammock-project/hammock/wiki)
+
 ## Getting Started
 
 First, add some dependencies to your project.  You can choose between Undertow and Jetty presently
