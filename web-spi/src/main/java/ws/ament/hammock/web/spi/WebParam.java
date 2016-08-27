@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 John D. Ament
+ * Copyright 2016 John D. Ament
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,30 @@
 
 package ws.ament.hammock.web.spi;
 
-public interface WebServer {
+import javax.enterprise.util.AnnotationLiteral;
+import javax.servlet.annotation.WebInitParam;
 
-    void addServlet(ServletDescriptor servletDescriptor);
+public class WebParam extends AnnotationLiteral<WebInitParam> implements WebInitParam {
+    private final String name;
+    private final String value;
 
-    void addFilter(FilterDescriptor filterDescriptor);
+    public WebParam(String value, String name) {
+        this.value = value;
+        this.name = name;
+    }
 
-    void addServletContextAttribute(String name, Object value);
+    @Override
+    public String name() {
+        return name;
+    }
 
-    void start();
+    @Override
+    public String value() {
+        return value;
+    }
 
-    void stop();
+    @Override
+    public String description() {
+        return null;
+    }
 }

@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.web.base;
 
+import ws.ament.hammock.web.spi.FilterDescriptor;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
@@ -30,6 +31,7 @@ import java.util.Map;
 
 public abstract class AbstractWebServer implements WebServer {
     private final List<ServletDescriptor> servletDescriptors = new ArrayList<>();
+    private final List<FilterDescriptor> filterDescriptors = new ArrayList<>();
     private final Map<String, Object> servletContextAttributes = new HashMap<>();
     private final WebServerConfiguration webServerConfiguration;
 
@@ -47,12 +49,21 @@ public abstract class AbstractWebServer implements WebServer {
         servletContextAttributes.put(name, value);
     }
 
+    @Override
+    public void addFilter(FilterDescriptor filterDescriptor) {
+        this.filterDescriptors.add(filterDescriptor);
+    }
+
     protected List<ServletDescriptor> getServletDescriptors() {
         return Collections.unmodifiableList(servletDescriptors);
     }
 
     protected Map<String, Object> getServletContextAttributes() {
         return Collections.unmodifiableMap(servletContextAttributes);
+    }
+
+    protected List<FilterDescriptor> getFilterDescriptors() {
+        return Collections.unmodifiableList(filterDescriptors);
     }
 
     public WebServerConfiguration getWebServerConfiguration() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 John D. Ament
+ * Copyright 2016 John D. Ament
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,13 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.spi;
+package ws.ament.hammock.rest.spark;
 
-public interface WebServer {
+import javax.enterprise.context.RequestScoped;
 
-    void addServlet(ServletDescriptor servletDescriptor);
-
-    void addFilter(FilterDescriptor filterDescriptor);
-
-    void addServletContextAttribute(String name, Object value);
-
-    void start();
-
-    void stop();
+@RequestScoped
+public class RequestScopedBean {
+    public String getResponse() {
+        return "Hello, World!";
+    }
 }

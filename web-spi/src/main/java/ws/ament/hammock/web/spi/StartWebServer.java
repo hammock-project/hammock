@@ -47,8 +47,9 @@ public class StartWebServer implements Extension {
         WebServer webServer = resolveWebServer(beanManager);
 
         webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
-        getServletDescriptors(beanManager).forEach(webServer::addServlet);
-        getServletContextAttributeProviders(beanManager)
+        getInstances(beanManager, ServletDescriptor.class).forEach(webServer::addServlet);
+        getInstances(beanManager, FilterDescriptor.class).forEach(webServer::addFilter);
+        getInstances(beanManager, ServletContextAttributeProvider.class)
                 .forEach(s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
         webServer.start();
 
@@ -63,12 +64,12 @@ public class StartWebServer implements Extension {
 
     private WebServer resolveWebServer(BeanManager beanManager) {
         Set<Bean<?>> beans = beanManager.getBeans(WebServer.class);
-        if(beans.size() > 1) {
-            StringJoiner foundInstances = new StringJoiner(",","[","]");
+        if (beans.size() > 1) {
+            StringJoiner foundInstances = new StringJoiner(",", "[", "]");
             beans.iterator().forEachRemaining(ws -> foundInstances.add(ws.toString()));
-            throw new RuntimeException("Multiple web server implementations found on the classpath "+foundInstances);
+            throw new RuntimeException("Multiple web server implementations found on the classpath " + foundInstances);
         }
-        if(beans.isEmpty()) {
+        if (beans.isEmpty()) {
             throw new RuntimeException("No web server implementations found on the classpath");
         }
         Bean<?> bean = beanManager.resolve(beans);
@@ -76,19 +77,8 @@ public class StartWebServer implements Extension {
         return (WebServer) beanManager.getReference(bean, WebServer.class, creationalContext);
     }
 
-    private Collection<ServletDescriptor> getServletDescriptors(BeanManager beanManager) {
-        Set<Bean<?>> beans = beanManager.getBeans(ServletDescriptor.class);
-        return beans.stream().map(bean -> {
-            CreationalContext<?> creationalContext = beanManager.createCreationalContext(bean);
-            return (ServletDescriptor) beanManager.getReference(bean, ServletDescriptor.class, creationalContext);
-        }).collect(toList());
-    }
-
-    private Collection<ServletContextAttributeProvider> getServletContextAttributeProviders(BeanManager beanManager) {
-        Set<Bean<?>> beans = beanManager.getBeans(ServletContextAttributeProvider.class);
-        return beans.stream().map(bean -> {
-            CreationalContext<?> creationalContext = beanManager.createCreationalContext(bean);
-            return (ServletContextAttributeProvider) beanManager.getReference(bean, ServletContextAttributeProvider.class, creationalContext);
-        }).collect(toList());
+    private <T> Collection<T> getInstances(BeanManager beanManager, Class<T> clazz) {
+        Set<Bean<?>> beans = beanManager.getBeans(clazz);
+        return beans.stream().map(bean -> (T) beanManager.getReference(bean, clazz, beanManager.createCreationalContext(bean))).collect(toList());
     }
 }

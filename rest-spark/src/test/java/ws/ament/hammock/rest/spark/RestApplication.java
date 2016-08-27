@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 John D. Ament
+ * Copyright 2016 John D. Ament
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,22 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.spi;
+package ws.ament.hammock.rest.spark;
 
-public interface WebServer {
+import spark.servlet.SparkApplication;
 
-    void addServlet(ServletDescriptor servletDescriptor);
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
-    void addFilter(FilterDescriptor filterDescriptor);
+import static spark.Spark.get;
 
-    void addServletContextAttribute(String name, Object value);
+@ApplicationScoped
+public class RestApplication implements SparkApplication {
+    @Inject
+    private RequestScopedBean requestScopedBean;
 
-    void start();
-
-    void stop();
+    @Override
+    public void init() {
+        get("/rest", (request, response) -> requestScopedBean.getResponse());
+    }
 }

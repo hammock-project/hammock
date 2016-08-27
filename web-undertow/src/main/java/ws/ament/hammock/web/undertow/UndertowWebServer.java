@@ -28,6 +28,7 @@ import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
+import io.undertow.servlet.api.FilterInfo;
 import io.undertow.servlet.api.ServletInfo;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import org.jboss.weld.environment.servlet.Listener;
@@ -40,7 +41,9 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import javax.servlet.DispatcherType;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,6 +52,7 @@ import java.util.function.Function;
 
 import static io.undertow.Handlers.path;
 import static io.undertow.Handlers.resource;
+import static io.undertow.servlet.Servlets.filter;
 import static io.undertow.servlet.Servlets.listener;
 
 @ApplicationScoped
@@ -91,6 +95,18 @@ public class UndertowWebServer extends AbstractWebServer {
         getServletContextAttributes().forEach(di::addServletContextAttribute);
 
         servlets.forEach(di::addServlet);
+        getFilterDescriptors().forEach(filterDescriptor -> {
+            FilterInfo filterInfo = filter(filterDescriptor.displayName(), filterDescriptor.getClazz()).setAsyncSupported(filterDescriptor.asyncSupported());
+            for(WebInitParam param : filterDescriptor.initParams()) {
+                filterInfo.addInitParam(param.name(), param.value());
+            }
+            di.addFilter(filterInfo);
+            for(String url : filterDescriptor.urlPatterns()) {
+                for(DispatcherType dispatcherType : filterDescriptor.dispatcherTypes()) {
+                    di.addFilterUrlMapping(filterDescriptor.displayName(), url, dispatcherType);
+                }
+            }
+        });
 
         DeploymentManager deploymentManager = Servlets.defaultContainer().addDeployment(di);
         deploymentManager.deploy();

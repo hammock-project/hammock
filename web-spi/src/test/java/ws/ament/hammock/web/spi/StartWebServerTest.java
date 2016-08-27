@@ -73,6 +73,11 @@ public class StartWebServerTest {
         }
 
         @Override
+        public void addFilter(FilterDescriptor filterDescriptor) {
+
+        }
+
+        @Override
         public String toString() {
             return "WebServerA";
         }
@@ -97,6 +102,11 @@ public class StartWebServerTest {
 
         @Override
         public void stop() {
+
+        }
+
+        @Override
+        public void addFilter(FilterDescriptor filterDescriptor) {
 
         }
 

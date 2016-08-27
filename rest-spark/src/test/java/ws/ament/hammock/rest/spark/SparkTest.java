@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.resteasy;
+package ws.ament.hammock.rest.spark;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -25,20 +25,17 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ws.ament.hammock.web.spi.StartWebServer;
 
-import javax.enterprise.inject.spi.Extension;
 import java.net.URI;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
-public class ResteasyTest {
+public class SparkTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(RestController.class, RestApp.class)
-                .addAsServiceProviderAndClasses(Extension.class, StartWebServer.class);
+        return ShrinkWrap.create(JavaArchive.class).addClasses(RestApplication.class);
     }
 
     @ArquillianResource
