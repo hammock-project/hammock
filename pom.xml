@@ -48,7 +48,7 @@
         <weld.version>2.3.5.Final</weld.version>
         <resteasy.version>3.0.19.Final</resteasy.version>
         <arquillian.version>1.1.11.Final</arquillian.version>
-        <undertow.version>1.3.24.Final</undertow.version>
+        <undertow.version>1.4.0.Final</undertow.version>
         <jetty.version>9.3.11.v20160721</jetty.version>
         <arquillian.weld.version>2.0.0.Beta2</arquillian.weld.version>
         <slf4j.version>1.7.21</slf4j.version>
@@ -68,6 +68,7 @@
         <cxf.version>3.1.7</cxf.version>
         <rest-assured.version>3.0.0</rest-assured.version>
         <spark.version>2.5</spark.version>
+        <jboss-logging.version>3.3.0.Final</jboss-logging.version>
     </properties>
     <modules>
         <module>core</module>
@@ -86,6 +87,11 @@
     </modules>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss-logging.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.jboss.weld.se</groupId>
                 <artifactId>weld-se-core</artifactId>
@@ -181,11 +187,6 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-client</artifactId>
-                <version>${resteasy.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
@@ -205,11 +206,6 @@
                 <groupId>ws.ament.hammock</groupId>
                 <artifactId>hammock-core</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tamaya.ext</groupId>
-                <artifactId>tamaya-injection</artifactId>
-                <version>${tamaya.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
