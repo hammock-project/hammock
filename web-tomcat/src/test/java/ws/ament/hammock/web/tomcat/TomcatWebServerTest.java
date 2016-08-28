@@ -24,9 +24,11 @@ import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.Test;
+import ws.ament.hammock.web.spi.FilterDescriptor;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.annotation.WebInitParam;
 import java.io.InputStream;
 import java.net.URL;
@@ -44,16 +46,18 @@ public class TomcatWebServerTest {
                 .initialize()) {
             TomcatWebServer tomcat = weldContainer.select(TomcatWebServer.class).get();
             tomcat.addServlet(new ServletDescriptor("Default",new String[]{"/*"},new String[]{"/*"},1,new WebInitParam[]{}, true, DefaultServlet.class));
+            tomcat.addFilter(new FilterDescriptor("Default", null, new String[]{"/rest"},new DispatcherType[]{DispatcherType.REQUEST},null,true,null,DefaultFilter.class));
             tomcat.start();
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();
                 assertThat(data).isEqualTo(MessageProvider.DATA);
             }
 
-            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
+            try(InputStream stream = new URL("http://localhost:8080/rest").openStream()) {
                 String data = IOUtils.toString(stream).trim();
-                assertThat(data).isEqualTo(MessageProvider.DATA);
+                assertThat(data).isEqualTo("Hello, world!");
             }
+            tomcat.stop();
         }
     }
 }

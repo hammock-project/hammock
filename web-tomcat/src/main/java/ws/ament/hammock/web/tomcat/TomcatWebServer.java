@@ -20,51 +20,73 @@ package ws.ament.hammock.web.tomcat;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.tomcat.util.scan.StandardJarScanner;
-import org.jboss.weld.bootstrap.api.helpers.RegistrySingletonProvider;
-import org.jboss.weld.environment.se.WeldContainer;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.jboss.weld.environment.servlet.Listener;
+import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import ws.ament.hammock.web.base.AbstractWebServer;
+import ws.ament.hammock.web.spi.FilterDescriptor;
+import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import java.io.File;
-import java.util.Arrays;
+import java.util.List;
+
+import static java.util.Arrays.stream;
 
 @ApplicationScoped
 public class TomcatWebServer extends AbstractWebServer{
+    private BeanManager beanManager;
     private Tomcat tomcat;
     @Inject
-    protected TomcatWebServer(WebServerConfiguration webServerConfiguration) {
+    protected TomcatWebServer(WebServerConfiguration webServerConfiguration, BeanManager beanManager) {
         super(webServerConfiguration);
+        this.beanManager = beanManager;
     }
 
     @Override
     public void start() {
         tomcat = new Tomcat();
         tomcat.setPort(getWebServerConfiguration().getWebserverPort());
-        File base = new File("./target");
-        Context ctx = tomcat.addContext("/",base.getAbsolutePath());
+        File base = new File(".");
+        Context ctx = tomcat.addContext("",base.getAbsolutePath());
+        ctx.getServletContext().setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
+        ctx.addApplicationListener(Listener.class.getName());
+        List<ServletDescriptor> servletDescriptors = getServletDescriptors();
+        List<FilterDescriptor> filterDescriptors = getFilterDescriptors();
+        if(!filterDescriptors.isEmpty() && servletDescriptors.isEmpty()) {
+            String servletName = "TomcatDefault";
+            Tomcat.addServlet(ctx, servletName, DefaultServlet.class.getName());
+            ctx.addServletMapping("/*", servletName);
+        }
+        servletDescriptors.forEach(servletDescriptor -> {
+            String servletName = servletDescriptor.name();
+            Tomcat.addServlet(ctx, servletName, servletDescriptor.servletClass().getName());
+            stream(servletDescriptor.urlPatterns()).forEach(s -> ctx.addServletMapping(s, servletName));
+        });
+        filterDescriptors.forEach(filterDescriptor -> {
+            String filterName = filterDescriptor.filterName();
+            FilterDef filterDef = new FilterDef();
+            filterDef.setFilterName(filterName);
+            filterDef.setFilterClass(filterDescriptor.getClazz().getName());
+            ctx.addFilterDef(filterDef);
 
-        ((StandardJarScanner) ctx.getJarScanner()).setScanAllDirectories(true);
-        StandardContext standardContext = (StandardContext)ctx;
-        WeldContainer weldContainer = WeldContainer.instance(RegistrySingletonProvider.STATIC_INSTANCE);
-        ctx.getServletContext().setAttribute(Listener.CONTAINER_ATTRIBUTE_NAME, weldContainer);
-//        standardContext.setatt(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, container.getBeanManager());
-        standardContext.addApplicationListener(Listener.class.getName());
-        getServletDescriptors().forEach(servletDescriptor -> {
-            Tomcat.addServlet(ctx, servletDescriptor.name(), servletDescriptor.servletClass().getName());
-            Arrays.stream(servletDescriptor.urlPatterns()).forEach(s -> ctx.addServletMapping(s, servletDescriptor.name()));
+            FilterMap mapping = new FilterMap();
+            mapping.setFilterName(filterName);
+            stream(filterDescriptor.urlPatterns()).forEach(mapping::addURLPattern);
+            ctx.addFilterMap(mapping);
         });
         try {
             tomcat.start();
             Runnable r = () -> tomcat.getServer().await();
             new Thread(r).start();
         } catch (LifecycleException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to launch tomcat ",e);
         }
     }
 
@@ -73,7 +95,7 @@ public class TomcatWebServer extends AbstractWebServer{
         try {
             tomcat.stop();
         } catch (LifecycleException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to stop tomcat ",e);
         }
     }
 }

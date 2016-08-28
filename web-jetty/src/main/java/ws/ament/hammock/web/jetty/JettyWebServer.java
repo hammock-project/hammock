@@ -22,11 +22,15 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.jboss.weld.environment.servlet.Listener;
 import ws.ament.hammock.web.base.AbstractWebServer;
+import ws.ament.hammock.web.spi.FilterDescriptor;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.servlet.DispatcherType;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Map;
 
 @ApplicationScoped
@@ -51,6 +55,15 @@ public class JettyWebServer extends AbstractWebServer {
         for(ServletDescriptor servletDescriptor : getServletDescriptors()) {
             for(String pattern : servletDescriptor.urlPatterns()) {
                 context.addServlet(servletDescriptor.servletClass(), pattern);
+            }
+        }
+
+        for(FilterDescriptor filterDescriptor : getFilterDescriptors()) {
+            DispatcherType[] dispatcherTypesArr = filterDescriptor.dispatcherTypes();
+            EnumSet<DispatcherType> dispatcherTypes = EnumSet.copyOf(Arrays.asList(dispatcherTypesArr));
+            for(String pattern : filterDescriptor.urlPatterns()) {
+                System.out.println(filterDescriptor.getClazz() + pattern + dispatcherTypes);
+                context.addFilter(filterDescriptor.getClazz(), pattern, dispatcherTypes);
             }
         }
 

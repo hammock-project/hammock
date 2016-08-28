@@ -21,6 +21,7 @@ package ws.ament.hammock.rest.spark;
 import ws.ament.hammock.web.spi.FilterDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.servlet.DispatcherType;
 import javax.servlet.annotation.WebInitParam;
@@ -28,11 +29,10 @@ import javax.servlet.annotation.WebInitParam;
 @ApplicationScoped
 public class SparkFilterProvider {
     private static final String[] PATTERN = new String[]{"/*"};
-    private static final DispatcherType[] DISPATCHER_TYPES = new DispatcherType[]{DispatcherType.FORWARD,
-            DispatcherType.ASYNC,DispatcherType.REQUEST};
+    private static final DispatcherType[] DISPATCHER_TYPES = new DispatcherType[]{DispatcherType.REQUEST};
 
     @Produces
+    @Dependent
     private FilterDescriptor filterDescriptor = new FilterDescriptor("Spark",PATTERN, PATTERN,DISPATCHER_TYPES
             ,new WebInitParam[]{},true,new String[]{}, CDISparkFilter.class);
-
 }

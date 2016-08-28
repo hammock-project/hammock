@@ -25,9 +25,11 @@ import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
+import ws.ament.hammock.web.spi.FilterDescriptor;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
+import javax.servlet.DispatcherType;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -54,6 +56,31 @@ public class JettyBootTest {
                 String data = IOUtils.toString(stream).trim();
                 assertThat(data).isEqualTo(MessageProvider.DATA);
             }
+            webServer.stop();
+        }
+    }
+
+    @Test
+    public void shouldBootWebServerWithOnlyFilter() throws Exception {
+        try(WeldContainer weldContainer = new Weld().disableDiscovery()
+                .extensions(new ConfigurationExtension())
+                .beanClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
+                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
+                .initialize()) {
+            JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
+            webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
+            webServer.addFilter(new FilterDescriptor("Default", null, new String[]{"/*"},new DispatcherType[]{DispatcherType.REQUEST},null,true,null,DefaultFilter.class));
+            webServer.start();
+            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
+                String data = IOUtils.toString(stream).trim();
+                assertThat(data).isEqualTo("Hello, world!");
+            }
+
+            try(InputStream stream = new URL("http://localhost:8080/rest").openStream()) {
+                String data = IOUtils.toString(stream).trim();
+                assertThat(data).isEqualTo("Hello, world!");
+            }
+            webServer.stop();
         }
     }
 }
