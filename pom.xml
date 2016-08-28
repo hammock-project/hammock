@@ -54,7 +54,7 @@
         <slf4j.version>1.7.21</slf4j.version>
         <junit.version>4.12</junit.version>
         <deltaspike.version>1.7.1</deltaspike.version>
-        <assertj.version>3.4.1</assertj.version>
+        <assertj.version>3.5.2</assertj.version>
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <tomcat.version>8.5.4</tomcat.version>
