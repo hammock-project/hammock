@@ -42,7 +42,7 @@ public class CLIPropertySource extends MapConfigSource {
      * Configure the main arguments, herby parsing and mapping the main arguments into
      * configuration properties.
      *
-     * @returns the parsed main arguments as key/value pairs.
+     * @return the parsed main arguments as key/value pairs.
      */
     public static ConfigSource parseMainArgs() {
         String argsProp = System.getProperty("sun.java.command");
