@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 John D. Ament
+ * Copyright 2016 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ public class TomcatWebServerTest {
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .extensions(new ConfigurationExtension())
                 .beanClasses(TomcatWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        TestServletProducer.class,
                         WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
                 .initialize()) {
             TomcatWebServer tomcat = weldContainer.select(TomcatWebServer.class).get();

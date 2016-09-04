@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 John D. Ament
+ * Copyright 2016 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,10 +55,7 @@ public class CLIPropertySource extends MapConfigSource {
             result = Collections.emptyMap();
         } else {
             result = new HashMap<>();
-            String prefix = System.getProperty("main.args.prefix");
-            if (prefix == null) {
-                prefix = "";
-            }
+            String prefix = System.getProperty("main.args.prefix","");
             String key = null;
             for (String arg : args) {
                 if (arg.startsWith("--")) {
