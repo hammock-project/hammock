@@ -2,12 +2,3 @@ language: java
 sudo: false
 jdk:
   - oraclejdk8
-env:
-  global:
-    - SONAUN=johndament
-    - secure: "TfvUPSWOC5Vdzh5eXOP8HFkJAsMruGL8xmhThKr7qO/3pH0pvVDnv9McxoRAgEAyrWiuMrgGmwP4SI/SChsqk7cjqxDufYNxmMw8VsC8M5av1+CxDI2waICKu84lzNdMaD0x5sYP4aE6PFozcmjOCk1q0w3FelxEYcTyPm0phig="
-
-after_success:
-  - sh src/travis/addServer.sh
-  - python src/travis/addServer.py
-  - mvn deploy --settings target/settings.xml
