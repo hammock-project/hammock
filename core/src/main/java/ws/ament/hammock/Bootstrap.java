@@ -19,7 +19,7 @@
 package ws.ament.hammock;
 
 public class Bootstrap {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         org.jboss.weld.environment.se.StartMain.main(args);
     }
 }
