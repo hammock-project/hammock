@@ -20,8 +20,10 @@ package ws.ament.hammock.web.spi;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class WebServerConfiguration {
@@ -32,6 +34,11 @@ public class WebServerConfiguration {
     @Inject
     @ConfigProperty(name="file.dir",defaultValue = "/tmp")
     private String fileDir;
+
+    @PostConstruct
+    public void logPort() {
+        Logger.getLogger(WebServerConfiguration.class.getName()).info("Starting webserver on port '"+webserverPort+"'");
+    }
 
     public int getWebserverPort() {
         return webserverPort;
