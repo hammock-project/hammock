@@ -25,7 +25,7 @@ Both containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-undertow</artifactId>
-    <version>0.1.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -35,7 +35,7 @@ Both containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-jetty</artifactId>
-    <version>0.1.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ Next, you'll want to add a REST Runtime to your application.  The default is to 
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>rest-resteasy</artifactId>
-    <version>0.1.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -54,8 +54,8 @@ But you can also use CXF
 ```xml
 <dependency>
     <groupId>ws.ament.hammock</groupId>
-    <artifactId>rest-resteasy</artifactId>
-    <version>0.1.0</version>
+    <artifactId>rest-cxf</artifactId>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -90,7 +90,7 @@ You'll likely want to create an executable JAR.  Just shade in all dependencies 
 
 ### Configuration
 
-Configuration is provided via Apache Tamaya.  The default configuration uses port 8080 for your webserver and /tmp for your static file directory.  You'll likely want to configure those for your project.
+Configuration is provided via Apache DeltaSpike.  The default configuration uses port 8080 for your webserver and /tmp for your static file directory.  You'll likely want to configure those for your project.
 
 ### Security
 
@@ -104,7 +104,10 @@ To add the security runtime to your app, just include this dependency.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>security-spi</artifactId>
-    <version>0.1.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
+### Issue Tracking
+
+Have a feature request? Or found an issue? Please use [github issues](https://github.com/hammock-project/hammock/issues) to let us know!
