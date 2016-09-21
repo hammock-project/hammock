@@ -78,6 +78,7 @@
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <javax.persistence.version>2.1.0</javax.persistence.version>
         <hibernate.version>5.2.2.Final</hibernate.version>
+        <jersey.version>2.23.2</jersey.version>
     </properties>
     <modules>
         <module>core</module>
@@ -86,8 +87,9 @@
         <module>web-jetty</module>
         <module>web-tomcat</module>
         <module>util-cxf-shaded</module>
-        <module>rest-resteasy</module>
         <module>rest-cxf</module>
+        <module>rest-jersey</module>
+        <module>rest-resteasy</module>
         <module>rest-spark</module>
         <module>util-metrics</module>
         <module>security-spi</module>
@@ -357,6 +359,21 @@
                         <artifactId>cdi-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext.cdi</groupId>
+                <artifactId>jersey-cdi1x</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers</groupId>
+                <artifactId>jersey-container-servlet-core</artifactId>
+                <version>${jersey.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
