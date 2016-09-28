@@ -18,31 +18,52 @@
 
 package ws.ament.hammock.rest.jersey;
 
-import org.glassfish.jersey.servlet.ServletContainer;
-import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.ws.rs.core.Application;
-import java.util.Map;
+
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
+import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
+import ws.ament.hammock.web.spi.ServletDescriptor;
 
 import static java.util.Collections.singletonMap;
 
 @ApplicationScoped
 public class JerseyContainerConfigurator implements ServletContextAttributeProvider {
 
+    /**
+     * Jersey internal contract to look for {@link ResourceConfig} instance within servlet attributes
+     * named '{@value #RESOURCE_CONFIG}_$ServletName$'.
+     */
+    private static final String RESOURCE_CONFIG = "jersey.config.servlet.internal.resourceConfig";
+    private static final String SERVLET_NAME = "JerseyServlet";
+
+    @Inject
+    private JaxRsCdiExtension jaxRsCdiExtension;
     @Inject
     private Instance<Application> applicationInstance;
+
     @Produces
-    public ServletDescriptor resteasyServlet() {
-        return new ServletDescriptor("JerseyServlet",null, new String[]{"/*"},1,null,true,ServletContainer.class);
+    public ServletDescriptor jerseyServlet() {
+        return new ServletDescriptor(SERVLET_NAME, null, new String[] { "/*" }, 1, null, true, ServletContainer.class);
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return singletonMap(Application.class.getName(), applicationInstance.get());
+        final ResourceConfig resourceConfig = ResourceConfig.forApplication(applicationInstance.get());
+        if (resourceConfig.getClasses().isEmpty()) {
+            resourceConfig
+                    .registerClasses(jaxRsCdiExtension.getProviders())
+                    .registerClasses(jaxRsCdiExtension.getResources());
+        }
+
+        final String attributeName = RESOURCE_CONFIG + "_" + SERVLET_NAME;
+        return singletonMap(attributeName, resourceConfig);
     }
+
 }

@@ -18,6 +18,10 @@
 
 package ws.ament.hammock.rest.jersey;
 
+import java.net.URI;
+
+import javax.enterprise.inject.spi.Extension;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -26,9 +30,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.web.spi.StartWebServer;
-
-import javax.enterprise.inject.spi.Extension;
-import java.net.URI;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;

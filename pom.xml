@@ -375,6 +375,11 @@
                 <artifactId>jersey-container-servlet-core</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext.cdi</groupId>
+                <artifactId>jersey-cdi1x-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
