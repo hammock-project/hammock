@@ -43,6 +43,10 @@
             <artifactId>jersey-container-servlet-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jersey.ext.cdi</groupId>
+            <artifactId>jersey-cdi1x-servlet</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>web-spi</artifactId>
             <version>${project.version}</version>

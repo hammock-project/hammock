@@ -19,10 +19,8 @@
 package ws.ament.hammock.rest.jersey;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/")
 @ApplicationScoped
-public class RestApp extends Application{
+public class RestApp {//extends Application { //??? Tested archive contains both Applications on classpath
 }

@@ -18,31 +18,67 @@
 
 package ws.ament.hammock.rest.jersey;
 
-import org.glassfish.jersey.servlet.ServletContainer;
-import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.util.Map;
+
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
+import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
+import ws.ament.hammock.web.spi.ServletDescriptor;
 
 import static java.util.Collections.singletonMap;
 
 @ApplicationScoped
 public class JerseyContainerConfigurator implements ServletContextAttributeProvider {
 
+    /**
+     * Jersey internal contract to look for {@link ResourceConfig} instance within servlet attributes
+     * named '{@value #RESOURCE_CONFIG}$ServletName$'.
+     */
+    private static final String RESOURCE_CONFIG = "jersey.config.servlet.internal.resourceConfig_";
+    private static final String SERVLET_NAME = "JerseyServlet";
+
+    @Inject
+    private JerseyCdiExtension jerseyCdiExtension;
     @Inject
     private Instance<Application> applicationInstance;
+
     @Produces
-    public ServletDescriptor resteasyServlet() {
-        return new ServletDescriptor("JerseyServlet",null, new String[]{"/*"},1,null,true,ServletContainer.class);
+    public ServletDescriptor jerseyServlet() {
+        final String urlPattern;
+        if (!applicationInstance.isUnsatisfied() && !applicationInstance.isAmbiguous() &&
+                applicationInstance.get().getClass().getAnnotation(ApplicationPath.class) != null) {
+            String path = applicationInstance.get().getClass().getAnnotation(ApplicationPath.class).value();
+            urlPattern = path.endsWith("/") ? path + "*" : path + "/*";
+        } else {
+            urlPattern = "/*";
+        }
+        return new ServletDescriptor(SERVLET_NAME, null, new String[] { urlPattern }, 1, null, true, ServletContainer.class);
     }
 
     @Override
     public Map<String, Object> getAttributes() {
-        return singletonMap(Application.class.getName(), applicationInstance.get());
+        final ResourceConfig resourceConfig;
+        if (!applicationInstance.isUnsatisfied() && !applicationInstance.isAmbiguous()) {
+            resourceConfig = ResourceConfig.forApplication(applicationInstance.get());
+        } else {
+            resourceConfig = new ResourceConfig();
+        }
+
+        if (resourceConfig.getClasses().isEmpty()) {
+            resourceConfig
+                    .registerClasses(jerseyCdiExtension.getProviders())
+                    .registerClasses(jerseyCdiExtension.getResources());
+        }
+
+        final String attributeName = RESOURCE_CONFIG + SERVLET_NAME;
+        return singletonMap(attributeName, resourceConfig);
     }
+
 }

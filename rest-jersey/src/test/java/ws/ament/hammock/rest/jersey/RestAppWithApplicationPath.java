@@ -18,15 +18,10 @@
 
 package ws.ament.hammock.rest.jersey;
 
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
-@Path("/hello")
-@RequestScoped
-public class RestController {
-    @GET
-    public String doGet() {
-        return "Hello, World!";
-    }
+@ApplicationPath("/rest")
+//@ApplicationScoped - ??? ApplicationPath is not available on CDI proxy (caused by @ApplicationScoped)
+public class RestAppWithApplicationPath extends Application {
 }
