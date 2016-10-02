@@ -22,7 +22,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-@Path("/hello")
+@Path("/rest")
 @RequestScoped
 public class RestController {
     @GET

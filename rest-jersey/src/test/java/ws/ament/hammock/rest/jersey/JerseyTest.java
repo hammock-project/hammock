@@ -27,7 +27,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.web.spi.StartWebServer;
@@ -36,11 +35,10 @@ import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
-public class JerseyTest1 {
+public class JerseyTest {
 
     @Deployment
     public static JavaArchive createArchive() {
-        //Application class with NO ApplicationPath annotation
         return ShrinkWrap.create(JavaArchive.class).addClasses(RestController.class, RestApp.class)
                 .addAsServiceProviderAndClasses(Extension.class, StartWebServer.class);
     }
@@ -48,10 +46,10 @@ public class JerseyTest1 {
     @ArquillianResource
     private URI uri;
 
-    @Ignore("Tested archive contains both Applications on classpath.")
     @Test
     public void shouldBeAbleToRetrieveRestEndpoint() throws Exception {
-        get(uri + "/hello").then()
+        System.out.println("Jersey1Test::shouldBeAbleToRetrieveRestEndpoint");
+        get(uri + "/rest").then()
                 .assertThat().statusCode(200)
                 .body(is("Hello, World!"));
     }
