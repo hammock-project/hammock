@@ -3,3 +3,14 @@ Copyright 2015 - 2016 The Hammock Project and individual contributors as listed
 
 This product includes software developed by
 John D. Ament
+Antoine Sabot-Durand
+
+This project includes software developed at The Apache Software Foundation.
+The Apache Software Foundation (http://www.apache.org/).
+
+Apache Tamaya:
+ws.ament.hammock.core.config.CLIPropertySource
+
+Apache Commons IO:
+ws.ament.hammock.web.resource.IOUtils
+
