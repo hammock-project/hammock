@@ -22,12 +22,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.servlet.DispatcherType;
 import javax.servlet.annotation.WebInitParam;
 import java.io.InputStream;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import ws.ament.hammock.web.spi.FilterDescriptor;
+
+import static ws.ament.hammock.web.base.Constants.DISPATCHER_TYPES;
 
 @ApplicationScoped
 public class ResourceManager {
@@ -62,6 +63,5 @@ public class ResourceManager {
    @Produces
    @Dependent
    private FilterDescriptor resourceFilter = new FilterDescriptor("ResourceFilter", new String[]{"/*"}, new String[]{"/*"},
-        new DispatcherType[]{DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC, DispatcherType.INCLUDE, DispatcherType.ERROR},
-                                                                 new WebInitParam[]{}, true, null, ResourceRenderFilter.class);
+        DISPATCHER_TYPES, new WebInitParam[]{}, true, null, ResourceRenderFilter.class);
 }

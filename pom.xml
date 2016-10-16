@@ -79,6 +79,7 @@
         <javax.persistence.version>2.1.0</javax.persistence.version>
         <hibernate.version>5.2.2.Final</hibernate.version>
         <jersey.version>2.23.2</jersey.version>
+        <mockito-core.version>2.1.0</mockito-core.version>
     </properties>
     <modules>
         <module>core</module>
@@ -379,6 +380,12 @@
                 <groupId>org.glassfish.jersey.ext.cdi</groupId>
                 <artifactId>jersey-cdi1x-servlet</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito-core.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -112,11 +112,8 @@ public class UndertowWebServer extends AbstractWebServer {
         deploymentManager.deploy();
         try {
             HttpHandler servletHandler = deploymentManager.start();
-            ResourceHandler resourceHandler = resource(new PathResourceManager(Paths.get(getWebServerConfiguration().getFileDir()), 100))
-                    .setDirectoryListingEnabled(true);
             PathHandler path = path(Handlers.redirect("/"))
-                    .addPrefixPath("/", servletHandler)
-                    .addPrefixPath("/resource", resourceHandler);
+                    .addPrefixPath("/", servletHandler);
             this.undertow = Undertow.builder()
                     .addHttpListener(getWebServerConfiguration().getWebserverPort(), "0.0.0.0")
                     .setHandler(path)
