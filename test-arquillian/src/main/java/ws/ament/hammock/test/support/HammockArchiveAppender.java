@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.test.support;
 
+import org.apache.deltaspike.core.spi.config.ConfigSourceProvider;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
@@ -26,13 +27,20 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class HammockArchiveAppender implements ApplicationArchiveProcessor {
 
-    public static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"annotated\"/>");
+    private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"annotated\"/>");
+    private static final StringAsset ASSET = new StringAsset("ws.ament.hammock.test.support.RandomWebServerPortConfigSourceProvider");
+    private static final String SERVICE_PATH = "services/" + ConfigSourceProvider.class.getName();
 
     @Override
     public void process(Archive<?> archive, TestClass testClass) {
-        archive.as(JavaArchive.class)
-                .addPackages(true, "ws.ament.hammock", "org.apache.deltaspike")
-                .addPackage("io.astefanutti.metrics.cdi")
-                .addAsManifestResource(BEANS_XML, "beans.xml");
+        EnableRandomWebServerPort annotation = testClass.getJavaClass().getAnnotation(EnableRandomWebServerPort.class);
+        JavaArchive jar = archive.as(JavaArchive.class)
+           .addPackages(true, "ws.ament.hammock", "org.apache.deltaspike")
+           .addPackage("io.astefanutti.metrics.cdi")
+           .addAsManifestResource(BEANS_XML, "beans.xml");
+
+        if(annotation != null) {
+            jar.addAsManifestResource(ASSET, SERVICE_PATH);
+        }
     }
 }

@@ -27,12 +27,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.metrics.MetricsConfig;
 import ws.ament.hammock.metrics.MetricsServletProvider;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 
 import java.net.URI;
 
 import static io.restassured.RestAssured.get;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class MetricsServletTest {
     @Deployment
     public static JavaArchive createArchive() {

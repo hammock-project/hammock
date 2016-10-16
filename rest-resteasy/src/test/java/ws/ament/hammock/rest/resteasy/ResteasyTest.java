@@ -25,6 +25,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.web.spi.StartWebServer;
 
 import javax.enterprise.inject.spi.Extension;
@@ -34,6 +35,7 @@ import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class ResteasyTest {
     @Deployment
     public static JavaArchive createArchive() {

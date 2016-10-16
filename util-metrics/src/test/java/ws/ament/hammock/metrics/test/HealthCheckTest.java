@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.metrics.MetricsConfig;
 import ws.ament.hammock.metrics.MetricsServletProvider;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 
 import javax.enterprise.inject.spi.CDI;
 import java.net.URI;
@@ -38,6 +39,7 @@ import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class HealthCheckTest {
     @Deployment
     public static JavaArchive createArchive() {
