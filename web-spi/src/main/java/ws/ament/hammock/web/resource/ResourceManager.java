@@ -33,6 +33,7 @@ import static ws.ament.hammock.web.base.Constants.DISPATCHER_TYPES;
 @ApplicationScoped
 public class ResourceManager {
 
+   public static final String SLASH = "/";
    private String cleanBaseUri;
 
    ResourceManager() {
@@ -44,18 +45,18 @@ public class ResourceManager {
                String baseUri) {
       this();
       String cleanBaseUri = baseUri;
-      if(cleanBaseUri.startsWith("/")) {
-         cleanBaseUri = cleanBaseUri.replaceFirst("/","");
+      if(cleanBaseUri.startsWith(SLASH)) {
+         cleanBaseUri = cleanBaseUri.replaceFirst(SLASH, "");
       }
-      if(!cleanBaseUri.endsWith("/")) {
-         cleanBaseUri = cleanBaseUri + "/";
+      if(!cleanBaseUri.endsWith(SLASH)) {
+         cleanBaseUri = cleanBaseUri + SLASH;
       }
       this.cleanBaseUri = cleanBaseUri;
    }
 
    InputStream load(String path) {
-      if(path.startsWith("/")) {
-         path = path.replaceFirst("/","");
+      if(path.startsWith(SLASH)) {
+         path = path.replaceFirst(SLASH, "");
       }
       return ResourceManager.class.getClassLoader().getResourceAsStream( cleanBaseUri + path);
    }
