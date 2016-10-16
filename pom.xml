@@ -80,6 +80,8 @@
         <hibernate.version>5.2.2.Final</hibernate.version>
         <jersey.version>2.23.2</jersey.version>
         <mockito-core.version>2.1.0</mockito-core.version>
+        <HikariCP.version>2.5.1</HikariCP.version>
+        <h2.version>1.4.189</h2.version>
     </properties>
     <modules>
         <module>core</module>
@@ -380,6 +382,17 @@
                 <groupId>org.glassfish.jersey.ext.cdi</groupId>
                 <artifactId>jersey-cdi1x-servlet</artifactId>
                 <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${HikariCP.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
