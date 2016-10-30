@@ -20,8 +20,6 @@ package ws.ament.hammock.rest.jersey;
 
 import java.net.URI;
 
-import javax.enterprise.inject.spi.Extension;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -30,7 +28,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
-import ws.ament.hammock.web.spi.StartWebServer;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
@@ -41,8 +38,7 @@ public class JerseyTest {
 
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(RestController.class, RestApp.class)
-                .addAsServiceProviderAndClasses(Extension.class, StartWebServer.class);
+        return ShrinkWrap.create(JavaArchive.class).addClasses(RestController.class, RestApp.class);
     }
 
     @ArquillianResource
@@ -50,7 +46,6 @@ public class JerseyTest {
 
     @Test
     public void shouldBeAbleToRetrieveRestEndpoint() throws Exception {
-        System.out.println("Jersey1Test::shouldBeAbleToRetrieveRestEndpoint");
         get(uri + "/rest").then()
                 .assertThat().statusCode(200)
                 .body(is("Hello, World!"));
