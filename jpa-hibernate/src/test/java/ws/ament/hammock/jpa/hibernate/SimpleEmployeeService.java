@@ -19,18 +19,16 @@
 package ws.ament.hammock.jpa.hibernate;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @ApplicationScoped
-public class EmployeeService {
+public class SimpleEmployeeService {
+   @Inject
+   private EntityManager em;
 
-    @PersistenceContext(unitName = "MyPU")
-    private EntityManager em;
-
-    List<Employee> getAll() {
-        return em.createNamedQuery("Employee.findAll", Employee.class).getResultList();
-    }
-
+   List<Employee> getAll() {
+      return em.createNamedQuery("Employee.findAll", Employee.class).getResultList();
+   }
 }

@@ -65,6 +65,10 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>hammock-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

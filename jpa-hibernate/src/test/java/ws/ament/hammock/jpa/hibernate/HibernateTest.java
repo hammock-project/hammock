@@ -18,15 +18,20 @@
 
 package ws.ament.hammock.jpa.hibernate;
 
-import org.assertj.core.api.Assertions;
+import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
+import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.jpa.EntityManagerProducer;
 
+import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test Hibernate bootstraping with simple request
@@ -37,12 +42,18 @@ import javax.inject.Inject;
 public class HibernateTest {
 
     @Inject
-    EmployeeService service;
+    private EmployeeService service;
+
+    @Inject
+    private SimpleEmployeeService simpleEmployeeService;
 
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Employee.class, EmployeeService.class, HibernateTest.class)
+                .addClasses(Employee.class, EmployeeService.class, HibernateTest.class, SimpleEmployeeService.class)
+           .addClass(DefaultConfigPropertyProducer.class)
+           .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class)
+                .addPackage(EntityManagerProducer.class.getPackage())
                 .addAsManifestResource("META-INF/beans.xml", "beans.xml")
                 .addAsManifestResource("META-INF/load.sql")
                 .addAsManifestResource("META-INF/persistence.xml");
@@ -50,7 +61,8 @@ public class HibernateTest {
 
     @Test
     public void shouldBeNotEmpty() {
-        Assertions.assertThat(service.getAll()).isNotEmpty();
+        assertThat(service.getAll()).isNotEmpty();
+        assertThat(simpleEmployeeService.getAll()).isNotEmpty();
     }
 
 }
