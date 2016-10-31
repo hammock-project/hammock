@@ -44,7 +44,7 @@ public class EntityManagerFactorProvider {
    private final Map<String, EntityManagerFactory> entityManagerFactoryMap = new ConcurrentHashMap<>();
 
    @Inject
-   @ConfigProperty(name = "hammock.persistence.default.datasource", defaultValue = DEFAULT_EMF)
+   @ConfigProperty(name = "hammock.jpa.__default.datasource", defaultValue = DEFAULT_EMF)
    private String defaultDataSourceName;
 
    @Inject
