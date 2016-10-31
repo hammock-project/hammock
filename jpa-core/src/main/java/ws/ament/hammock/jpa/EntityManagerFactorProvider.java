@@ -27,15 +27,14 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceProviderResolverHolder;
 import javax.persistence.spi.PersistenceUnitInfo;
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.jboss.weld.literal.NamedLiteral;
+import ws.ament.hammock.core.config.ConfigLoader;
 
+import static java.lang.String.format;
 import static java.util.Collections.*;
 
 @ApplicationScoped
@@ -65,25 +64,23 @@ public class EntityManagerFactorProvider {
             PersistenceUnitInfo persistenceUnitInfo = builder
                .withClasses(jpaExtension.getEntityClasses())
                .withDataSource(dataSource)
-               .withProperties(getDefaultProperties())
+               .loadAllProperties(createPrefix(DEFAULT_EMF),true)
                .build();
             PersistenceProvider provider = getPersistenceProvider();
             return provider.createContainerEntityManagerFactory(persistenceUnitInfo, emptyMap());
          }
          else {
-            return Persistence.createEntityManagerFactory(s);
+            Map<String, String> properties = ConfigLoader.loadAllProperties(createPrefix(s), true);
+            return Persistence.createEntityManagerFactory(s, properties);
          }
       });
    }
 
-   private PersistenceProvider getPersistenceProvider() {
-      return PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders().get(0);
+   private static String createPrefix(String puName) {
+      return format("hammock.jpa.%s",puName);
    }
 
-   private Map<String, String> getDefaultProperties() {
-      Map<String, String> properties = new HashMap<>();
-      properties.put("javax.persistence.schema-generation.database.action", "drop-and-create");
-      properties.put("javax.persistence.sql-load-script-source", "META-INF/load.sql");
-      return properties;
+   private PersistenceProvider getPersistenceProvider() {
+      return PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders().get(0);
    }
 }
