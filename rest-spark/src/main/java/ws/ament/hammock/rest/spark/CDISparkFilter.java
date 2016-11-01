@@ -22,16 +22,26 @@ import spark.servlet.SparkApplication;
 import spark.servlet.SparkFilter;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class CDISparkFilter extends SparkFilter{
     @Inject
-    private SparkApplication sparkApplication;
+    @Any
+    private Instance<SparkApplication> sparkApplications;
+
     @Override
-    protected SparkApplication getApplication(FilterConfig filterConfig) throws ServletException {
-        return sparkApplication;
+    protected SparkApplication[] getApplications(FilterConfig filterConfig) throws ServletException {
+        List<SparkApplication> applicationList = new ArrayList<>();
+        for(SparkApplication sparkApplication : sparkApplications) {
+            applicationList.add(sparkApplication);
+        }
+        return applicationList.toArray(new SparkApplication[applicationList.size()]);
     }
 }
