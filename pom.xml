@@ -82,6 +82,7 @@
         <mockito-core.version>2.2.7</mockito-core.version>
         <HikariCP.version>2.5.1</HikariCP.version>
         <h2.version>1.4.192</h2.version>
+        <flyway.version>4.0.3</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
     <modules>
@@ -388,6 +389,12 @@
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
                 <version>${HikariCP.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+                <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
