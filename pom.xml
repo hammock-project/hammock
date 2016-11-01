@@ -395,6 +395,7 @@
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway.version}</version>
                 <optional>true</optional>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
