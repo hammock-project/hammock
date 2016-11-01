@@ -18,8 +18,10 @@
 
 package ws.ament.hammock.jpa;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -55,6 +57,12 @@ public class EntityManagerFactorProvider {
 
    @Inject
    private PersistenceUnitBuilder builder;
+   private PersistenceProvider persistenceProvider;
+
+   @PostConstruct
+   private void locatePersistenceProvider() {
+      this.persistenceProvider = PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders().get(0);
+   }
 
    public EntityManagerFactory lookupEntityManagerFactory(String name) {
       return entityManagerFactoryMap.computeIfAbsent(name, s -> {
@@ -66,7 +74,7 @@ public class EntityManagerFactorProvider {
                .withDataSource(dataSource)
                .loadAllProperties(createPrefix(DEFAULT_EMF),true)
                .build();
-            PersistenceProvider provider = getPersistenceProvider();
+            PersistenceProvider provider = this.persistenceProvider;
             return provider.createContainerEntityManagerFactory(persistenceUnitInfo, emptyMap());
          }
          else {
@@ -76,11 +84,13 @@ public class EntityManagerFactorProvider {
       });
    }
 
-   private static String createPrefix(String puName) {
-      return format("hammock.jpa.%s",puName);
+   @Produces
+   @ApplicationScoped
+   public PersistenceProvider getPersistenceProvider() {
+      return persistenceProvider;
    }
 
-   private PersistenceProvider getPersistenceProvider() {
-      return PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders().get(0);
+   private static String createPrefix(String puName) {
+      return format("hammock.jpa.%s",puName);
    }
 }

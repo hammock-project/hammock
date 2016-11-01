@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.jpa;
 
+import javax.enterprise.context.Dependent;
 import javax.persistence.spi.PersistenceUnitInfo;
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import ws.ament.hammock.core.config.ConfigLoader;
 
+@Dependent
 public class PersistenceUnitBuilder {
 
    private String name = "__default";
