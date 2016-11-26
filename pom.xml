@@ -30,18 +30,11 @@
     </parent>
     <licenses>
         <license>
-            <name>The Apache Software License, Version 2.0</name>
+            <name>The Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <repositories>
-        <repository>
-            <id>jboss</id>
-            <name>jboss-releases</name>
-            <url>http://repository.jboss.org/</url>
-        </repository>
-    </repositories>
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/hammock-project/hammock/issues</url>
@@ -78,6 +71,7 @@
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <javax.persistence.version>2.1.1</javax.persistence.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
+        <openjpa.version>2.4.1</openjpa.version>
         <jersey.version>2.24</jersey.version>
         <mockito-core.version>2.2.15</mockito-core.version>
         <HikariCP.version>2.5.1</HikariCP.version>
@@ -102,6 +96,7 @@
         <module>test-arquillian</module>
         <module>jpa-core</module>
         <module>jpa-hibernate</module>
+        <module>jpa-openjpa</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -364,6 +359,11 @@
                         <artifactId>cdi-api</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.openjpa</groupId>
+                <artifactId>openjpa</artifactId>
+                <version>${openjpa.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jersey.ext.cdi</groupId>
