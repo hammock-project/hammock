@@ -55,16 +55,16 @@
         <weld.version>2.4.0.Final</weld.version>
         <resteasy.version>3.0.19.Final</resteasy.version>
         <arquillian.version>1.1.11.Final</arquillian.version>
-        <undertow.version>1.4.3.Final</undertow.version>
-        <jetty.version>9.3.13.v20161014</jetty.version>
+        <undertow.version>1.4.4.Final</undertow.version>
+        <jetty.version>9.3.14.v20161028</jetty.version>
         <arquillian.weld.version>2.0.0.Beta3</arquillian.weld.version>
         <slf4j.version>1.7.21</slf4j.version>
         <junit.version>4.12</junit.version>
-        <deltaspike.version>1.7.1</deltaspike.version>
+        <deltaspike.version>1.7.2</deltaspike.version>
         <assertj.version>3.5.2</assertj.version>
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <tomcat.version>8.5.6</tomcat.version>
+        <tomcat.version>8.5.8</tomcat.version>
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <johnzon.version>0.9.5</johnzon.version>
         <metrics.version>3.1.2</metrics.version>
@@ -74,14 +74,14 @@
         <cdi-api.version>1.2</cdi-api.version>
         <cxf.version>3.1.8</cxf.version>
         <rest-assured.version>3.0.1</rest-assured.version>
-        <spark.version>2.5.1</spark.version>
+        <spark.version>2.5.2</spark.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <javax.persistence.version>2.1.1</javax.persistence.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
-        <jersey.version>2.23.2</jersey.version>
-        <mockito-core.version>2.2.7</mockito-core.version>
+        <jersey.version>2.24</jersey.version>
+        <mockito-core.version>2.2.15</mockito-core.version>
         <HikariCP.version>2.5.1</HikariCP.version>
-        <h2.version>1.4.192</h2.version>
+        <h2.version>1.4.193</h2.version>
         <flyway.version>4.0.3</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
     </properties>
@@ -438,7 +438,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>3.6.0</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
