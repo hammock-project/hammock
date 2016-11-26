@@ -18,39 +18,66 @@
 
 package ws.ament.hammock.jpa;
 
+import org.apache.deltaspike.core.api.config.ConfigResolver;
+
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
 import javax.persistence.Entity;
 import javax.persistence.spi.PersistenceUnitInfo;
+import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptySet;
 import static java.util.Collections.unmodifiableSet;
+import static ws.ament.hammock.jpa.Database.DatabaseLiteral.database;
+import static ws.ament.hammock.jpa.EntityManagerFactoryProvider.DEFAULT_EMF;
 
 public class JPAExtension implements Extension {
-   private final Set<String> entityClasses = new LinkedHashSet<>();
-   private final Set<Bean<PersistenceUnitInfo>> persistenceUnitInfoBeans = new LinkedHashSet<>();
-   private Map<String, PersistenceUnitInfo> persistenceUnitInfos;
-   public void findEntities(@Observes @WithAnnotations(Entity.class)ProcessAnnotatedType<?> pat) {
-      entityClasses.add(pat.getAnnotatedType().getJavaClass().getName());
-   }
-   public void locatePersistenceUnits(@Observes ProcessBean<PersistenceUnitInfo> processBean) {
-      persistenceUnitInfoBeans.add(processBean.getBean());
-   }
-   public void load(@Observes final AfterDeploymentValidation event, final BeanManager beanManager) {
-      persistenceUnitInfos = persistenceUnitInfoBeans.stream().map(bean -> (PersistenceUnitInfo)beanManager.getReference(
-              bean, bean.getBeanClass(), beanManager.createCreationalContext(bean)
-      )).collect(Collectors.toMap(PersistenceUnitInfo::getPersistenceUnitName, Function.identity()));
-   }
+    private final Set<String> entityClasses = new LinkedHashSet<>();
+    private final Set<Bean<PersistenceUnitInfo>> persistenceUnitInfoBeans = new LinkedHashSet<>();
+    private Map<String, PersistenceUnitInfo> persistenceUnitInfos;
+    private final Set<String> persistenceUnits = new LinkedHashSet<>();
 
-   public Set<String> getEntityClasses() {
-      return unmodifiableSet(entityClasses);
-   }
+    public void findEntities(@Observes @WithAnnotations(Entity.class) ProcessAnnotatedType<?> pat) {
+        entityClasses.add(pat.getAnnotatedType().getJavaClass().getName());
+    }
+    public void locatePersistenceUnits(@Observes ProcessBean<PersistenceUnitInfo> processBean) {
+        persistenceUnitInfoBeans.add(processBean.getBean());
+        addDatabase(processBean.getAnnotated(), processBean.getBean().getQualifiers());
+    }
+    public void locatePUProducers(@Observes ProcessProducer<?, PersistenceUnitInfo> processProducer) {
+        addDatabase(processProducer.getAnnotatedMember(), emptySet());
+    }
+    private void addDatabase(Annotated annotated, Set<Annotation> qualifiers) {
+        Database annotation = annotated.getAnnotation(Database.class);
+        if(annotation == null) {
+            annotation = (Database)qualifiers.iterator().next();
+        }
+        persistenceUnits.add(annotation.value());
+    }
+    public void addEntityManagerBeans(@Observes AfterBeanDiscovery afterBeanDiscovery) {
+        persistenceUnits.stream().map(EntityManagerBean::new).forEach(afterBeanDiscovery::addBean);
+        final String defaultDataSourceName = ConfigResolver.getPropertyValue("hammock.jpa.__default.datasource", DEFAULT_EMF);
+        if(!persistenceUnits.contains(defaultDataSourceName)) {
+            afterBeanDiscovery.addBean(new DefaultPersistenceUnitBean(this,defaultDataSourceName));
+            afterBeanDiscovery.addBean(new EntityManagerBean(defaultDataSourceName));
+        }
+    }
+    public void load(@Observes final AfterDeploymentValidation event, final BeanManager beanManager) {
+        persistenceUnitInfos = persistenceUnitInfoBeans.stream().map(bean -> (PersistenceUnitInfo) beanManager.getReference(
+                bean, bean.getBeanClass(), beanManager.createCreationalContext(bean)
+        )).collect(Collectors.toMap(PersistenceUnitInfo::getPersistenceUnitName, Function.identity()));
+    }
 
-   public PersistenceUnitInfo getPersistnceUnitInfo(String name) {
-      return persistenceUnitInfos.get(name);
-   }
+    Set<String> getEntityClasses() {
+        return unmodifiableSet(entityClasses);
+    }
+
+    PersistenceUnitInfo getPersistenceUnitInfo(String name) {
+        return persistenceUnitInfos.computeIfAbsent(name, s -> CDI.current().select(PersistenceUnitInfo.class).select(database(s)).get());
+    }
 }

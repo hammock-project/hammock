@@ -25,7 +25,6 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -53,15 +52,7 @@ public class EntityManagerProducer {
       }
    }
 
-   @Produces
-   @Dependent
-   @Database("")
-   public EntityManager createEM(InjectionPoint injectionPoint) {
-      String name = injectionPoint.getAnnotated().getAnnotation(Database.class).value();
-      return getEntityManagerFactoryByName(name).createEntityManager();
-   }
-
-   private EntityManagerFactory getEntityManagerFactoryByName(String name) {
+   EntityManagerFactory getEntityManagerFactoryByName(String name) {
       return entityManagerFactoryProvider.lookupEntityManagerFactory(name);
    }
 }

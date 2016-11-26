@@ -63,7 +63,7 @@ public class EntityManagerFactoryProvider {
 
     public EntityManagerFactory lookupEntityManagerFactory(String name) {
         return entityManagerFactoryMap.computeIfAbsent(name, s -> {
-            PersistenceUnitInfo persistenceUnitInfo = jpaExtension.getPersistnceUnitInfo(name);
+            PersistenceUnitInfo persistenceUnitInfo = jpaExtension.getPersistenceUnitInfo(name);
             if (s.equals(DEFAULT_EMF) && persistenceUnitInfo == null) {
                 persistenceUnitInfo = getDefaultPersistenceUnitInfo();
             }
@@ -93,7 +93,7 @@ public class EntityManagerFactoryProvider {
         return persistenceProvider;
     }
 
-    private static String createPrefix(String puName) {
+    static String createPrefix(String puName) {
         return format("hammock.jpa.%s", puName);
     }
 }

@@ -70,6 +70,11 @@ public class PersistenceUnitBuilder {
       return this;
    }
 
+   public PersistenceUnitBuilder withProperty(String key, String value) {
+      this.properties.put(key, value);
+      return this;
+   }
+
    public PersistenceUnitBuilder loadAllProperties(String prefix, boolean strip) {
       Map<String, String> properties = ConfigLoader.loadAllProperties(prefix, strip);
       return withProperties(properties);

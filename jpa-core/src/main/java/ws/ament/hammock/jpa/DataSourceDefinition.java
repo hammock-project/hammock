@@ -30,11 +30,11 @@ public class DataSourceDefinition {
         this.name = dataSourceDefinition.name();
     }
 
-    HammockDataSource getDataSource() {
+    public HammockDataSource getDataSource() {
         return dataSource;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
