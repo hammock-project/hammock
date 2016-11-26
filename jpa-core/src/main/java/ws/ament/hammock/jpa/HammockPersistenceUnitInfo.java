@@ -88,7 +88,7 @@ class HammockPersistenceUnitInfo implements PersistenceUnitInfo {
 
    @Override
    public URL getPersistenceUnitRootUrl() {
-      return null;
+      return HammockPersistenceUnitInfo.class.getProtectionDomain().getCodeSource().getLocation();
    }
 
    @Override

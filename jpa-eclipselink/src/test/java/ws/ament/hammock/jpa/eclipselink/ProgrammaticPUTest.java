@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa.openjpa;
+package ws.ament.hammock.jpa.eclipselink;
 
 import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
@@ -33,37 +33,23 @@ import ws.ament.hammock.jpa.JPAExtension;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * Test Hibernate bootstraping with simple request
- *
- * @author Antoine Sabot-Durand
- */
 @RunWith(Arquillian.class)
-public class OpenJPATest {
-
-    @Inject
-    private EmployeeService service;
-
-    @Inject
-    private SimpleEmployeeService simpleEmployeeService;
-
+public class ProgrammaticPUTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Employee.class, EmployeeService.class, OpenJPATest.class, SimpleEmployeeService.class)
-           .addClass(DefaultConfigPropertyProducer.class)
-           .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class, DataSourceExtension.class, JPAExtension.class)
+                .addClasses(AnotherEmployeeService.class, ProgrammaticPUTest.class, PUConfiguration.class)
+                .addClass(DefaultConfigPropertyProducer.class)
+                .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class, DataSourceExtension.class, JPAExtension.class)
                 .addPackage(EntityManagerProducer.class.getPackage())
-                .addAsManifestResource("META-INF/beans.xml", "beans.xml")
-                .addAsManifestResource("META-INF/persistence.xml");
+                .addAsManifestResource("META-INF/beans.xml", "beans.xml");
     }
+
+    @Inject
+    private AnotherEmployeeService anotherEmployeeService;
 
     @Test
-    public void shouldBeNotEmpty() {
-        assertThat(service.getAll()).isNotEmpty();
-        assertThat(simpleEmployeeService.getAll()).isNotEmpty();
+    public void shouldQueryForEmployees() {
+        anotherEmployeeService.findAll();
     }
-
 }

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa.openjpa;
+package ws.ament.hammock.jpa.eclipselink;
 
 import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Antoine Sabot-Durand
  */
 @RunWith(Arquillian.class)
-public class OpenJPATest {
+public class EclipseLinkTest {
 
     @Inject
     private EmployeeService service;
@@ -52,11 +52,12 @@ public class OpenJPATest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Employee.class, EmployeeService.class, OpenJPATest.class, SimpleEmployeeService.class)
+                .addClasses(Employee.class, EmployeeService.class, EclipseLinkTest.class, SimpleEmployeeService.class)
            .addClass(DefaultConfigPropertyProducer.class)
            .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class, DataSourceExtension.class, JPAExtension.class)
                 .addPackage(EntityManagerProducer.class.getPackage())
                 .addAsManifestResource("META-INF/beans.xml", "beans.xml")
+                .addAsManifestResource("META-INF/load.sql")
                 .addAsManifestResource("META-INF/persistence.xml");
     }
 

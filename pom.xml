@@ -78,6 +78,7 @@
         <h2.version>1.4.193</h2.version>
         <flyway.version>4.0.3</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <eclipselink.version>2.6.4</eclipselink.version>
     </properties>
     <modules>
         <module>core</module>
@@ -97,6 +98,7 @@
         <module>jpa-core</module>
         <module>jpa-hibernate</module>
         <module>jpa-openjpa</module>
+        <module>jpa-eclipselink</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -364,6 +366,11 @@
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa</artifactId>
                 <version>${openjpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>eclipselink</artifactId>
+                <version>${eclipselink.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jersey.ext.cdi</groupId>
