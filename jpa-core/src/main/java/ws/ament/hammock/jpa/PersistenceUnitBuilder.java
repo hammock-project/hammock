@@ -29,6 +29,8 @@ import java.util.Map;
 
 import ws.ament.hammock.core.config.ConfigLoader;
 
+import static java.util.Arrays.asList;
+
 @Dependent
 public class PersistenceUnitBuilder {
 
@@ -53,8 +55,8 @@ public class PersistenceUnitBuilder {
       return this;
    }
 
-   public PersistenceUnitBuilder withClass(String className) {
-      this.classes.add(className);
+   public PersistenceUnitBuilder withClasses(String... className) {
+      this.classes.addAll(asList(className));
       return this;
    }
 

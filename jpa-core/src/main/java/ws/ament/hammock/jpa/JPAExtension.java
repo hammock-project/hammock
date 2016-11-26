@@ -19,22 +19,38 @@
 package ws.ament.hammock.jpa;
 
 import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.WithAnnotations;
+import javax.enterprise.inject.spi.*;
 import javax.persistence.Entity;
+import javax.persistence.spi.PersistenceUnitInfo;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableSet;
 
 public class JPAExtension implements Extension {
    private final Set<String> entityClasses = new LinkedHashSet<>();
+   private final Set<Bean<PersistenceUnitInfo>> persistenceUnitInfoBeans = new LinkedHashSet<>();
+   private Map<String, PersistenceUnitInfo> persistenceUnitInfos;
    public void findEntities(@Observes @WithAnnotations(Entity.class)ProcessAnnotatedType<?> pat) {
       entityClasses.add(pat.getAnnotatedType().getJavaClass().getName());
+   }
+   public void locatePersistenceUnits(@Observes ProcessBean<PersistenceUnitInfo> processBean) {
+      persistenceUnitInfoBeans.add(processBean.getBean());
+   }
+   public void load(@Observes final AfterDeploymentValidation event, final BeanManager beanManager) {
+      persistenceUnitInfos = persistenceUnitInfoBeans.stream().map(bean -> (PersistenceUnitInfo)beanManager.getReference(
+              bean, bean.getBeanClass(), beanManager.createCreationalContext(bean)
+      )).collect(Collectors.toMap(PersistenceUnitInfo::getPersistenceUnitName, Function.identity()));
    }
 
    public Set<String> getEntityClasses() {
       return unmodifiableSet(entityClasses);
+   }
+
+   public PersistenceUnitInfo getPersistnceUnitInfo(String name) {
+      return persistenceUnitInfos.get(name);
    }
 }

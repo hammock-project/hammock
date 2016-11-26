@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.jpa.DataSourceDefinitionBuilder;
 import ws.ament.hammock.jpa.DataSourceExtension;
+import ws.ament.hammock.jpa.Database;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,7 +53,7 @@ public class FlywayTest {
    }
 
    @Inject
-   @Named("__default")
+   @Database("__default")
    private DataSource testds;
 
    @Test

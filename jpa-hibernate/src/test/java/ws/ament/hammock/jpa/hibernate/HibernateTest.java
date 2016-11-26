@@ -26,7 +26,9 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.jpa.DataSourceExtension;
 import ws.ament.hammock.jpa.EntityManagerProducer;
+import ws.ament.hammock.jpa.JPAExtension;
 
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
@@ -52,7 +54,7 @@ public class HibernateTest {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(Employee.class, EmployeeService.class, HibernateTest.class, SimpleEmployeeService.class)
            .addClass(DefaultConfigPropertyProducer.class)
-           .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class)
+           .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class, DataSourceExtension.class, JPAExtension.class)
                 .addPackage(EntityManagerProducer.class.getPackage())
                 .addAsManifestResource("META-INF/beans.xml", "beans.xml")
                 .addAsManifestResource("META-INF/load.sql")

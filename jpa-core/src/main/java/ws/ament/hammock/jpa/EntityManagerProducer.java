@@ -18,50 +18,50 @@
 
 package ws.ament.hammock.jpa;
 
+import org.apache.deltaspike.core.api.config.ConfigProperty;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import static ws.ament.hammock.jpa.EntityManagerFactoryProvider.DEFAULT_EMF;
 
 @ApplicationScoped
 public class EntityManagerProducer {
    @Inject
-   private EntityManagerFactorProvider entityManagerFactorProvider;
-
+   private EntityManagerFactoryProvider entityManagerFactoryProvider;
    @Inject
-   @ConfigProperty(name="hammock.datasource.__default.user")
-   private String user;
-   @Inject
-   @ConfigProperty(name="hammock.datasource.__default.password")
-   private String password;
-   @Inject
-   @ConfigProperty(name="hammock.datasource.__default.url")
-   private String url;
+   @ConfigProperty(name="hammock.default.persistence.unit.name",defaultValue = DEFAULT_EMF)
+   private String defaultPersistenceUnitName;
 
    @Produces
    @Dependent
    public EntityManager createEM() {
-      return entityManagerFactorProvider.lookupEntityManagerFactory("__default").createEntityManager();
+      String name = defaultPersistenceUnitName;
+      return getEntityManagerFactoryByName(name).createEntityManager();
    }
 
-   public void closeEM(@Disposes EntityManager entityManager) {
+   public void closeEM(@Disposes @Any EntityManager entityManager) {
       if(entityManager.isOpen()) {
          entityManager.close();
       }
    }
 
    @Produces
-   @Named("__default")
-   public DataSource createDefaultDataSource(DataSourceDefinitionBuilder builder) {
-      return builder.url(url)
-         .user(user)
-         .password(password)
-         .build();
+   @Dependent
+   @Database("")
+   public EntityManager createEM(InjectionPoint injectionPoint) {
+      String name = injectionPoint.getAnnotated().getAnnotation(Database.class).value();
+      return getEntityManagerFactoryByName(name).createEntityManager();
+   }
+
+   private EntityManagerFactory getEntityManagerFactoryByName(String name) {
+      return entityManagerFactoryProvider.lookupEntityManagerFactory(name);
    }
 }

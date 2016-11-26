@@ -18,20 +18,14 @@
 
 package ws.ament.hammock.jpa;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
-import javax.inject.Named;
-import javax.sql.DataSource;
 
 @Dependent
 public class BuilderBackedBean {
    @Produces
-   @ApplicationScoped
-   @Named("test2")
-   public DataSource createDataSource(DataSourceDefinitionBuilder builder) {
-      return builder.url("jdbc:h2:mem:test_mem")
-         .name("test2")
-         .build();
+   @Database("test2")
+   public DataSourceDefinition createDataSource(DataSourceDefinitionBuilder builder) {
+      return builder.url("jdbc:h2:mem:test_mem").build();
    }
 }

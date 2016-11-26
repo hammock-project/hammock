@@ -30,73 +30,78 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class HammockDataSource implements DataSource {
-   private final DataSource delegate;
+    private final String name;
+    private final DataSource delegate;
 
-   public HammockDataSource(DataSourceDefinition dataSourceDefinition) {
-      this.delegate = createDelegate(dataSourceDefinition);
-   }
+    public HammockDataSource(DataSourceDefinition dataSourceDefinition) {
+        this.delegate = createDelegate(dataSourceDefinition);
+        this.name = dataSourceDefinition.name();
+    }
 
-   private static DataSource createDelegate(DataSourceDefinition dataSourceDefinition) {
-      HikariConfig config = new HikariConfig();
-      if(dataSourceDefinition.url() != null) {
-         config.setJdbcUrl(dataSourceDefinition.url());
-      }
-      if(dataSourceDefinition.user() != null) {
-         config.setUsername(dataSourceDefinition.user());
-         config.setPassword(dataSourceDefinition.password());
-      }
-      if(dataSourceDefinition.maxPoolSize() > 0) {
-         config.setMaximumPoolSize(dataSourceDefinition.maxPoolSize());
-      }
-      config.addDataSourceProperty("cachePrepStmts", "true");
-      config.addDataSourceProperty("prepStmtCacheSize", "250");
-      config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+    private static DataSource createDelegate(DataSourceDefinition dataSourceDefinition) {
+        HikariConfig config = new HikariConfig();
+        if (dataSourceDefinition.url() != null) {
+            config.setJdbcUrl(dataSourceDefinition.url());
+        }
+        if (dataSourceDefinition.user() != null) {
+            config.setUsername(dataSourceDefinition.user());
+            config.setPassword(dataSourceDefinition.password());
+        }
+        if (dataSourceDefinition.maxPoolSize() > 0) {
+            config.setMaximumPoolSize(dataSourceDefinition.maxPoolSize());
+        }
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        return new HikariDataSource(config);
+    }
 
-      return new HikariDataSource(config);
-   }
+    @Override
+    public Connection getConnection() throws SQLException {
+        return delegate.getConnection();
+    }
 
-   @Override
-   public Connection getConnection() throws SQLException {
-      return delegate.getConnection();
-   }
+    @Override
+    public Connection getConnection(String username, String password) throws SQLException {
+        return delegate.getConnection(username, password);
+    }
 
-   @Override
-   public Connection getConnection(String username, String password) throws SQLException {
-      return delegate.getConnection(username, password);
-   }
+    @Override
+    public PrintWriter getLogWriter() throws SQLException {
+        return delegate.getLogWriter();
+    }
 
-   @Override
-   public PrintWriter getLogWriter() throws SQLException {
-      return delegate.getLogWriter();
-   }
+    @Override
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        delegate.setLogWriter(out);
+    }
 
-   @Override
-   public void setLogWriter(PrintWriter out) throws SQLException {
-      delegate.setLogWriter(out);
-   }
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException {
+        delegate.setLoginTimeout(seconds);
+    }
 
-   @Override
-   public void setLoginTimeout(int seconds) throws SQLException {
-      delegate.setLoginTimeout(seconds);
-   }
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        return delegate.getLoginTimeout();
+    }
 
-   @Override
-   public int getLoginTimeout() throws SQLException {
-      return delegate.getLoginTimeout();
-   }
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return delegate.getParentLogger();
+    }
 
-   @Override
-   public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-      return delegate.getParentLogger();
-   }
+    @Override
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        return delegate.unwrap(iface);
+    }
 
-   @Override
-   public <T> T unwrap(Class<T> iface) throws SQLException {
-      return delegate.unwrap(iface);
-   }
+    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return delegate.isWrapperFor(iface);
+    }
 
-   @Override
-   public boolean isWrapperFor(Class<?> iface) throws SQLException {
-      return delegate.isWrapperFor(iface);
-   }
+    public String getName() {
+        return name;
+    }
 }

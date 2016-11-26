@@ -20,9 +20,10 @@ package ws.ament.hammock.jpa;
 
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.sql.DataSource;
 
+import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
+import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -35,25 +36,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 public class DataSourceTest {
-   @Deployment
-   public static JavaArchive createDeployment() {
-      return ShrinkWrap.create(JavaArchive.class)
-         .addClasses(BeanWithDataSource.class, BuilderBackedBean.class, DataSourceDefinitionBuilder.class)
-         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-         .addAsServiceProvider(Extension.class, DataSourceExtension.class);
-   }
+    @Deployment
+    public static JavaArchive createDeployment() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClasses(BeanWithDataSource.class, BuilderBackedBean.class, DataSourceDefinitionBuilder.class)
+                .addClasses(DefaultConfigPropertyProducer.class)
+                .addPackage(DataSourceDelegateBean.class.getPackage())
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsServiceProvider(Extension.class, DataSourceExtension.class, ConfigurationExtension.class);
+    }
 
-   @Inject
-   @Named("testds")
-   private DataSource testds;
+    @Inject
+    @Database("testds")
+    private DataSource testds;
 
-   @Inject
-   @Named("test2")
-   private DataSource test2;
+    @Inject
+    @Database("test2")
+    private DataSource test2;
 
-   @Test
-   public void shouldInjectDataSource() {
-      assertThat(testds).isNotNull();
-      assertThat(test2).isNotNull();
-   }
+    @Test
+    public void shouldInjectDataSource() {
+        assertThat(testds).isNotNull();
+        assertThat(test2).isNotNull();
+    }
 }

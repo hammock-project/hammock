@@ -25,10 +25,10 @@ import java.util.List;
 
 @ApplicationScoped
 public class SimpleEmployeeService {
-   @Inject
-   private EntityManager em;
+    @Inject
+    private EntityManager em;
 
-   List<Employee> getAll() {
-      return em.createNamedQuery("Employee.findAll", Employee.class).getResultList();
-   }
+    List<Employee> getAll() {
+        return em.createNamedQuery("Employee.findAll", Employee.class).getResultList();
+    }
 }

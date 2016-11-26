@@ -18,35 +18,32 @@
 
 package ws.ament.hammock.jpa;
 
-import javax.annotation.sql.DataSourceDefinition;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.util.AnnotationLiteral;
-import javax.sql.DataSource;
 
 @Dependent
 public class DataSourceDefinitionBuilder {
 
-   private String name;
-   private String className;
-   private String description;
-   private String url;
-   private String user;
-   private String password;
-   private String databaseName;
-   private int portNumber;
-   private String serverName;
-   private int isolationLevel;
-   private boolean transactional;
-   private int initialPoolSize;
-   private int maxPoolSize;
-   private int minPoolSize;
-   private int maxIdleTime;
-   private int maxStatements;
-   private String[] properties;
-   private int loginTimeout;
+   String name;
+   String className;
+   String description;
+   String url;
+   String user;
+   String password;
+   String databaseName;
+   int portNumber;
+   String serverName;
+   int isolationLevel;
+   boolean transactional;
+   int initialPoolSize;
+   int maxPoolSize;
+   int minPoolSize;
+   int maxIdleTime;
+   int maxStatements;
+   String[] properties;
+   int loginTimeout;
 
-   public DataSource build() {
-      return new HammockDataSource(new DataSourceDefinitionLiteral(this));
+   public DataSourceDefinition build() {
+      return new DataSourceDefinition(this);
    }
 
    public DataSourceDefinitionBuilder name(String name) {
@@ -139,137 +136,4 @@ public class DataSourceDefinitionBuilder {
       return this;
    }
 
-   private class DataSourceDefinitionLiteral extends AnnotationLiteral<DataSourceDefinition> implements DataSourceDefinition {
-
-      private final String name;
-      private final String className;
-      private final String description;
-      private final String url;
-      private final String user;
-      private final String password;
-      private final String databaseName;
-      private final int portNumber;
-      private final String serverName;
-      private final int isolationLevel;
-      private final boolean transactional;
-      private final int initialPoolSize;
-      private final int maxPoolSize;
-      private final int minPoolSize;
-      private final int maxIdleTime;
-      private final int maxStatements;
-      private final String[] properties;
-      private final int loginTimeout;
-
-      DataSourceDefinitionLiteral(DataSourceDefinitionBuilder builder) {
-         this.name = builder.name;
-         this.className = builder.className;
-         this.description = builder.description;
-         this.url = builder.url;
-         this.user = builder.user;
-         this.password = builder.password;
-         this.databaseName = builder.databaseName;
-         this.portNumber = builder.portNumber;
-         this.serverName = builder.serverName;
-         this.isolationLevel = builder.isolationLevel;
-         this.transactional = builder.transactional;
-         this.initialPoolSize = builder.initialPoolSize;
-         this.maxPoolSize = builder.maxPoolSize;
-         this.minPoolSize = builder.minPoolSize;
-         this.maxIdleTime = builder.maxIdleTime;
-         this.maxStatements = builder.maxStatements;
-         this.properties = builder.properties;
-         this.loginTimeout = builder.loginTimeout;
-      }
-
-      @Override
-      public String name() {
-         return name;
-      }
-
-      @Override
-      public String className() {
-         return className;
-      }
-
-      @Override
-      public String description() {
-         return description;
-      }
-
-      @Override
-      public String url() {
-         return url;
-      }
-
-      @Override
-      public String user() {
-         return user;
-      }
-
-      @Override
-      public String password() {
-         return password;
-      }
-
-      @Override
-      public String databaseName() {
-         return databaseName;
-      }
-
-      @Override
-      public int portNumber() {
-         return portNumber;
-      }
-
-      @Override
-      public String serverName() {
-         return serverName;
-      }
-
-      @Override
-      public int isolationLevel() {
-         return isolationLevel;
-      }
-
-      @Override
-      public boolean transactional() {
-         return transactional;
-      }
-
-      @Override
-      public int initialPoolSize() {
-         return initialPoolSize;
-      }
-
-      @Override
-      public int maxPoolSize() {
-         return maxPoolSize;
-      }
-
-      @Override
-      public int minPoolSize() {
-         return minPoolSize;
-      }
-
-      @Override
-      public int maxIdleTime() {
-         return maxIdleTime;
-      }
-
-      @Override
-      public int maxStatements() {
-         return maxStatements;
-      }
-
-      @Override
-      public String[] properties() {
-         return properties;
-      }
-
-      @Override
-      public int loginTimeout() {
-         return loginTimeout;
-      }
-   }
-
-   }
+}
