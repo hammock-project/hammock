@@ -79,6 +79,7 @@
         <flyway.version>4.0.3</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <eclipselink.version>2.6.4</eclipselink.version>
+        <activemq.artemis.version>1.5.0</activemq.artemis.version>
     </properties>
     <modules>
         <module>core</module>
@@ -99,6 +100,7 @@
         <module>jpa-hibernate</module>
         <module>jpa-openjpa</module>
         <module>jpa-eclipselink</module>
+        <module>messaging-artemis</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -403,6 +405,11 @@
                 <version>${flyway.version}</version>
                 <optional>true</optional>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-cdi-client</artifactId>
+                <version>${activemq.artemis.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.h2database</groupId>
