@@ -23,11 +23,11 @@ import java.net.URI;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
@@ -38,7 +38,7 @@ public class JerseyTest {
 
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(RestController.class, RestApp.class);
+        return new HammockArchive().classes(RestController.class, RestApp.class).jar();
     }
 
     @ArquillianResource
