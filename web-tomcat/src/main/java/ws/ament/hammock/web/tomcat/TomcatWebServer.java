@@ -52,7 +52,7 @@ public class TomcatWebServer extends AbstractWebServer{
     @Override
     public void start() {
         tomcat = new Tomcat();
-        tomcat.setPort(getWebServerConfiguration().getWebserverPort());
+        tomcat.setPort(getWebServerConfiguration().getPort());
         File base = new File(".");
         Context ctx = tomcat.addContext("",base.getAbsolutePath());
         ctx.getServletContext().setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);

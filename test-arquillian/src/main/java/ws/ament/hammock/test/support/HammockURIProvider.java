@@ -30,7 +30,7 @@ public class HammockURIProvider implements ResourceProvider {
     @Override
     public Object lookup(ArquillianResource arquillianResource, Annotation... annotations) {
         WebServerConfiguration webServerConfiguration = CDI.current().select(WebServerConfiguration.class).get();
-        return URI.create("http://localhost:" + webServerConfiguration.getWebserverPort());
+        return URI.create("http://localhost:" + webServerConfiguration.getPort());
     }
 
     @Override
