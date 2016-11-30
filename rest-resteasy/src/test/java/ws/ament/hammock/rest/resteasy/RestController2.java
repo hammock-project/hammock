@@ -18,11 +18,15 @@
 
 package ws.ament.hammock.rest.resteasy;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
-@ApplicationPath("/testme")
-@ApplicationScoped
-public class RestApp extends Application{
+@Path("/path2")
+@RequestScoped
+public class RestController2 {
+    @GET
+    public String doGet() {
+        return "Hello, World2!";
+    }
 }

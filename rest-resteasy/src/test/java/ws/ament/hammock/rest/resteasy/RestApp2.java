@@ -22,7 +22,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/testme")
+@ApplicationPath("/resttest/")
 @ApplicationScoped
-public class RestApp extends Application{
+public class RestApp2 extends Application{
 }
