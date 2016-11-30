@@ -79,21 +79,27 @@ public class JettyWebServer extends AbstractWebServer {
 
     		ServerConnector connector = new ServerConnector(server);
     		connector.setPort(getWebServerConfiguration().getPort());
-    		HttpConfiguration https = new HttpConfiguration();
-    		https.addCustomizer(new SecureRequestCustomizer());
-    		SslContextFactory sslContextFactory = new SslContextFactory();
-    		sslContextFactory.setKeyStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getKeystorePath()).toExternalForm());
-    		sslContextFactory.setKeyStorePassword(getWebServerConfiguration().getKeystorePassword());
-    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getKeystorePassword());
     		
-    		sslContextFactory.setTrustStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getTruststorePath()).toExternalForm());
-    		sslContextFactory.setTrustStorePassword(getWebServerConfiguration().getTruststorePassword());
-    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getTruststorePassword());
+    		if (getWebServerConfiguration().getSecuredPort() != 0){
+	    		HttpConfiguration https = new HttpConfiguration();
+	    		https.addCustomizer(new SecureRequestCustomizer());
+	    		SslContextFactory sslContextFactory = new SslContextFactory();
+	    		sslContextFactory.setKeyStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getKeystorePath()).toExternalForm());
+	    		sslContextFactory.setKeyStorePassword(getWebServerConfiguration().getKeystorePassword());
+	    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getKeystorePassword());
+	    		
+	    		sslContextFactory.setTrustStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getTruststorePath()).toExternalForm());
+	    		sslContextFactory.setTrustStorePassword(getWebServerConfiguration().getTruststorePassword());
+	    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getTruststorePassword());
+	    		
+	    		ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
+	    		sslConnector.setPort(getWebServerConfiguration().getSecuredPort());
+	    		server.setConnectors(new Connector[]{connector, sslConnector});
+    		} else{
+    			server.setConnectors(new Connector[]{connector});
+    		}
     		
-    		ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
-    		sslConnector.setPort(getWebServerConfiguration().getSecuredPort());
     		
-    		server.setConnectors(new Connector[]{connector, sslConnector});
             
             server.setHandler(context);
             server.start();
