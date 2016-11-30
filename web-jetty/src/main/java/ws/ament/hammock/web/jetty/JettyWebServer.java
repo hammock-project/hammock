@@ -80,7 +80,7 @@ public class JettyWebServer extends AbstractWebServer {
     		ServerConnector connector = new ServerConnector(server);
     		connector.setPort(getWebServerConfiguration().getPort());
     		
-    		if (getWebServerConfiguration().getSecuredPort() != 0){
+    		if (getWebServerConfiguration().isSecuredConfigured()){
 	    		HttpConfiguration https = new HttpConfiguration();
 	    		https.addCustomizer(new SecureRequestCustomizer());
 	    		SslContextFactory sslContextFactory = new SslContextFactory();

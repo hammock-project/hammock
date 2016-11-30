@@ -18,6 +18,17 @@
 
 package ws.ament.hammock.web.undertow;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.net.URL;
+
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
@@ -25,18 +36,15 @@ import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.junit.Test;
+
 import ws.ament.hammock.web.spi.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 
-import java.io.InputStream;
-import java.net.URL;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class UndertowBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
+    	HammockTestPropertyFileConfig.testProperty="";
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .extensions(new UndertowWebSocketExtension(), new ConfigurationExtension())
                 .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,
@@ -55,6 +63,36 @@ public class UndertowBootTest {
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();
                 assertThat(data).isEqualTo(MessageProvider.DATA);
+            }
+        }
+    }
+    
+    @Test
+    public void shouldBootWebServerSecured() throws Exception {
+    	HammockTestPropertyFileConfig.testProperty="hammock-test.properties";
+        try(WeldContainer weldContainer = new Weld().disableDiscovery()
+                .extensions(new UndertowWebSocketExtension(), new ConfigurationExtension())
+                .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,
+                        WebServerConfiguration.class, HammockTestPropertyFileConfig.class , DefaultConfigPropertyProducer.class)
+                .initialize()) {
+            UndertowWebServer undertowWebServer = weldContainer.select(UndertowWebServer.class).get();
+            undertowWebServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
+            undertowWebServer.addServlet(new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class));
+            undertowWebServer.start();
+
+            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
+                String data = IOUtils.toString(stream).trim();
+                assertThat(data).isEqualTo(MessageProvider.DATA);
+            }
+
+            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
+                String data = IOUtils.toString(stream).trim();
+                assertThat(data).isEqualTo(MessageProvider.DATA);
+            }
+            
+            try (Socket ignored = new Socket("localhost", 8443)) {
+            } catch (IOException ignored) {
+                fail("https port is not open");
             }
         }
     }

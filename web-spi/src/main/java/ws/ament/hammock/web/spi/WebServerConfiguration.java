@@ -80,6 +80,10 @@ public class WebServerConfiguration {
         return address;
     }
     
+    public boolean isSecuredConfigured(){
+    	return securedPort != 0 && keystorePath != null && truststorePassword != null;
+    }
+    
     public int getSecuredPort(){
     	return securedPort;
     }

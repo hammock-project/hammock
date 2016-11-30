@@ -129,7 +129,7 @@ public class UndertowWebServer extends AbstractWebServer {
             Builder undertowBuilder = Undertow.builder()
                     .addHttpListener(getWebServerConfiguration().getPort(), getWebServerConfiguration().getAddress())
                     .setHandler(path);
-            if (getWebServerConfiguration().getSecuredPort() != 0){
+            if (getWebServerConfiguration().isSecuredConfigured()){
             	KeyManager[] keyManagers = loadKeyManager();
             	TrustManager[] trustManagers = loadTrustManager();
             	SSLContext sslContext = SSLContext.getInstance("TLS");

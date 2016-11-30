@@ -56,7 +56,7 @@ public class TomcatWebServer extends AbstractWebServer{
         tomcat.setPort(getWebServerConfiguration().getPort());
         //init http connector
         tomcat.getConnector();
-        if (getWebServerConfiguration().getSecuredPort() != 0){
+        if (getWebServerConfiguration().isSecuredConfigured()){
         	Connector connector = new Connector();
         	connector.setScheme("https");
         	connector.setProperty("keystoreFile", getWebServerConfiguration().getKeystorePath());
