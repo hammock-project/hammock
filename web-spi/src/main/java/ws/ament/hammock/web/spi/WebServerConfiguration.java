@@ -29,7 +29,39 @@ import java.util.logging.Logger;
 public class WebServerConfiguration {
     @Inject
     @ConfigProperty(name="webserver.port",defaultValue = "8080")
-    private int webserverPort;
+    private int port;
+    
+    @Inject
+    @ConfigProperty(name="webserver.address",defaultValue = "0.0.0.0")
+    private String address;
+    
+    @Inject
+    @ConfigProperty(name="webserver.secured.port", defaultValue="0")
+    private int securedPort;
+    
+    @Inject
+    @ConfigProperty(name="webserver.keystore.path")
+    private String keystorePath;
+    
+    @Inject
+    @ConfigProperty(name="webserver.keystore.type")
+    private String keystoreType;
+
+    @Inject
+    @ConfigProperty(name="webserver.keystore.password")
+    private String keystorePassword;
+    
+    @Inject
+    @ConfigProperty(name="webserver.truststore.path")
+    private String truststorePath;
+    
+    @Inject
+    @ConfigProperty(name="webserver.truststore.type")
+    private String truststoreType;
+
+    @Inject
+    @ConfigProperty(name="webserver.truststore.password")
+    private String truststorePassword;
 
     @Inject
     @ConfigProperty(name="file.dir",defaultValue = "/tmp")
@@ -37,14 +69,46 @@ public class WebServerConfiguration {
 
     @PostConstruct
     public void logPort() {
-        Logger.getLogger(WebServerConfiguration.class.getName()).info("Starting webserver on port '"+webserverPort+"'");
+        Logger.getLogger(WebServerConfiguration.class.getName()).info("Starting webserver on http://" + address + ":" + port + (securedPort != 0 ? " https://" +address  + ":" + securedPort + " " :""));
     }
 
-    public int getWebserverPort() {
-        return webserverPort;
+    public int getPort() {
+        return port;
+    }
+    
+    public String getAddress() {
+        return address;
+    }
+    
+    public int getSecuredPort(){
+    	return securedPort;
     }
 
     public String getFileDir() {
         return fileDir;
     }
+
+	public String getKeystorePath() {
+		return keystorePath;
+	}
+
+	public String getKeystoreType() {
+		return keystoreType;
+	}
+
+	public String getKeystorePassword() {
+		return keystorePassword;
+	}
+
+	public String getTruststorePath() {
+		return truststorePath;
+	}
+
+	public String getTruststoreType() {
+		return truststoreType;
+	}
+
+	public String getTruststorePassword() {
+		return truststorePassword;
+	}
 }
