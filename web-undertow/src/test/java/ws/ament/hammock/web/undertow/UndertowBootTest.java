@@ -55,7 +55,6 @@ import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 public class UndertowBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
-    	HammockTestPropertyFileConfig.testProperty="";
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .extensions(new UndertowWebSocketExtension(), new ConfigurationExtension())
                 .beanClasses(UndertowServletMapper.class, UndertowWebServer.class, DefaultServlet.class, MessageProvider.class,

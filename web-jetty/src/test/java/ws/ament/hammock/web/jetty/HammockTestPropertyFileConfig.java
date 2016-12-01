@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.undertow;
+package ws.ament.hammock.web.jetty;
 
 import org.apache.deltaspike.core.api.config.PropertyFileConfig;
 
 public class HammockTestPropertyFileConfig implements PropertyFileConfig {
 	
-	public static String testProperty = null;
+	public static String testProperty = "hammock-test.properties";
     @Override
     public String getPropertyFileName() {
         return HammockTestPropertyFileConfig.testProperty;
