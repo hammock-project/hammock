@@ -20,6 +20,7 @@ package ws.ament.hammock.web.tomcat;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
@@ -52,7 +53,22 @@ public class TomcatWebServer extends AbstractWebServer{
     @Override
     public void start() {
         tomcat = new Tomcat();
-        tomcat.setPort(getWebServerConfiguration().getWebserverPort());
+        tomcat.setPort(getWebServerConfiguration().getPort());
+        //init http connector
+        tomcat.getConnector();
+        if (getWebServerConfiguration().isSecuredConfigured()){
+        	Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        	connector.setPort(getWebServerConfiguration().getSecuredPort());
+        	connector.setScheme("https");
+        	connector.setSecure(true);
+        	connector.setProperty("SSLEnabled", "true");
+        	connector.setProperty("sslProtocol", "TLS");
+        	connector.setProperty("keystoreFile", TomcatWebServer.class.getResource(getWebServerConfiguration().getKeystorePath()).getFile());
+        	connector.setProperty("keystorePass", getWebServerConfiguration().getKeystorePassword());
+        	connector.setProperty("keystoreType", getWebServerConfiguration().getKeystoreType());
+        	tomcat.getService().addConnector(connector);	
+        }
+        
         File base = new File(".");
         Context ctx = tomcat.addContext("",base.getAbsolutePath());
         ctx.getServletContext().setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
