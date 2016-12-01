@@ -22,7 +22,7 @@ import org.apache.deltaspike.core.api.config.PropertyFileConfig;
 
 public class HammockTestPropertyFileConfig implements PropertyFileConfig {
 	
-	public static String testProperty = "hammock-test.properties";
+	public static String testProperty = null;
     @Override
     public String getPropertyFileName() {
         return HammockTestPropertyFileConfig.testProperty;
