@@ -23,11 +23,22 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 
-import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
@@ -90,10 +101,32 @@ public class UndertowBootTest {
                 assertThat(data).isEqualTo(MessageProvider.DATA);
             }
             
-            try (Socket ignored = new Socket("localhost", 8443)) {
-            } catch (IOException ignored) {
-                fail("https port is not open");
+         	SSLContext ctx = SSLContext.getInstance("TLS");
+        	ctx.init(null, getTestTrustManagers(), null);
+        	SSLSocketFactory socketFactory = ctx.getSocketFactory();
+        	Socket socket = socketFactory.createSocket("localhost", 8443);
+        	
+            try(InputStream stream = socket.getInputStream();
+            		OutputStream output = socket.getOutputStream()) {
+            	output.write("GET /index.html HTTP/1.0 \n\n".getBytes());
+                String data = IOUtils.toString(stream).trim();
+                assertThat(data).endsWith(MessageProvider.DATA);
             }
         }
+        HammockTestPropertyFileConfig.testProperty=null;
+    }
+    
+    private TrustManager[] getTestTrustManagers(){
+    	try (InputStream is  = UndertowBootTest.class.getResourceAsStream("/keystore.jks")){
+			KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+			ks.load(is, "123456".toCharArray());
+			TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+			tmf.init(ks);
+			return tmf.getTrustManagers();
+		} catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
+			e.printStackTrace();
+			fail("The test certificate could not be loaded" + e.getMessage());
+		}
+    	return null;
     }
 }
