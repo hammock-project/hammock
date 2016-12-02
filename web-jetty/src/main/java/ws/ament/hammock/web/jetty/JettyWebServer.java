@@ -18,7 +18,14 @@
 
 package ws.ament.hammock.web.jetty;
 
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.jboss.weld.environment.servlet.Listener;
 import ws.ament.hammock.web.base.AbstractWebServer;
@@ -68,7 +75,32 @@ public class JettyWebServer extends AbstractWebServer {
         }
 
         try {
-            Server server = new Server(getWebServerConfiguration().getWebserverPort());
+            Server server = new Server();
+
+    		ServerConnector connector = new ServerConnector(server);
+    		connector.setPort(getWebServerConfiguration().getPort());
+    		
+    		if (getWebServerConfiguration().isSecuredConfigured()){
+	    		HttpConfiguration https = new HttpConfiguration();
+	    		https.addCustomizer(new SecureRequestCustomizer());
+	    		SslContextFactory sslContextFactory = new SslContextFactory();
+	    		sslContextFactory.setKeyStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getKeystorePath()).toExternalForm());
+	    		sslContextFactory.setKeyStorePassword(getWebServerConfiguration().getKeystorePassword());
+	    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getKeystorePassword());
+	    		
+	    		sslContextFactory.setTrustStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getTruststorePath()).toExternalForm());
+	    		sslContextFactory.setTrustStorePassword(getWebServerConfiguration().getTruststorePassword());
+	    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getTruststorePassword());
+	    		
+	    		ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
+	    		sslConnector.setPort(getWebServerConfiguration().getSecuredPort());
+	    		server.setConnectors(new Connector[]{connector, sslConnector});
+    		} else{
+    			server.setConnectors(new Connector[]{connector});
+    		}
+    		
+    		
+            
             server.setHandler(context);
             server.start();
             jetty = server;
