@@ -53,15 +53,24 @@ public class TomcatWebServer extends AbstractWebServer{
     @Override
     public void start() {
         tomcat = new Tomcat();
-        tomcat.setPort(getWebServerConfiguration().getPort());
+        WebServerConfiguration webServerConfiguration = getWebServerConfiguration();
+        tomcat.setPort(webServerConfiguration.getPort());
         //init http connector
         tomcat.getConnector();
-        if (getWebServerConfiguration().isSecuredConfigured()){
+        if (webServerConfiguration.isSecuredConfigured()){
         	Connector connector = new Connector();
         	connector.setScheme("https");
-        	connector.setProperty("keystoreFile", getWebServerConfiguration().getKeystorePath());
-        	connector.setProperty("keystorePass", getWebServerConfiguration().getKeystorePassword());
-        	connector.setProperty("keystoreType", getWebServerConfiguration().getKeystoreType());
+            connector.setPort(webServerConfiguration.getSecuredPort());
+        	connector.setProperty("keystoreFile", webServerConfiguration.getKeystorePath());
+        	connector.setProperty("keystorePass", webServerConfiguration.getKeystorePassword());
+        	connector.setProperty("keystoreType", webServerConfiguration.getKeystoreType());
+            connector.setProperty("clientAuth", "false");
+            connector.setProperty("protocol", "HTTP/1.1");
+            connector.setProperty("sslProtocol", "TLS");
+            connector.setProperty("maxThreads", "200");
+            connector.setProperty("protocol", "org.apache.coyote.http11.Http11AprProtocol");
+            connector.setAttribute("SSLEnabled", true);
+            connector.setSecure(true);
         	tomcat.getService().addConnector(connector);	
         }
         

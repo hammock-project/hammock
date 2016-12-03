@@ -38,6 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JettyBootTest {
     @Test
     public void shouldBootWebServer() throws Exception {
+        SSLBypass.disableSSLChecks();
         try(WeldContainer weldContainer = new Weld().disableDiscovery()
                 .extensions(new ConfigurationExtension())
                 .beanClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
@@ -52,7 +53,7 @@ public class JettyBootTest {
                 assertThat(data).isEqualTo(MessageProvider.DATA);
             }
 
-            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
+            try(InputStream stream = new URL("https://localhost:8443/").openStream()) {
                 String data = IOUtils.toString(stream).trim();
                 assertThat(data).isEqualTo(MessageProvider.DATA);
             }

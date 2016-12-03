@@ -81,7 +81,7 @@ public class WebServerConfiguration {
     }
     
     public boolean isSecuredConfigured(){
-    	return securedPort != 0 && keystorePath != null && truststorePassword != null;
+    	return securedPort != 0;
     }
     
     public int getSecuredPort(){

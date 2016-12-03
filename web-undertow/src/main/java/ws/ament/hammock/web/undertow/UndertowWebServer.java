@@ -145,13 +145,18 @@ public class UndertowWebServer extends AbstractWebServer {
     
     private KeyManager[] loadKeyManager() throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        keyManagerFactory.init(loadKeystore(getWebServerConfiguration().getKeystorePath(), getWebServerConfiguration().getKeystorePassword(), getWebServerConfiguration().getKeystoreType()), getWebServerConfiguration().getKeystorePassword().toCharArray());
+        keyManagerFactory.init(loadKeystore(getWebServerConfiguration().getTruststorePath(),
+                getWebServerConfiguration().getTruststorePassword(),
+                getWebServerConfiguration().getTruststoreType()),
+                getWebServerConfiguration().getTruststorePassword().toCharArray());
         return keyManagerFactory.getKeyManagers();
     }
 
     private TrustManager[] loadTrustManager() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        trustManagerFactory.init(loadKeystore(getWebServerConfiguration().getTruststorePath(), getWebServerConfiguration().getTruststorePassword(), getWebServerConfiguration().getTruststoreType()));
+        trustManagerFactory.init(loadKeystore(getWebServerConfiguration().getTruststorePath(),
+                getWebServerConfiguration().getTruststorePassword(),
+                getWebServerConfiguration().getTruststoreType()));
         return trustManagerFactory.getTrustManagers();
     }
     
