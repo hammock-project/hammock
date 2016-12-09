@@ -80,6 +80,7 @@
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <eclipselink.version>2.6.4</eclipselink.version>
         <activemq.artemis.version>1.5.0</activemq.artemis.version>
+        <rabbitmq-amqp-client.version>4.0.0</rabbitmq-amqp-client.version>
     </properties>
     <modules>
         <module>core</module>
@@ -101,6 +102,7 @@
         <module>jpa-openjpa</module>
         <module>jpa-eclipselink</module>
         <module>messaging-artemis</module>
+        <module>messaging-rabbitmq</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -312,6 +314,11 @@
                 <groupId>io.dropwizard.metrics</groupId>
                 <artifactId>metrics-servlets</artifactId>
                 <version>${metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${rabbitmq-amqp-client.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.rest-assured</groupId>
