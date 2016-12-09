@@ -1,6 +1,7 @@
 Hammock
 =======
 
+[![Gitter chat](https://badges.gitter.im/hammock-project/gitter.png)](https://gitter.im/hammock-project/Lobby)
 [![Build Status](https://travis-ci.org/hammock-project/hammock.png)](https://travis-ci.org/hammock-project/hammock)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ws.ament.hammock/hammock/badge.png?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
 [![Dependency Status](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad/badge.svg?style=flat)](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad)
