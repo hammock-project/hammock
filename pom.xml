@@ -57,7 +57,7 @@
         <assertj.version>3.6.1</assertj.version>
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <tomcat.version>8.5.8</tomcat.version>
+        <tomcat.version>8.5.9</tomcat.version>
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <johnzon.version>0.9.5</johnzon.version>
         <metrics.version>3.1.2</metrics.version>
@@ -67,13 +67,13 @@
         <cdi-api.version>1.2</cdi-api.version>
         <cxf.version>3.1.8</cxf.version>
         <rest-assured.version>3.0.1</rest-assured.version>
-        <spark.version>2.5.3</spark.version>
+        <spark.version>2.5.4</spark.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <javax.persistence.version>2.1.1</javax.persistence.version>
         <hibernate.version>5.2.5.Final</hibernate.version>
         <openjpa.version>2.4.1</openjpa.version>
         <jersey.version>2.24.1</jersey.version>
-        <mockito-core.version>2.2.26</mockito-core.version>
+        <mockito-core.version>2.2.28</mockito-core.version>
         <HikariCP.version>2.5.1</HikariCP.version>
         <h2.version>1.4.193</h2.version>
         <flyway.version>4.0.3</flyway.version>

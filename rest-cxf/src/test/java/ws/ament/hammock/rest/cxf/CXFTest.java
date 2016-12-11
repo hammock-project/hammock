@@ -22,11 +22,11 @@ import org.apache.cxf.cdi.CXFCdiServlet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import java.net.URI;
 
@@ -38,7 +38,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class CXFTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(RestController.class, RestApp.class, CXFCdiServlet.class);
+        return new HammockArchive().classes(RestController.class, RestApp.class, CXFCdiServlet.class).jar();
     }
 
     @ArquillianResource

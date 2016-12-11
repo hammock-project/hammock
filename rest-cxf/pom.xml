@@ -28,9 +28,12 @@
     <artifactId>rest-cxf</artifactId>
     <dependencies>
         <dependency>
-            <groupId>ws.ament.hammock</groupId>
-            <artifactId>util-cxf-shaded</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-integration-cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
