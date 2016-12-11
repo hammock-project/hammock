@@ -28,6 +28,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.servlet.annotation.WebInitParam;
 import javax.ws.rs.core.Application;
 import java.util.Map;
 
@@ -55,6 +56,7 @@ public class ResteasyServletContextAttributeProvider implements ServletContextAt
 
     @Produces
     public ServletDescriptor resteasyServlet() {
-        return new ServletDescriptor("ResteasyServlet",null, new String[]{"/*"},1,null,true,HttpServlet30Dispatcher.class);
+        return new ServletDescriptor("ResteasyServlet",new String[]{"/*"}, new String[]{"/*"},
+                1,new WebInitParam[0],true,HttpServlet30Dispatcher.class);
     }
 }

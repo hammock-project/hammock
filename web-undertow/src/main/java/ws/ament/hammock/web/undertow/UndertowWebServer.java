@@ -24,7 +24,7 @@ import static io.undertow.servlet.Servlets.listener;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyManagementException;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -138,7 +138,7 @@ public class UndertowWebServer extends AbstractWebServer {
             }
             this.undertow = undertowBuilder.build();
             this.undertow.start();
-        } catch (ServletException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | KeyManagementException e) {
+        } catch (ServletException | GeneralSecurityException | IOException e) {
             throw new RuntimeException("Unable to start server", e);
         }
     }

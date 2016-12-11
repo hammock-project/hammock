@@ -19,13 +19,9 @@
 package ws.ament.hammock.web.spi;
 
 import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.exceptions.WeldException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-
-import javax.enterprise.inject.spi.DeploymentException;
-import java.lang.reflect.InvocationTargetException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -36,17 +32,16 @@ public class StartWebServerTest {
     public TestName testName = new TestName();
     @Test
     public void shouldNotFindImpls() {
-        assertThatThrownBy(() -> {
-            new Weld(testName.getMethodName()).addExtension(new StartWebServer()).initialize();
-        }).isInstanceOf(DeploymentException.class)
+        assertThatThrownBy(() -> { new Weld(testName.getMethodName()).addBeanClass(StartWebServer.class).initialize(); })
+                .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining(NO_WEBSERVERS);
     }
 
     @Test
     public void shouldFindTooMany() {
         assertThatThrownBy(() -> {
-            new Weld(testName.getMethodName()).addExtension(new StartWebServer()).beanClasses(WebServerA.class, WebServerB.class).initialize();
-        }).isInstanceOf(DeploymentException.class)
+            new Weld(testName.getMethodName()).beanClasses(StartWebServer.class, WebServerA.class, WebServerB.class).initialize();
+        }).isInstanceOf(RuntimeException.class)
                 .hasMessageContaining(WEBSERVERS);
     }
 

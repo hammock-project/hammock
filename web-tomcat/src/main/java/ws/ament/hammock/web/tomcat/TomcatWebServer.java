@@ -35,8 +35,10 @@ import ws.ament.hammock.web.spi.WebServerConfiguration;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.stream;
 
@@ -76,8 +78,12 @@ public class TomcatWebServer extends AbstractWebServer{
         
         File base = new File(".");
         Context ctx = tomcat.addContext("",base.getAbsolutePath());
-        ctx.getServletContext().setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
+        ServletContext servletContext = ctx.getServletContext();
+        servletContext.setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
         ctx.addApplicationListener(Listener.class.getName());
+        for(Map.Entry<String, Object> attribute : getServletContextAttributes().entrySet()) {
+            servletContext.setAttribute(attribute.getKey(), attribute.getValue());
+        }
         List<ServletDescriptor> servletDescriptors = getServletDescriptors();
         List<FilterDescriptor> filterDescriptors = getFilterDescriptors();
         if(!filterDescriptors.isEmpty() && servletDescriptors.isEmpty()) {
@@ -104,8 +110,6 @@ public class TomcatWebServer extends AbstractWebServer{
         });
         try {
             tomcat.start();
-            Runnable r = () -> tomcat.getServer().await();
-            new Thread(r).start();
         } catch (LifecycleException e) {
             throw new RuntimeException("Unable to launch tomcat ",e);
         }

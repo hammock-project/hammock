@@ -1,4 +1,8 @@
 language: java
 sudo: false
-jdk:
-  - oraclejdk8
+matrix:
+  include:
+  - jdk: oraclejdk8
+    script: mvn -q install -Dwebserver=undertow
+  - jdk: oraclejdk8
+    script: mvn -q install -Dwebserver=tomcat

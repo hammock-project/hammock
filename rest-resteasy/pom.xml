@@ -86,7 +86,10 @@
         <profile>
             <id>undertow-test</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>webserver</name>
+                    <value>undertow</value>
+                </property>
             </activation>
             <dependencies>
                 <dependency>
@@ -99,6 +102,12 @@
         </profile>
         <profile>
             <id>jetty-test</id>
+            <activation>
+                <property>
+                    <name>webserver</name>
+                    <value>jetty</value>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ws.ament.hammock</groupId>
@@ -110,6 +119,12 @@
         </profile>
         <profile>
             <id>tomcat-test</id>
+            <activation>
+                <property>
+                    <name>webserver</name>
+                    <value>tomcat</value>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ws.ament.hammock</groupId>

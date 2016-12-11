@@ -61,12 +61,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ws.ament.hammock</groupId>
-            <artifactId>web-undertow</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-weld-embedded</artifactId>
         </dependency>
@@ -91,7 +85,10 @@
         <profile>
             <id>undertow-test</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>webserver</name>
+                    <value>undertow</value>
+                </property>
             </activation>
             <dependencies>
                 <dependency>
@@ -104,6 +101,9 @@
         </profile>
         <profile>
             <id>jetty-test</id>
+            <activation>
+               <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ws.ament.hammock</groupId>
@@ -115,6 +115,12 @@
         </profile>
         <profile>
             <id>tomcat-test</id>
+            <activation>
+                <property>
+                    <name>webserver</name>
+                    <value>tomcat</value>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>ws.ament.hammock</groupId>
