@@ -19,6 +19,8 @@
 package ws.ament.hammock.rabbitmq;
 
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.MetricsCollector;
+import com.rabbitmq.client.impl.StandardMetricsCollector;
 import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -34,6 +36,7 @@ import javax.inject.Inject;
 import java.io.File;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class RabbitMQConfigurationTest {
@@ -49,8 +52,17 @@ public class RabbitMQConfigurationTest {
     @Inject
     private ConnectionFactory connectionFactory;
 
+    @Inject
+    private MetricsCollector metricsCollector;
+
     @Test
     public void shouldCreateAConnectionFactory() {
         assertNotNull(connectionFactory);
+    }
+
+    @Test
+    public void shouldHaveInjectedCollector() {
+        assertNotNull(metricsCollector);
+        assertTrue(metricsCollector instanceof StandardMetricsCollector);
     }
 }

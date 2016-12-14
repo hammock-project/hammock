@@ -47,6 +47,11 @@
             <artifactId>cdi-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.astefanutti.metrics.cdi</groupId>
+            <artifactId>metrics-cdi</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
         </dependency>

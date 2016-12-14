@@ -86,6 +86,8 @@ public class RabbitMQConfiguration {
     @Inject
     @ConfigProperty(name = "rabbitmq.nio", defaultValue = "false")
     private boolean nio;
+    @Inject
+    private MetricsCollector metricsCollector;
 
     private Map<String, Object> clientProperties = AMQConnection.defaultClientProperties();
     private SocketFactory factory = SocketFactory.getDefault();
@@ -96,7 +98,6 @@ public class RabbitMQConfiguration {
     private ScheduledExecutorService heartbeatExecutor;
     private SocketConfigurator socketConf;
     private ExceptionHandler exceptionHandler;
-    private MetricsCollector metricsCollector;
     private NioParams nioParams;
     private SSLContext sslContext;
 
