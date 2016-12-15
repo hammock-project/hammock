@@ -33,7 +33,6 @@ import java.net.URI;
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
 
-@Ignore
 @RunWith(Arquillian.class)
 public class CXFTest {
     @Deployment
