@@ -88,6 +88,10 @@
             <id>undertow-test</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>webserver</name>
+                    <value>undertow</value>
+                </property>
             </activation>
             <dependencies>
                 <dependency>

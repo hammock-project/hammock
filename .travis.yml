@@ -11,8 +11,8 @@ matrix:
   - jdk: oraclejdk8
     script: mvn -q install -Dwebserver=undertow
   - jdk: oraclejdk8
-    script: mvn -q install -Dwebserver=tomcat
+    script: mvn -q install -Dwebserver=tomcat -P!undertow-test
   - jdk: oraclejdk8
-    script: mvn -q install -Dwebserver=jetty -Dmaven.test.failure.ignore=true
+    script: mvn -q install -Dwebserver=jetty -P!undertow-test -Dmaven.test.failure.ignore=true
 
 # jetty fails right now on jersey tests, so don't require those tests to pass
