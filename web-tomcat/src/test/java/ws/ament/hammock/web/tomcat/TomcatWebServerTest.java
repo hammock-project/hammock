@@ -23,6 +23,7 @@ import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
+import org.jboss.weld.manager.BeanManagerImpl;
 import org.junit.Test;
 import ws.ament.hammock.web.spi.FilterDescriptor;
 import ws.ament.hammock.web.spi.ServletDescriptor;
@@ -45,8 +46,10 @@ public class TomcatWebServerTest {
                         WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
                 .initialize()) {
             TomcatWebServer tomcat = weldContainer.select(TomcatWebServer.class).get();
+            BeanManagerImpl beanManager = weldContainer.select(BeanManagerImpl.class).get();
             tomcat.addServlet(new ServletDescriptor("Default",new String[]{"/*"},new String[]{"/*"},1,new WebInitParam[]{}, true, DefaultServlet.class));
             tomcat.addFilter(new FilterDescriptor("Default", null, new String[]{"/rest"},new DispatcherType[]{DispatcherType.REQUEST},null,true,null,DefaultFilter.class));
+            tomcat.addInitParameter(org.jboss.weld.Container.CONTEXT_ID_KEY, beanManager.getContextId());
             tomcat.start();
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();

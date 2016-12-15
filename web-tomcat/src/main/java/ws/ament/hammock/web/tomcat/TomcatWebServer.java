@@ -78,6 +78,7 @@ public class TomcatWebServer extends AbstractWebServer{
         
         File base = new File(".");
         Context ctx = tomcat.addContext("",base.getAbsolutePath());
+        super.getInitParams().forEach(ctx::addParameter);
         ServletContext servletContext = ctx.getServletContext();
         servletContext.setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
         ctx.addApplicationListener(Listener.class.getName());

@@ -105,7 +105,6 @@ public class UndertowWebServer extends AbstractWebServer {
         }
 
         getServletContextAttributes().forEach(di::addServletContextAttribute);
-
         servlets.forEach(di::addServlet);
         getFilterDescriptors().forEach(filterDescriptor -> {
             FilterInfo filterInfo = filter(filterDescriptor.displayName(), filterDescriptor.getClazz()).setAsyncSupported(filterDescriptor.asyncSupported());
@@ -119,6 +118,8 @@ public class UndertowWebServer extends AbstractWebServer {
                 }
             }
         });
+
+        getInitParams().forEach(di::addInitParameter);
 
         DeploymentManager deploymentManager = Servlets.defaultContainer().addDeployment(di);
         deploymentManager.deploy();

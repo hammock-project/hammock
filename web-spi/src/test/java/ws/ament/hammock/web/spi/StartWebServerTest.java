@@ -58,6 +58,11 @@ public class StartWebServerTest {
         }
 
         @Override
+        public void addInitParameter(String key, String value) {
+
+        }
+
+        @Override
         public void start() {
 
         }
@@ -87,6 +92,11 @@ public class StartWebServerTest {
 
         @Override
         public void addServletContextAttribute(String name, Object value) {
+
+        }
+
+        @Override
+        public void addInitParameter(String key, String value) {
 
         }
 

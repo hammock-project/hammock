@@ -47,6 +47,7 @@ public class UndertowBootTest {
                 .initialize()) {
             UndertowWebServer undertowWebServer = weldContainer.select(UndertowWebServer.class).get();
             undertowWebServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
+            undertowWebServer.addInitParameter(org.jboss.weld.Container.CONTEXT_ID_KEY, weldContainer.getId());
             undertowWebServer.addServlet(new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class));
             undertowWebServer.start();
 

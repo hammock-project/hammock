@@ -19,6 +19,7 @@
 package ws.ament.hammock.web.spi;
 
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
+import org.jboss.weld.manager.BeanManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,14 +43,14 @@ public class StartWebServer {
     private WebServer webServer;
     private final Logger logger = LoggerFactory.getLogger(StartWebServer.class);
 
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object obj, BeanManager beanManager) {
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object obj, BeanManagerImpl beanManager) {
         WebServer webServer = resolveWebServer(beanManager);
-
         webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
         processInstances(beanManager, ServletDescriptor.class, webServer::addServlet);
         processInstances(beanManager, FilterDescriptor.class, webServer::addFilter);
         processInstances(beanManager, ServletContextAttributeProvider.class,
                 s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
+        webServer.addServletContextAttribute(org.jboss.weld.Container.CONTEXT_ID_KEY, beanManager.getContextId());
         webServer.start();
 
         this.webServer = webServer;

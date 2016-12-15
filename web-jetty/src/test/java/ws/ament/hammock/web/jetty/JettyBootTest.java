@@ -47,6 +47,7 @@ public class JettyBootTest {
             JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
             webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
             webServer.addServlet(new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class));
+            webServer.addInitParameter(org.jboss.weld.Container.CONTEXT_ID_KEY, weldContainer.getId());
             webServer.start();
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();
@@ -71,6 +72,7 @@ public class JettyBootTest {
             JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
             webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
             webServer.addFilter(new FilterDescriptor("Default", null, new String[]{"/*"},new DispatcherType[]{DispatcherType.REQUEST},null,true,null,DefaultFilter.class));
+            webServer.addInitParameter(org.jboss.weld.Container.CONTEXT_ID_KEY, weldContainer.getId());
             webServer.start();
             try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
                 String data = IOUtils.toString(stream).trim();

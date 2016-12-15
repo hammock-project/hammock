@@ -26,6 +26,8 @@ public interface WebServer {
 
     void addServletContextAttribute(String name, Object value);
 
+    void addInitParameter(String key, String value);
+
     void start();
 
     void stop();

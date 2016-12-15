@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import javax.servlet.DispatcherType;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Map;
 
 @ApplicationScoped
 public class JettyWebServer extends AbstractWebServer {
@@ -53,11 +52,10 @@ public class JettyWebServer extends AbstractWebServer {
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
         context.setResourceBase(getWebServerConfiguration().getFileDir());
+        super.getInitParams().forEach(context::setInitParameter);
         context.addEventListener(new Listener());
 
-        for(Map.Entry<String, Object> attribute : getServletContextAttributes().entrySet()) {
-            context.setAttribute(attribute.getKey(), attribute.getValue());
-        }
+        getServletContextAttributes().forEach(context::setAttribute);
 
         for(ServletDescriptor servletDescriptor : getServletDescriptors()) {
             for(String pattern : servletDescriptor.urlPatterns()) {
@@ -69,7 +67,6 @@ public class JettyWebServer extends AbstractWebServer {
             DispatcherType[] dispatcherTypesArr = filterDescriptor.dispatcherTypes();
             EnumSet<DispatcherType> dispatcherTypes = EnumSet.copyOf(Arrays.asList(dispatcherTypesArr));
             for(String pattern : filterDescriptor.urlPatterns()) {
-                System.out.println(filterDescriptor.getClazz() + pattern + dispatcherTypes);
                 context.addFilter(filterDescriptor.getClazz(), pattern, dispatcherTypes);
             }
         }

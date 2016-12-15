@@ -34,6 +34,7 @@ public abstract class AbstractWebServer implements WebServer {
     private final List<FilterDescriptor> filterDescriptors = new ArrayList<>();
     private final Map<String, Object> servletContextAttributes = new HashMap<>();
     private final WebServerConfiguration webServerConfiguration;
+    private final Map<String, String> initParams = new HashMap<>();
 
     protected AbstractWebServer(WebServerConfiguration webServerConfiguration) {
         this.webServerConfiguration = webServerConfiguration;
@@ -54,12 +55,21 @@ public abstract class AbstractWebServer implements WebServer {
         this.filterDescriptors.add(filterDescriptor);
     }
 
+    @Override
+    public void addInitParameter(String key, String value) {
+        initParams.put(key, value);
+    }
+
     protected List<ServletDescriptor> getServletDescriptors() {
         return Collections.unmodifiableList(servletDescriptors);
     }
 
     protected Map<String, Object> getServletContextAttributes() {
         return Collections.unmodifiableMap(servletContextAttributes);
+    }
+
+    protected Map<String, String> getInitParams() {
+        return Collections.unmodifiableMap(initParams);
     }
 
     protected List<FilterDescriptor> getFilterDescriptors() {
