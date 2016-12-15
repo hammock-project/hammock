@@ -9,10 +9,10 @@ cache:
 matrix:
   include:
   - jdk: oraclejdk8
-    script: mvn -q install -Dwebserver=undertow
+    script: mvn -q install
   - jdk: oraclejdk8
-    script: mvn -q install -Dwebserver=tomcat -P!undertow-test
+    script: mvn -q install -Ptomcat-test
   - jdk: oraclejdk8
-    script: mvn -q install -Dwebserver=jetty -P!undertow-test -Dmaven.test.failure.ignore=true
+    script: mvn -q install -Pjetty-test -Dmaven.test.failure.ignore=true
 
 # jetty fails right now on jersey tests, so don't require those tests to pass
