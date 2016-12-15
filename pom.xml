@@ -22,7 +22,7 @@
     <artifactId>hammock</artifactId>
     <packaging>pom</packaging>
     <url>https://github.com/hammock-project/hammock/wiki</url>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
