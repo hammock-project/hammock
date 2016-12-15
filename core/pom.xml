@@ -24,7 +24,7 @@
     <parent>
         <groupId>ws.ament.hammock</groupId>
         <artifactId>hammock</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <dependencies>
         <dependency>
