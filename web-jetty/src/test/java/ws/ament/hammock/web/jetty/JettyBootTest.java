@@ -19,71 +19,57 @@
 package ws.ament.hammock.web.jetty;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
 import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
-import org.jboss.weld.environment.servlet.WeldServletLifecycle;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
-import ws.ament.hammock.web.spi.FilterDescriptor;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import org.junit.runner.RunWith;
+import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
-import javax.servlet.DispatcherType;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(Arquillian.class)
 public class JettyBootTest {
+    @Deployment
+    public static JavaArchive createArchive() {
+        return ShrinkWrap.create(JavaArchive.class).addClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
+                WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
+                .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
+    }
+
     @Test
     public void shouldBootWebServer() throws Exception {
         SSLBypass.disableSSLChecks();
-        try(WeldContainer weldContainer = new Weld().disableDiscovery()
-                .extensions(new ConfigurationExtension())
-                .beanClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
-                .initialize()) {
-            JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
-            webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
-            webServer.addServlet(new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class));
-            webServer.addInitParameter(org.jboss.weld.Container.CONTEXT_ID_KEY, weldContainer.getId());
-            webServer.start();
-            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
-                String data = IOUtils.toString(stream).trim();
-                assertThat(data).isEqualTo(MessageProvider.DATA);
-            }
+        try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
+            String data = IOUtils.toString(stream).trim();
+            assertThat(data).isEqualTo(MessageProvider.DATA);
+        }
 
-            try(InputStream stream = new URL("https://localhost:8443/").openStream()) {
-                String data = IOUtils.toString(stream).trim();
-                assertThat(data).isEqualTo(MessageProvider.DATA);
-            }
-            webServer.stop();
+        try (InputStream stream = new URL("https://localhost:8443/").openStream()) {
+            String data = IOUtils.toString(stream).trim();
+            assertThat(data).isEqualTo(MessageProvider.DATA);
         }
     }
 
     @Test
     public void shouldBootWebServerWithOnlyFilter() throws Exception {
-        try(WeldContainer weldContainer = new Weld().disableDiscovery()
-                .extensions(new ConfigurationExtension())
-                .beanClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
-                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class)
-                .initialize()) {
-            JettyWebServer webServer = weldContainer.select(JettyWebServer.class).get();
-            webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, weldContainer.getBeanManager());
-            webServer.addFilter(new FilterDescriptor("Default", null, new String[]{"/*"},new DispatcherType[]{DispatcherType.REQUEST},null,true,null,DefaultFilter.class));
-            webServer.addInitParameter(org.jboss.weld.Container.CONTEXT_ID_KEY, weldContainer.getId());
-            webServer.start();
-            try(InputStream stream = new URL("http://localhost:8080/").openStream()) {
-                String data = IOUtils.toString(stream).trim();
-                assertThat(data).isEqualTo("Hello, world!");
-            }
+        DefaultFilter.doFilter = true;
+        try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
+            String data = IOUtils.toString(stream).trim();
+            assertThat(data).isEqualTo("Hello, world!");
+        }
 
-            try(InputStream stream = new URL("http://localhost:8080/rest").openStream()) {
-                String data = IOUtils.toString(stream).trim();
-                assertThat(data).isEqualTo("Hello, world!");
-            }
-            webServer.stop();
+        try (InputStream stream = new URL("http://localhost:8080/rest").openStream()) {
+            String data = IOUtils.toString(stream).trim();
+            assertThat(data).isEqualTo("Hello, world!");
         }
     }
 }

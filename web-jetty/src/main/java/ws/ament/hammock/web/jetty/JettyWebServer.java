@@ -39,6 +39,7 @@ import javax.servlet.DispatcherType;
 import java.util.Arrays;
 import java.util.EnumSet;
 
+
 @ApplicationScoped
 public class JettyWebServer extends AbstractWebServer {
     private Server jetty;
@@ -95,9 +96,6 @@ public class JettyWebServer extends AbstractWebServer {
     		} else{
     			server.setConnectors(new Connector[]{connector});
     		}
-    		
-    		
-            
             server.setHandler(context);
             server.start();
             jetty = server;

@@ -29,6 +29,7 @@ import java.io.IOException;
 
 @RequestScoped
 public class DefaultFilter implements Filter{
+    public static boolean doFilter = false;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -36,7 +37,12 @@ public class DefaultFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        servletResponse.getWriter().println("Hello, world!");
+        if(doFilter) {
+            servletResponse.getWriter().println("Hello, world!");
+        }
+        else {
+            filterChain.doFilter(servletRequest,servletResponse);
+        }
     }
 
     @Override

@@ -22,8 +22,8 @@ import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MessageProvider {
-    public static final String DATA = "Some data";
-    public String getMessage() {
+    static final String DATA = "Some data";
+    String getMessage() {
         return DATA;
     }
 }
