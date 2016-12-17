@@ -14,5 +14,13 @@ matrix:
     script: mvn -q install -Ptomcat-test
   - jdk: oraclejdk8
     script: mvn -q install -Pjetty-test -Dmaven.test.failure.ignore=true
+  - jdk: oraclejdk8
+    script: mvn -q install -Dweld.version=3.0.0.Alpha17 -Dcdi-api.version=2.0-EDR2 -Dmaven.test.failure.ignore=true
+  - jdk: oraclejdk8
+    script: mvn -q install -Ptomcat-test -Dweld.version=3.0.0.Alpha17 -Dcdi-api.version=2.0-EDR2 -Dmaven.test.failure.ignore=true
+  - jdk: oraclejdk8
+    script: mvn -q install -Pjetty-test -Dmaven.test.failure.ignore=true -Dweld.version=3.0.0.Alpha17 -Dcdi-api.version=2.0-EDR2
+
+
 
 # jetty fails right now on jersey tests, so don't require those tests to pass
