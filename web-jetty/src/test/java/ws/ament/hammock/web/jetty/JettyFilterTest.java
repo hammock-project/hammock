@@ -37,26 +37,26 @@ import java.net.URL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class JettyBootTest {
+public class JettyFilterTest {
     @Deployment
     public static JavaArchive createArchive() {
         SSLBypass.disableSSLChecks();
-        return ShrinkWrap.create(JavaArchive.class).addClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
+        return ShrinkWrap.create(JavaArchive.class).addClasses(JettyWebServer.class, DefaultFilter.class, MessageProvider.class,
                 WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
 
+
     @Test
-    public void shouldBootWebServer() throws Exception {
+    public void shouldBootWebServerWithOnlyFilter() throws Exception {
         try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
             String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA);
+            assertThat(data).isEqualTo("Hello, world!");
         }
 
-        try (InputStream stream = new URL("https://localhost:8443/").openStream()) {
+        try (InputStream stream = new URL("https://localhost:8443/rest").openStream()) {
             String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA);
+            assertThat(data).isEqualTo("Hello, world!");
         }
     }
-
 }

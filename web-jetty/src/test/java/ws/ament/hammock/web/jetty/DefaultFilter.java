@@ -18,18 +18,17 @@
 
 package ws.ament.hammock.web.jetty;
 
+import ws.ament.hammock.web.spi.FilterDescriptor;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.enterprise.inject.Produces;
+import javax.servlet.*;
 import java.io.IOException;
 
-@RequestScoped
-public class DefaultFilter implements Filter{
-    public static boolean doFilter = false;
+@ApplicationScoped
+public class DefaultFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -37,16 +36,15 @@ public class DefaultFilter implements Filter{
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        if(doFilter) {
-            servletResponse.getWriter().println("Hello, world!");
-        }
-        else {
-            filterChain.doFilter(servletRequest,servletResponse);
-        }
+        servletResponse.getWriter().println("Hello, world!");
     }
 
     @Override
     public void destroy() {
 
     }
+
+    @Produces
+    @Dependent
+    private FilterDescriptor filterDescriptor = new FilterDescriptor("Default", null, new String[]{"/*"}, new DispatcherType[]{DispatcherType.REQUEST}, null, true, null, DefaultFilter.class);
 }

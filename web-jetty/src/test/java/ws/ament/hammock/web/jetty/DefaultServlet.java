@@ -18,14 +18,12 @@
 
 package ws.ament.hammock.web.jetty;
 
-import ws.ament.hammock.web.spi.FilterDescriptor;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.servlet.DispatcherType;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +43,4 @@ public class DefaultServlet extends HttpServlet {
     @Produces
     @Dependent
     private ServletDescriptor descriptor = new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class);
-
-    @Produces
-    @Dependent
-    private FilterDescriptor filterDescriptor = new FilterDescriptor("Default", null, new String[]{"/*"},new DispatcherType[]{DispatcherType.REQUEST},null,true,null,DefaultFilter.class);
 }
