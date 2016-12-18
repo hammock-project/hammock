@@ -16,9 +16,12 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.jetty;
+package ws.ament.hammock.web.tck;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;

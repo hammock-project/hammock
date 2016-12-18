@@ -18,45 +18,14 @@
 
 package ws.ament.hammock.web.jetty;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import ws.ament.hammock.web.spi.StartWebServer;
-import ws.ament.hammock.web.spi.WebServerConfiguration;
+import ws.ament.hammock.web.tck.ServletTest;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@RunWith(Arquillian.class)
-public class JettyBootTest {
+public class JettyBootTest extends ServletTest {
     @Deployment
     public static JavaArchive createArchive() {
-        SSLBypass.disableSSLChecks();
-        return ShrinkWrap.create(JavaArchive.class).addClasses(JettyWebServer.class, DefaultServlet.class, MessageProvider.class,
-                WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
-                .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
-    }
-
-    @Test
-    public void shouldBootWebServer() throws Exception {
-        try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
-            String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA);
-        }
-
-        try (InputStream stream = new URL("https://localhost:8443/").openStream()) {
-            String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA);
-        }
+        return ServletTest.createArchive(JettyWebServer.class);
     }
 
 }

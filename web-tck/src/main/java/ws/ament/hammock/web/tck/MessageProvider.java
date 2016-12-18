@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.jetty;
+package ws.ament.hammock.web.tck;
 
 import javax.enterprise.context.RequestScoped;
 

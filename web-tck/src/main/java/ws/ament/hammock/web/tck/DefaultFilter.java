@@ -16,31 +16,34 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.jetty;
+package ws.ament.hammock.web.tck;
 
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.FilterDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
 import java.io.IOException;
 
 @ApplicationScoped
-public class DefaultServlet extends HttpServlet {
-    @Inject
-    private MessageProvider messageProvider;
+public class DefaultFilter implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println(messageProvider.getMessage());
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletResponse.getWriter().println("Hello, world!");
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     @Produces
     @Dependent
-    private ServletDescriptor descriptor = new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class);
+    private FilterDescriptor filterDescriptor = new FilterDescriptor("Default", null, new String[]{"/*"}, new DispatcherType[]{DispatcherType.REQUEST}, null, true, null, DefaultFilter.class);
 }

@@ -85,6 +85,7 @@
     <modules>
         <module>core</module>
         <module>web-spi</module>
+        <module>web-tck</module>
         <module>web-undertow</module>
         <module>web-jetty</module>
         <module>web-tomcat</module>
