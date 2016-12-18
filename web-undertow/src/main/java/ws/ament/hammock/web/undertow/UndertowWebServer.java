@@ -108,8 +108,10 @@ public class UndertowWebServer extends AbstractWebServer {
         servlets.forEach(di::addServlet);
         getFilterDescriptors().forEach(filterDescriptor -> {
             FilterInfo filterInfo = filter(filterDescriptor.displayName(), filterDescriptor.getClazz()).setAsyncSupported(filterDescriptor.asyncSupported());
-            for(WebInitParam param : filterDescriptor.initParams()) {
-                filterInfo.addInitParam(param.name(), param.value());
+            if(filterDescriptor.initParams() != null) {
+                for (WebInitParam param : filterDescriptor.initParams()) {
+                    filterInfo.addInitParam(param.name(), param.value());
+                }
             }
             di.addFilter(filterInfo);
             for(String url : filterDescriptor.urlPatterns()) {
