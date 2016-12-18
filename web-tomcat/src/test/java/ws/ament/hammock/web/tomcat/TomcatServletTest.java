@@ -18,12 +18,13 @@
 
 package ws.ament.hammock.web.tomcat;
 
-import javax.enterprise.context.RequestScoped;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import ws.ament.hammock.web.tck.ServletTest;
 
-@RequestScoped
-public class MessageProvider {
-    public static final String DATA = "Some data";
-    public String getMessage() {
-        return DATA;
+public class TomcatServletTest extends ServletTest {
+    @Deployment
+    public static JavaArchive createArchive() {
+        return ServletTest.createArchive(TomcatWebServer.class);
     }
 }

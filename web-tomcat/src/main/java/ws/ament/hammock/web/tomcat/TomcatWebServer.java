@@ -120,6 +120,7 @@ public class TomcatWebServer extends AbstractWebServer{
     public void stop() {
         try {
             tomcat.stop();
+            tomcat.destroy();
         } catch (LifecycleException e) {
             throw new RuntimeException("Unable to stop tomcat ",e);
         }

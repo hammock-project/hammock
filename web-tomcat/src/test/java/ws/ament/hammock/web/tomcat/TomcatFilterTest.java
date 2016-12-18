@@ -18,23 +18,13 @@
 
 package ws.ament.hammock.web.tomcat;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import ws.ament.hammock.web.tck.FilterTest;
 
-@ApplicationScoped
-@WebServlet("/*")
-public class DefaultServlet extends HttpServlet {
-    @Inject
-    private MessageProvider messageProvider;
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println(messageProvider.getMessage());
+public class TomcatFilterTest extends FilterTest{
+    @Deployment
+    public static JavaArchive createArchive() {
+        return FilterTest.createArchive(TomcatWebServer.class);
     }
 }
