@@ -89,7 +89,6 @@
         <module>web-undertow</module>
         <module>web-jetty</module>
         <module>web-tomcat</module>
-        <module>util-cxf-shaded</module>
         <module>rest-cxf</module>
         <module>rest-jersey</module>
         <module>rest-resteasy</module>
