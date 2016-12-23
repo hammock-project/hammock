@@ -13,7 +13,7 @@ matrix:
   - jdk: oraclejdk8
     script: mvn -q install -Ptomcat-test
   - jdk: oraclejdk8
-    script: mvn -q install -Pjetty-test -Dmaven.test.failure.ignore=true
+    script: mvn -q install -Pjetty-test
   - jdk: oraclejdk8
     script: mvn -q install -Dweld.version=3.0.0.Alpha17 -Dcdi-api.version=2.0-EDR2 -Dmaven.test.failure.ignore=true
   - jdk: oraclejdk8
