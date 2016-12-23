@@ -25,6 +25,9 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.Source;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.jboss.weld.environment.servlet.Listener;
@@ -38,7 +41,6 @@ import javax.inject.Inject;
 import javax.servlet.DispatcherType;
 import java.util.Arrays;
 import java.util.EnumSet;
-
 
 @ApplicationScoped
 public class JettyWebServer extends AbstractWebServer {
@@ -57,10 +59,13 @@ public class JettyWebServer extends AbstractWebServer {
         context.addEventListener(new Listener());
 
         getServletContextAttributes().forEach(context::setAttribute);
-
+        ServletHandler servletHandler = context.getServletHandler();
         for(ServletDescriptor servletDescriptor : getServletDescriptors()) {
+            ServletHolder servletHolder = servletHandler.newServletHolder(Source.EMBEDDED);
+            servletHolder.setHeldClass(servletDescriptor.servletClass());
+            servletHolder.setName(servletDescriptor.name());
             for(String pattern : servletDescriptor.urlPatterns()) {
-                context.addServlet(servletDescriptor.servletClass(), pattern);
+                servletHandler.addServletWithMapping(servletHolder, pattern);
             }
         }
 
