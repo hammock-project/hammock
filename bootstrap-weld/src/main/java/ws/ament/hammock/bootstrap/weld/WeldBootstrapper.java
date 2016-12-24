@@ -16,15 +16,28 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock;
+package ws.ament.hammock.bootstrap.weld;
 
+import org.jboss.weld.bootstrap.api.helpers.RegistrySingletonProvider;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 import ws.ament.hammock.bootstrap.Bootstrapper;
 
-import java.util.ServiceLoader;
+public class WeldBootstrapper implements Bootstrapper{
+    private Weld weld;
+    private WeldContainer container;
 
-public class Bootstrap {
-    public static void main(String... args) {
-        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
-        bootstrapper.start();
+    public WeldBootstrapper() {
+        weld = new Weld(RegistrySingletonProvider.STATIC_INSTANCE);
+    }
+
+    @Override
+    public void start() {
+        container = weld.initialize();
+    }
+
+    @Override
+    public void stop() {
+        container.close();
     }
 }

@@ -20,11 +20,24 @@ package ws.ament.hammock;
 
 import ws.ament.hammock.bootstrap.Bootstrapper;
 
-import java.util.ServiceLoader;
+public class DummyBootstrap implements Bootstrapper {
+    private static int START_CALLED = 0;
+    private static int STOP_CALLED = 0;
+    @Override
+    public void start() {
+        START_CALLED++;
+    }
 
-public class Bootstrap {
-    public static void main(String... args) {
-        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
-        bootstrapper.start();
+    @Override
+    public void stop() {
+        STOP_CALLED++;
+    }
+
+    public static int getStartCalled() {
+        return START_CALLED;
+    }
+
+    public static int getStopCalled() {
+        return STOP_CALLED;
     }
 }

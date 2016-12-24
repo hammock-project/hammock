@@ -18,13 +18,14 @@
 
 package ws.ament.hammock;
 
-import ws.ament.hammock.bootstrap.Bootstrapper;
+import org.junit.Test;
 
-import java.util.ServiceLoader;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class Bootstrap {
-    public static void main(String... args) {
-        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
-        bootstrapper.start();
+public class BootstrapTest {
+    @Test
+    public void shouldBootstrapDummyInstance() {
+        Bootstrap.main();
+        assertThat(DummyBootstrap.getStartCalled()).isEqualTo(1);
     }
 }

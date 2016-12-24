@@ -17,7 +17,9 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>hammock</artifactId>
         <groupId>ws.ament.hammock</groupId>
@@ -25,35 +27,28 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dist-microprofile</artifactId>
+    <artifactId>bootstrap-weld</artifactId>
+
     <dependencies>
         <dependency>
-            <groupId>ws.ament.hammock</groupId>
-            <artifactId>bootstrap-weld</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
         </dependency>
         <dependency>
-            <groupId>ws.ament.hammock</groupId>
-            <artifactId>rest-cxf</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>ws.ament.hammock</groupId>
-            <artifactId>web-undertow</artifactId>
-            <version>${project.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>hammock-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.johnzon</groupId>
-            <artifactId>johnzon-jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-json_1.0_spec</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
         </dependency>
     </dependencies>
-
 </project>

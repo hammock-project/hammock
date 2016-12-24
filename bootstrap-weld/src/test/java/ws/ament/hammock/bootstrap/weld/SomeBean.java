@@ -16,15 +16,10 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock;
+package ws.ament.hammock.bootstrap.weld;
 
-import ws.ament.hammock.bootstrap.Bootstrapper;
+import javax.enterprise.context.ApplicationScoped;
 
-import java.util.ServiceLoader;
-
-public class Bootstrap {
-    public static void main(String... args) {
-        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
-        bootstrapper.start();
-    }
+@ApplicationScoped
+public class SomeBean {
 }

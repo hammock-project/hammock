@@ -84,6 +84,7 @@
     </properties>
     <modules>
         <module>core</module>
+        <module>bootstrap-weld</module>
         <module>web-spi</module>
         <module>web-tck</module>
         <module>web-undertow</module>
@@ -106,6 +107,16 @@
     </modules>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.enterprise</groupId>
+                <artifactId>cdi-api</artifactId>
+                <version>1.2</version>
+            </dependency>
             <dependency>
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>

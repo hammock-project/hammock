@@ -16,15 +16,21 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock;
+package ws.ament.hammock.bootstrap.weld;
 
-import ws.ament.hammock.bootstrap.Bootstrapper;
+import org.junit.Test;
 
-import java.util.ServiceLoader;
+import javax.enterprise.inject.spi.CDI;
 
-public class Bootstrap {
-    public static void main(String... args) {
-        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class WeldBootstrapperTest {
+    @Test
+    public void shouldCreateWeldContainer() {
+        WeldBootstrapper bootstrapper = new WeldBootstrapper();
         bootstrapper.start();
+        SomeBean someBean = CDI.current().select(SomeBean.class).get();
+        assertThat(someBean).isNotNull();
+        bootstrapper.stop();
     }
 }

@@ -16,15 +16,10 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock;
+package ws.ament.hammock.bootstrap;
 
-import ws.ament.hammock.bootstrap.Bootstrapper;
+public interface Bootstrapper {
+    void start();
 
-import java.util.ServiceLoader;
-
-public class Bootstrap {
-    public static void main(String... args) {
-        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
-        bootstrapper.start();
-    }
+    void stop();
 }
