@@ -38,11 +38,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 public abstract class ServletTest {
-    public static JavaArchive createArchive(Class<?>...classes) {
+    public static JavaArchive createArchive(Class<?>... classes) {
         SSLBypass.disableSSLChecks();
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, MessageProvider.class,
-                WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
+                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
                 .addClasses(classes)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
@@ -51,12 +51,12 @@ public abstract class ServletTest {
     public void shouldBootWebServer() throws Exception {
         try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
             String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA);
+            assertThat(data).isEqualTo(MessageProvider.DATA + "\n, value");
         }
 
         try (InputStream stream = new URL("https://localhost:8443/").openStream()) {
             String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA);
+            assertThat(data).isEqualTo(MessageProvider.DATA + "\n, value");
         }
     }
 

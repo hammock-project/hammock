@@ -25,9 +25,9 @@ public class WebParam extends AnnotationLiteral<WebInitParam> implements WebInit
     private final String name;
     private final String value;
 
-    public WebParam(String value, String name) {
-        this.value = value;
+    public WebParam(String name, String value) {
         this.name = name;
+        this.value = value;
     }
 
     @Override
@@ -42,6 +42,6 @@ public class WebParam extends AnnotationLiteral<WebInitParam> implements WebInit
 
     @Override
     public String description() {
-        return null;
+        return "";
     }
 }

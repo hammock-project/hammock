@@ -23,15 +23,22 @@ import io.undertow.servlet.api.ServletInfo;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.servlet.annotation.WebInitParam;
 import java.util.function.Function;
 
 @ApplicationScoped
 public class UndertowServletMapper implements Function<ServletDescriptor, ServletInfo> {
     @Override
     public ServletInfo apply(ServletDescriptor servletDescriptor) {
-        return Servlets.servlet(servletDescriptor.name(), servletDescriptor.servletClass())
+        ServletInfo servletInfo = Servlets.servlet(servletDescriptor.name(), servletDescriptor.servletClass())
                 .setAsyncSupported(servletDescriptor.asyncSupported())
                 .setLoadOnStartup(servletDescriptor.loadOnStartup())
                 .addMappings(servletDescriptor.urlPatterns());
+        if(servletDescriptor.initParams() != null) {
+            for(WebInitParam param : servletDescriptor.initParams()) {
+                servletInfo.addInitParam(param.name(), param.value());
+            }
+        }
+        return servletInfo;
     }
 }

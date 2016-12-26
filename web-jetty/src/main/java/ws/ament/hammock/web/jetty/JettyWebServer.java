@@ -59,15 +59,8 @@ public class JettyWebServer extends AbstractWebServer {
         context.addEventListener(new Listener());
 
         getServletContextAttributes().forEach(context::setAttribute);
-        ServletHandler servletHandler = context.getServletHandler();
-        for(ServletDescriptor servletDescriptor : getServletDescriptors()) {
-            ServletHolder servletHolder = servletHandler.newServletHolder(Source.EMBEDDED);
-            servletHolder.setHeldClass(servletDescriptor.servletClass());
-            servletHolder.setName(servletDescriptor.name());
-            for(String pattern : servletDescriptor.urlPatterns()) {
-                servletHandler.addServletWithMapping(servletHolder, pattern);
-            }
-        }
+        ServletHolderMapper mapper = new ServletHolderMapper(context.getServletHandler());
+        getServletDescriptors().forEach(mapper::apply);
 
         for(FilterDescriptor filterDescriptor : getFilterDescriptors()) {
             DispatcherType[] dispatcherTypesArr = filterDescriptor.dispatcherTypes();

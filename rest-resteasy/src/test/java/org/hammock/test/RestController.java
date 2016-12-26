@@ -16,13 +16,17 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.resteasy;
+package org.hammock.test;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 
-@ApplicationPath("/")
-@ApplicationScoped
-public class RestApp extends Application{
+@Path("/rest")
+@RequestScoped
+public class RestController {
+    @GET
+    public String doGet() {
+        return "Hello, World!";
+    }
 }

@@ -23,6 +23,7 @@ import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebParam;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
@@ -30,6 +31,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.annotation.WebInitParam;
 import javax.ws.rs.core.Application;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
@@ -38,6 +40,8 @@ import static java.util.Collections.singletonMap;
 public class ResteasyServletContextAttributeProvider implements ServletContextAttributeProvider {
     @Inject
     private ResteasyCdiExtension resteasyCdiExtension;
+    @Inject
+    private ApplicationLocatorExtension applicationLocatorExtension;
     @Inject
     private Instance<Application> applicationInstance;
 
@@ -50,13 +54,18 @@ public class ResteasyServletContextAttributeProvider implements ServletContextAt
             deployment.setApplication(applicationInstance.get());
         }
         deployment.setInjectorFactoryClass(Cdi11InjectorFactory.class.getName());
-
         return singletonMap(ResteasyDeployment.class.getName(), deployment);
     }
 
     @Produces
     public ServletDescriptor resteasyServlet() {
-        return new ServletDescriptor("ResteasyServlet",new String[]{"/*"}, new String[]{"/*"},
-                1,new WebInitParam[0],true,HttpServlet30Dispatcher.class);
+        String path = "/";
+        if( applicationLocatorExtension.getApplicationPath() != null) {
+            path = applicationLocatorExtension.getApplicationPath().value();
+        }
+        String pattern = path.equals("/") ? "/*" : path + "/*";
+        WebInitParam param = new WebParam("resteasy.servlet.mapping.prefix", path);
+        return new ServletDescriptor("ResteasyServlet",new String[]{pattern}, new String[]{pattern},
+                1,new WebInitParam[]{param},true,HttpServlet30Dispatcher.class);
     }
 }

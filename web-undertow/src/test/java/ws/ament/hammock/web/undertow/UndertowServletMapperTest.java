@@ -21,12 +21,14 @@ package ws.ament.hammock.web.undertow;
 import io.undertow.servlet.api.ServletInfo;
 import org.junit.Test;
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebParam;
 import ws.ament.hammock.web.tck.DefaultServlet;
 
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UndertowServletMapperTest {
@@ -39,7 +41,7 @@ public class UndertowServletMapperTest {
         String[] value = new String[]{"a"};
         String[] urlPatterns = new String[]{"/b"};
         int loadOnStartup = 2;
-        WebInitParam[] initParams = null;
+        WebInitParam[] initParams = new WebInitParam[]{new WebParam("name","value")};
         boolean asyncSupported = true;
         ServletDescriptor servletDescriptor = new ServletDescriptor(name, value, urlPatterns, loadOnStartup,
                 initParams, asyncSupported, servletClass);
@@ -50,5 +52,6 @@ public class UndertowServletMapperTest {
         assertThat(servletInfo.getMappings()).isEqualTo(asList(urlPatterns));
         assertThat(servletInfo.getLoadOnStartup()).isEqualTo(loadOnStartup);
         assertThat(servletInfo.isAsyncSupported()).isEqualTo(asyncSupported);
+        assertThat(servletInfo.getInitParams()).isEqualTo(singletonMap("name","value"));
     }
 }

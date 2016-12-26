@@ -19,12 +19,14 @@
 package ws.ament.hammock.web.tck;
 
 import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.spi.WebParam;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,9 +40,10 @@ public class DefaultServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.getWriter().println(messageProvider.getMessage());
+        resp.getWriter().println(", "+getInitParameter("name"));
     }
 
     @Produces
     @Dependent
-    private ServletDescriptor descriptor = new ServletDescriptor("Default",null,new String[]{"/"},1,null,true,DefaultServlet.class);
+    private ServletDescriptor descriptor = new ServletDescriptor("Default",null,new String[]{"/"},1,new WebInitParam[]{new WebParam("name","value")},true,DefaultServlet.class);
 }

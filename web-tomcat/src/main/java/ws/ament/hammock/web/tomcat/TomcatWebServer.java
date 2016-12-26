@@ -20,6 +20,7 @@ package ws.ament.hammock.web.tomcat;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
@@ -37,6 +38,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -94,7 +96,11 @@ public class TomcatWebServer extends AbstractWebServer{
         }
         servletDescriptors.forEach(servletDescriptor -> {
             String servletName = servletDescriptor.name();
-            Tomcat.addServlet(ctx, servletName, servletDescriptor.servletClass().getName());
+            Wrapper wrapper = Tomcat.addServlet(ctx, servletName, servletDescriptor.servletClass().getName());
+            if(servletDescriptor.initParams() != null) {
+                Arrays.stream(servletDescriptor.initParams())
+                        .forEach(p -> wrapper.addInitParameter(p.name(), p.value()));
+            }
             stream(servletDescriptor.urlPatterns()).forEach(s -> ctx.addServletMapping(s, servletName));
         });
         filterDescriptors.forEach(filterDescriptor -> {
