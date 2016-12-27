@@ -35,8 +35,7 @@ public class OWBListener extends WebBeansConfigurationListener {
     }
 
     @Override
-    public void contextInitialized(ServletContextEvent event)
-    {
+    public void contextInitialized(ServletContextEvent event) {
         this.lifeCycle = webBeansContext.getService(ContainerLifecycle.class);
     }
 

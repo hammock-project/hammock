@@ -40,8 +40,5 @@ public class OWBBootstrapper implements Bootstrapper {
     @Override
     public void configure(WebServer webServer) {
         webServer.addListener(OWBListener.class);
-        // todo need to handle jetty - DecoratedObjectFactory jetty.
-        // todo need to handle Undertow - ClassIntrospector di.
-        // todo need to handle tomcat - instance manager - ctx.setInstanceManager();
     }
 }
