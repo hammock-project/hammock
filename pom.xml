@@ -100,6 +100,7 @@
         <module>util-metrics</module>
         <module>security-spi</module>
         <module>dist-microprofile</module>
+        <module>dist-microprofile-cochise</module>
         <module>test-arquillian</module>
         <module>jpa-core</module>
         <module>jpa-hibernate</module>

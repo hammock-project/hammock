@@ -15,6 +15,12 @@ matrix:
   - jdk: oraclejdk8
     script: mvn -q install -PWeld -Pjetty-test
   - jdk: oraclejdk8
+    script: mvn -q install -POWB -Pundertow-test
+  - jdk: oraclejdk8
+    script: mvn -q install -POWB -Ptomcat-test
+  - jdk: oraclejdk8
+    script: mvn -q install -POWB -Pjetty-test
+  - jdk: oraclejdk8
     script: mvn -q install -PWeld -Dweld.version=3.0.0.Alpha17 -Dcdi-api.version=2.0-EDR2 -Dmaven.test.failure.ignore=true
   - jdk: oraclejdk8
     script: mvn -q install -PWeld -Ptomcat-test -Dweld.version=3.0.0.Alpha17 -Dcdi-api.version=2.0-EDR2 -Dmaven.test.failure.ignore=true
