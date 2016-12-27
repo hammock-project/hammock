@@ -40,16 +40,15 @@ import java.util.EnumSet;
 @ApplicationScoped
 public class JettyWebServer extends AbstractWebServer {
     private Server jetty;
+
     @Inject
-    public JettyWebServer(WebServerConfiguration webServerConfiguration) {
-        super(webServerConfiguration);
-    }
+    private WebServerConfiguration webServerConfiguration;
 
     @Override
     public void start() {
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
-        context.setResourceBase(getWebServerConfiguration().getFileDir());
+        context.setResourceBase(webServerConfiguration.getFileDir());
         super.getInitParams().forEach(context::setInitParameter);
         getListeners().forEach(c -> {
             try {
@@ -75,22 +74,22 @@ public class JettyWebServer extends AbstractWebServer {
             Server server = new Server();
 
     		ServerConnector connector = new ServerConnector(server);
-    		connector.setPort(getWebServerConfiguration().getPort());
+    		connector.setPort(webServerConfiguration.getPort());
     		
-    		if (getWebServerConfiguration().isSecuredConfigured()){
+    		if (webServerConfiguration.isSecuredConfigured()){
 	    		HttpConfiguration https = new HttpConfiguration();
 	    		https.addCustomizer(new SecureRequestCustomizer());
 	    		SslContextFactory sslContextFactory = new SslContextFactory();
-	    		sslContextFactory.setKeyStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getKeystorePath()).toExternalForm());
-	    		sslContextFactory.setKeyStorePassword(getWebServerConfiguration().getKeystorePassword());
-	    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getKeystorePassword());
+	    		sslContextFactory.setKeyStorePath(JettyWebServer.class.getResource(webServerConfiguration.getKeystorePath()).toExternalForm());
+	    		sslContextFactory.setKeyStorePassword(webServerConfiguration.getKeystorePassword());
+	    		sslContextFactory.setKeyManagerPassword(webServerConfiguration.getKeystorePassword());
 	    		
-	    		sslContextFactory.setTrustStorePath(JettyWebServer.class.getResource(getWebServerConfiguration().getTruststorePath()).toExternalForm());
-	    		sslContextFactory.setTrustStorePassword(getWebServerConfiguration().getTruststorePassword());
-	    		sslContextFactory.setKeyManagerPassword(getWebServerConfiguration().getTruststorePassword());
+	    		sslContextFactory.setTrustStorePath(JettyWebServer.class.getResource(webServerConfiguration.getTruststorePath()).toExternalForm());
+	    		sslContextFactory.setTrustStorePassword(webServerConfiguration.getTruststorePassword());
+	    		sslContextFactory.setKeyManagerPassword(webServerConfiguration.getTruststorePassword());
 	    		
 	    		ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
-	    		sslConnector.setPort(getWebServerConfiguration().getSecuredPort());
+	    		sslConnector.setPort(webServerConfiguration.getSecuredPort());
 	    		server.setConnectors(new Connector[]{connector, sslConnector});
     		} else{
     			server.setConnectors(new Connector[]{connector});

@@ -29,6 +29,8 @@ import ws.ament.hammock.web.api.WebServer;
 
 import javax.enterprise.inject.spi.CDI;
 
+import static org.jboss.weld.environment.Container.CONTEXT_PARAM_CONTAINER_CLASS;
+
 public class WeldBootstrapper implements Bootstrapper{
     private Weld weld;
     private WeldContainer container;
@@ -52,6 +54,7 @@ public class WeldBootstrapper implements Bootstrapper{
         BeanManagerImpl beanManager = CDI.current().select(BeanManagerImpl.class).get();
         webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
         webServer.addServletContextAttribute(org.jboss.weld.Container.CONTEXT_ID_KEY, beanManager.getContextId());
+        webServer.addInitParameter(CONTEXT_PARAM_CONTAINER_CLASS, HammockContainer.class.getName());
         webServer.addListener(Listener.class);
     }
 }

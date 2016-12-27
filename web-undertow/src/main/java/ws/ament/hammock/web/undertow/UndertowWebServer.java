@@ -18,36 +18,6 @@
 
 package ws.ament.hammock.web.undertow;
 
-import static io.undertow.Handlers.path;
-import static io.undertow.servlet.Servlets.filter;
-import static io.undertow.servlet.Servlets.listener;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
-
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebInitParam;
-
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
@@ -55,15 +25,32 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.servlet.Servlets;
-import io.undertow.servlet.api.DeploymentInfo;
-import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.servlet.api.FilterInfo;
-import io.undertow.servlet.api.ServletInfo;
+import io.undertow.servlet.api.*;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
-import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.ServletDescriptor;
+import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
+
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.net.ssl.*;
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
+
+import static io.undertow.Handlers.path;
+import static io.undertow.servlet.Servlets.filter;
+import static io.undertow.servlet.Servlets.listener;
 
 @ApplicationScoped
 public class UndertowWebServer extends AbstractWebServer {
@@ -72,14 +59,9 @@ public class UndertowWebServer extends AbstractWebServer {
     @Inject
     private UndertowWebSocketExtension extension;
     @Inject
-    private BeanManager beanManager;
+    private WebServerConfiguration webServerConfiguration;
     private Set<ServletInfo> servlets = new HashSet<>();
     private Undertow undertow;
-
-    @Inject
-    public UndertowWebServer(WebServerConfiguration webServerConfiguration) {
-        super(webServerConfiguration);
-    }
 
     @Override
     public void addServlet(ServletDescriptor servletDescriptor) {
@@ -129,14 +111,14 @@ public class UndertowWebServer extends AbstractWebServer {
             PathHandler path = path(Handlers.redirect("/"))
                     .addPrefixPath("/", servletHandler);
             Builder undertowBuilder = Undertow.builder()
-                    .addHttpListener(getWebServerConfiguration().getPort(), getWebServerConfiguration().getAddress())
+                    .addHttpListener(webServerConfiguration.getPort(), webServerConfiguration.getAddress())
                     .setHandler(path);
-            if (getWebServerConfiguration().isSecuredConfigured()){
+            if (webServerConfiguration.isSecuredConfigured()){
             	KeyManager[] keyManagers = loadKeyManager();
             	TrustManager[] trustManagers = loadTrustManager();
             	SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(keyManagers, trustManagers, null);
-            	undertowBuilder = undertowBuilder.addHttpsListener(getWebServerConfiguration().getSecuredPort(), getWebServerConfiguration().getAddress(), sslContext);
+            	undertowBuilder = undertowBuilder.addHttpsListener(webServerConfiguration.getSecuredPort(), webServerConfiguration.getAddress(), sslContext);
             }
             this.undertow = undertowBuilder.build();
             this.undertow.start();
@@ -147,18 +129,18 @@ public class UndertowWebServer extends AbstractWebServer {
     
     private KeyManager[] loadKeyManager() throws UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        keyManagerFactory.init(loadKeystore(getWebServerConfiguration().getKeystorePath(),
-                getWebServerConfiguration().getKeystorePassword(),
-                getWebServerConfiguration().getKeystoreType()),
-                getWebServerConfiguration().getKeystorePassword().toCharArray());
+        keyManagerFactory.init(loadKeystore(webServerConfiguration.getKeystorePath(),
+                webServerConfiguration.getKeystorePassword(),
+                webServerConfiguration.getKeystoreType()),
+                webServerConfiguration.getKeystorePassword().toCharArray());
         return keyManagerFactory.getKeyManagers();
     }
 
     private TrustManager[] loadTrustManager() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        trustManagerFactory.init(loadKeystore(getWebServerConfiguration().getTruststorePath(),
-                getWebServerConfiguration().getTruststorePassword(),
-                getWebServerConfiguration().getTruststoreType()));
+        trustManagerFactory.init(loadKeystore(webServerConfiguration.getTruststorePath(),
+                webServerConfiguration.getTruststorePassword(),
+                webServerConfiguration.getTruststoreType()));
         return trustManagerFactory.getTrustManagers();
     }
     

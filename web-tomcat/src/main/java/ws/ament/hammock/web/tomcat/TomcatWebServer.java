@@ -44,18 +44,17 @@ import static java.util.Arrays.stream;
 
 @ApplicationScoped
 public class TomcatWebServer extends AbstractWebServer{
-    private BeanManager beanManager;
-    private Tomcat tomcat;
     @Inject
-    protected TomcatWebServer(WebServerConfiguration webServerConfiguration, BeanManager beanManager) {
-        super(webServerConfiguration);
-        this.beanManager = beanManager;
-    }
+    private BeanManager beanManager;
+
+    @Inject
+    private WebServerConfiguration webServerConfiguration;
+
+    private Tomcat tomcat;
 
     @Override
     public void start() {
         tomcat = new Tomcat();
-        WebServerConfiguration webServerConfiguration = getWebServerConfiguration();
         tomcat.setPort(webServerConfiguration.getPort());
         //init http connector
         tomcat.getConnector();

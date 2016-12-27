@@ -30,13 +30,8 @@ public abstract class AbstractWebServer implements WebServer {
     private final List<ServletDescriptor> servletDescriptors = new ArrayList<>();
     private final List<FilterDescriptor> filterDescriptors = new ArrayList<>();
     private final Map<String, Object> servletContextAttributes = new HashMap<>();
-    private final WebServerConfiguration webServerConfiguration;
     private final Map<String, String> initParams = new HashMap<>();
     private final Set<Class<? extends ServletContextListener>> listeners = new LinkedHashSet<>();
-
-    protected AbstractWebServer(WebServerConfiguration webServerConfiguration) {
-        this.webServerConfiguration = webServerConfiguration;
-    }
 
     @Override
     public void addServlet(ServletDescriptor servletDescriptor) {
@@ -83,7 +78,4 @@ public abstract class AbstractWebServer implements WebServer {
         return Collections.unmodifiableSet(listeners);
     }
 
-    public WebServerConfiguration getWebServerConfiguration() {
-        return webServerConfiguration;
-    }
 }

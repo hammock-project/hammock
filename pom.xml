@@ -85,6 +85,8 @@
     <modules>
         <module>core</module>
         <module>bootstrap-weld</module>
+        <module>bootstrap-owb</module>
+        <module>container-aware</module>
         <module>web-spi</module>
         <module>web-tck</module>
         <module>web-undertow</module>
@@ -105,7 +107,6 @@
         <module>jpa-eclipselink</module>
         <module>messaging-artemis</module>
         <module>messaging-rabbitmq</module>
-        <module>container-aware</module>
     </modules>
     <dependencyManagement>
         <dependencies>
