@@ -77,6 +77,7 @@ public class TomcatWebServer extends AbstractWebServer{
         
         File base = new File(".");
         Context ctx = tomcat.addContext("",base.getAbsolutePath());
+        ctx.setInstanceManager(new HammockInstanceManager());
         super.getInitParams().forEach(ctx::addParameter);
         ServletContext servletContext = ctx.getServletContext();
         getListeners().forEach(c -> ctx.addApplicationListener(c.getName()));
