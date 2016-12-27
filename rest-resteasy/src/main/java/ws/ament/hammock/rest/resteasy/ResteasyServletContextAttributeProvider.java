@@ -23,7 +23,7 @@ import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import ws.ament.hammock.utils.ClassUtils;
 import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebParam;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import javax.servlet.annotation.WebInitParam;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;

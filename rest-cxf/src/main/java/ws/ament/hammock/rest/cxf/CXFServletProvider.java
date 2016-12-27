@@ -19,7 +19,7 @@
 package ws.ament.hammock.rest.cxf;
 
 import org.apache.cxf.cdi.CXFCdiServlet;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

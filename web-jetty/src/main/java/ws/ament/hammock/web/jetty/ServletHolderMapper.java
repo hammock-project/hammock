@@ -21,7 +21,7 @@ package ws.ament.hammock.web.jetty;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlet.Source;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 
 import java.util.Arrays;
 import java.util.function.Function;

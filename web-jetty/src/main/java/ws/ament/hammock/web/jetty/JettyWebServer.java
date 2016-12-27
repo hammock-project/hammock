@@ -25,15 +25,11 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.servlet.ServletHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.servlet.Source;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.jboss.weld.environment.servlet.Listener;
 import ws.ament.hammock.web.base.AbstractWebServer;
-import ws.ament.hammock.web.spi.FilterDescriptor;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;

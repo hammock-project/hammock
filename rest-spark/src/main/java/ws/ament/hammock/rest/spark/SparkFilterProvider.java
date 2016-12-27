@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.rest.spark;
 
-import ws.ament.hammock.web.spi.FilterDescriptor;
+import ws.ament.hammock.web.api.FilterDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;

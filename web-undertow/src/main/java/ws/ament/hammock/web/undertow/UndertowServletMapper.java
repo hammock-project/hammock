@@ -20,7 +20,7 @@ package ws.ament.hammock.web.undertow;
 
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.ServletInfo;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.annotation.WebInitParam;

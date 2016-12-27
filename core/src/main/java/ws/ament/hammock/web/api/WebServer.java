@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.spi;
+package ws.ament.hammock.web.api;
 
 public interface WebServer {
 

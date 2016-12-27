@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.spi;
+package ws.ament.hammock.web.api;
 
 import javax.enterprise.util.AnnotationLiteral;
 import javax.servlet.DispatcherType;

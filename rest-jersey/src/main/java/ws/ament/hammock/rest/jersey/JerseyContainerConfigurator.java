@@ -31,7 +31,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import ws.ament.hammock.utils.ClassUtils;
 import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 
 import static java.util.Collections.singletonMap;
 

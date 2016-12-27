@@ -29,8 +29,8 @@ import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.jboss.weld.environment.servlet.Listener;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import ws.ament.hammock.web.base.AbstractWebServer;
-import ws.ament.hammock.web.spi.FilterDescriptor;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.FilterDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;

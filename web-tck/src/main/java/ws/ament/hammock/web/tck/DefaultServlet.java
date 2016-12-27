@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.web.tck;
 
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebParam;
 
 import javax.enterprise.context.ApplicationScoped;

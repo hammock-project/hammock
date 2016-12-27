@@ -63,7 +63,7 @@ import io.undertow.servlet.api.FilterInfo;
 import io.undertow.servlet.api.ServletInfo;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import ws.ament.hammock.web.base.AbstractWebServer;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 import ws.ament.hammock.web.undertow.websocket.UndertowWebSocketExtension;
 

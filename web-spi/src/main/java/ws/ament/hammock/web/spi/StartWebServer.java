@@ -22,6 +22,9 @@ import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ws.ament.hammock.web.api.FilterDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
+import ws.ament.hammock.web.api.WebServer;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;

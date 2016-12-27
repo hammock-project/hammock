@@ -20,7 +20,7 @@ package ws.ament.hammock.web.undertow;
 
 import io.undertow.servlet.api.ServletInfo;
 import org.junit.Test;
-import ws.ament.hammock.web.spi.ServletDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebParam;
 import ws.ament.hammock.web.tck.DefaultServlet;
 

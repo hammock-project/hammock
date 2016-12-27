@@ -18,9 +18,9 @@
 
 package ws.ament.hammock.web.base;
 
-import ws.ament.hammock.web.spi.FilterDescriptor;
-import ws.ament.hammock.web.spi.ServletDescriptor;
-import ws.ament.hammock.web.spi.WebServer;
+import ws.ament.hammock.web.api.FilterDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
+import ws.ament.hammock.web.api.WebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.util.ArrayList;

@@ -22,6 +22,9 @@ import org.jboss.weld.environment.se.Weld;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import ws.ament.hammock.web.api.FilterDescriptor;
+import ws.ament.hammock.web.api.ServletDescriptor;
+import ws.ament.hammock.web.api.WebServer;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

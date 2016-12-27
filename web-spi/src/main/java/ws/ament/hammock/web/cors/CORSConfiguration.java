@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import javax.servlet.annotation.WebInitParam;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
-import ws.ament.hammock.web.spi.FilterDescriptor;
+import ws.ament.hammock.web.api.FilterDescriptor;
 
 import static ws.ament.hammock.web.base.Constants.DISPATCHER_TYPES;
 
