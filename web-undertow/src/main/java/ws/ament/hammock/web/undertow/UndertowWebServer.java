@@ -48,8 +48,6 @@ import javax.servlet.DispatcherType;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 
-import org.jboss.weld.environment.servlet.Listener;
-
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
@@ -94,8 +92,9 @@ public class UndertowWebServer extends AbstractWebServer {
                 .setContextPath("/")
                 .setDeploymentName("Undertow")
                 .setResourceManager(new ClassPathResourceManager(getClass().getClassLoader()))
-                .setClassLoader(ClassLoader.getSystemClassLoader())
-                .addListener(listener(Listener.class));
+                .setClassLoader(ClassLoader.getSystemClassLoader());
+
+        super.getListeners().forEach(c ->di.addListener(listener(c)));
 
         Collection<Class<?>> endpoints = extension.getEndpointClasses();
         if(!endpoints.isEmpty()) {

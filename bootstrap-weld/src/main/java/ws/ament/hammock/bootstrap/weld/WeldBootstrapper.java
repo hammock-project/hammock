@@ -21,7 +21,13 @@ package ws.ament.hammock.bootstrap.weld;
 import org.jboss.weld.bootstrap.api.helpers.RegistrySingletonProvider;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
+import org.jboss.weld.environment.servlet.Listener;
+import org.jboss.weld.environment.servlet.WeldServletLifecycle;
+import org.jboss.weld.manager.BeanManagerImpl;
 import ws.ament.hammock.bootstrap.Bootstrapper;
+import ws.ament.hammock.web.api.WebServer;
+
+import javax.enterprise.inject.spi.CDI;
 
 public class WeldBootstrapper implements Bootstrapper{
     private Weld weld;
@@ -39,5 +45,13 @@ public class WeldBootstrapper implements Bootstrapper{
     @Override
     public void stop() {
         container.close();
+    }
+
+    @Override
+    public void configure(WebServer webServer) {
+        BeanManagerImpl beanManager = CDI.current().select(BeanManagerImpl.class).get();
+        webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
+        webServer.addServletContextAttribute(org.jboss.weld.Container.CONTEXT_ID_KEY, beanManager.getContextId());
+        webServer.addListener(Listener.class);
     }
 }

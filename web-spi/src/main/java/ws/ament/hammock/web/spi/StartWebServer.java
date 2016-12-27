@@ -18,10 +18,9 @@
 
 package ws.ament.hammock.web.spi;
 
-import org.jboss.weld.environment.servlet.WeldServletLifecycle;
-import org.jboss.weld.manager.BeanManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ws.ament.hammock.bootstrap.Bootstrapper;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.api.WebServer;
@@ -33,6 +32,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
@@ -46,14 +46,14 @@ public class StartWebServer {
     private WebServer webServer;
     private final Logger logger = LoggerFactory.getLogger(StartWebServer.class);
 
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object obj, BeanManagerImpl beanManager) {
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object obj, BeanManager beanManager) {
         WebServer webServer = resolveWebServer(beanManager);
-        webServer.addServletContextAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
+        Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
+        bootstrapper.configure(webServer);
         processInstances(beanManager, ServletDescriptor.class, webServer::addServlet);
         processInstances(beanManager, FilterDescriptor.class, webServer::addFilter);
         processInstances(beanManager, ServletContextAttributeProvider.class,
                 s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
-        webServer.addServletContextAttribute(org.jboss.weld.Container.CONTEXT_ID_KEY, beanManager.getContextId());
         webServer.start();
 
         this.webServer = webServer;

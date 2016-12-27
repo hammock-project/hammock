@@ -26,8 +26,6 @@ import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
-import org.jboss.weld.environment.servlet.Listener;
-import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
@@ -82,8 +80,7 @@ public class TomcatWebServer extends AbstractWebServer{
         Context ctx = tomcat.addContext("",base.getAbsolutePath());
         super.getInitParams().forEach(ctx::addParameter);
         ServletContext servletContext = ctx.getServletContext();
-        servletContext.setAttribute(WeldServletLifecycle.BEAN_MANAGER_ATTRIBUTE_NAME, beanManager);
-        ctx.addApplicationListener(Listener.class.getName());
+        getListeners().forEach(c -> ctx.addApplicationListener(c.getName()));
         for(Map.Entry<String, Object> attribute : getServletContextAttributes().entrySet()) {
             servletContext.setAttribute(attribute.getKey(), attribute.getValue());
         }

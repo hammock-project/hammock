@@ -23,11 +23,8 @@ import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.api.WebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.ServletContextListener;
+import java.util.*;
 
 public abstract class AbstractWebServer implements WebServer {
     private final List<ServletDescriptor> servletDescriptors = new ArrayList<>();
@@ -35,6 +32,7 @@ public abstract class AbstractWebServer implements WebServer {
     private final Map<String, Object> servletContextAttributes = new HashMap<>();
     private final WebServerConfiguration webServerConfiguration;
     private final Map<String, String> initParams = new HashMap<>();
+    private final Set<Class<? extends ServletContextListener>> listeners = new LinkedHashSet<>();
 
     protected AbstractWebServer(WebServerConfiguration webServerConfiguration) {
         this.webServerConfiguration = webServerConfiguration;
@@ -60,6 +58,11 @@ public abstract class AbstractWebServer implements WebServer {
         initParams.put(key, value);
     }
 
+    @Override
+    public void addListener(Class<? extends ServletContextListener> listenerClass) {
+        this.listeners.add(listenerClass);
+    }
+
     protected List<ServletDescriptor> getServletDescriptors() {
         return Collections.unmodifiableList(servletDescriptors);
     }
@@ -74,6 +77,10 @@ public abstract class AbstractWebServer implements WebServer {
 
     protected List<FilterDescriptor> getFilterDescriptors() {
         return Collections.unmodifiableList(filterDescriptors);
+    }
+
+    protected Set<Class<? extends ServletContextListener>> getListeners() {
+        return Collections.unmodifiableSet(listeners);
     }
 
     public WebServerConfiguration getWebServerConfiguration() {

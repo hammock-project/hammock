@@ -27,6 +27,8 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.Bootstrap;
+import ws.ament.hammock.bootstrap.Bootstrapper;
 import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
@@ -40,10 +42,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class ServletTest {
     public static JavaArchive createArchive(Class<?>... classes) {
         SSLBypass.disableSSLChecks();
+        String property = System.getProperty(Bootstrapper.class.getName());
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, MessageProvider.class,
                         WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
                 .addClasses(classes)
+                .addAsServiceProvider(Bootstrapper.class.getName(), property)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
 

@@ -105,6 +105,7 @@
         <module>jpa-eclipselink</module>
         <module>messaging-artemis</module>
         <module>messaging-rabbitmq</module>
+        <module>container-aware</module>
     </modules>
     <dependencyManagement>
         <dependencies>

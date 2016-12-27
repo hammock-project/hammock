@@ -18,8 +18,14 @@
 
 package ws.ament.hammock.bootstrap;
 
+import ws.ament.hammock.web.api.WebServer;
+
 public interface Bootstrapper {
     void start();
 
     void stop();
+
+    default void configure(WebServer webServer) {
+
+    }
 }

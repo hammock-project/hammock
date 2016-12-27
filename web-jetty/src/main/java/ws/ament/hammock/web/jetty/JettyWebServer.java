@@ -27,7 +27,6 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.jboss.weld.environment.servlet.Listener;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
@@ -52,7 +51,13 @@ public class JettyWebServer extends AbstractWebServer {
         context.setContextPath("/");
         context.setResourceBase(getWebServerConfiguration().getFileDir());
         super.getInitParams().forEach(context::setInitParameter);
-        context.addEventListener(new Listener());
+        getListeners().forEach(c -> {
+            try {
+                context.addEventListener(c.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException("Unable to instantiate listener "+c, e);
+            }
+        });
 
         getServletContextAttributes().forEach(context::setAttribute);
         ServletHolderMapper mapper = new ServletHolderMapper(context.getServletHandler());

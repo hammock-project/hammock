@@ -18,6 +18,8 @@
 
 package ws.ament.hammock.web.api;
 
+import javax.servlet.ServletContextListener;
+
 public interface WebServer {
 
     void addServlet(ServletDescriptor servletDescriptor);
@@ -27,6 +29,8 @@ public interface WebServer {
     void addServletContextAttribute(String name, Object value);
 
     void addInitParameter(String key, String value);
+
+    void addListener(Class<? extends ServletContextListener> listenerClass);
 
     void start();
 
