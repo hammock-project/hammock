@@ -16,9 +16,21 @@
  * limitations under the License.
  */
 
-package org.hammock.test;
+package ws.ament.hammock.utils;
 
-import org.hammock.rest.tck.BaseURITest;
+import java.lang.annotation.Annotation;
 
-public class ResteasyTest extends BaseURITest{
+public final class ClassUtils {
+    private ClassUtils() {}
+
+    public static <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> annotationClass) {
+        T annotation = clazz.getAnnotation(annotationClass);
+        if(annotation == null && clazz.getSuperclass() != Object.class) {
+            return getAnnotation(clazz.getSuperclass(), annotationClass);
+        }
+        else {
+            return annotation;
+        }
+    }
+
 }

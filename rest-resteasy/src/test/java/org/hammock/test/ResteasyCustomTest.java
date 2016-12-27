@@ -16,17 +16,9 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.cxf;
+package org.hammock.test;
 
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import org.hammock.rest.tck.CustomURITest;
 
-@Path("/rest")
-@RequestScoped
-public class RestController {
-    @GET
-    public String doGet() {
-        return "Hello, World!";
-    }
+public class ResteasyCustomTest extends CustomURITest {
 }

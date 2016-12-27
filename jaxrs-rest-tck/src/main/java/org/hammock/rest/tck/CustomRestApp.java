@@ -16,9 +16,13 @@
  * limitations under the License.
  */
 
-package org.hammock.test;
+package org.hammock.rest.tck;
 
-import org.hammock.rest.tck.BaseURITest;
+import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
-public class ResteasyTest extends BaseURITest{
+@ApplicationPath("/custom")
+@ApplicationScoped
+public class CustomRestApp extends Application {
 }

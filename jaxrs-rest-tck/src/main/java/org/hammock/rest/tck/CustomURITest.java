@@ -16,16 +16,15 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.cxf;
+package org.hammock.rest.tck;
 
-import org.apache.cxf.cdi.CXFCdiServlet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.test.support.HammockArchive;
 
 import java.net.URI;
@@ -34,10 +33,11 @@ import static io.restassured.RestAssured.get;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
-public class CXFTest {
+@EnableRandomWebServerPort
+public class CustomURITest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().classes(RestController.class, RestApp.class, CXFCdiServlet.class).jar();
+        return new HammockArchive().classes(RestController.class, CustomRestApp.class).jar();
     }
 
     @ArquillianResource
@@ -45,7 +45,10 @@ public class CXFTest {
 
     @Test
     public void shouldBeAbleToRetrieveRestEndpoint() throws Exception {
-        get(uri + "/rest").then().assertThat().statusCode(200)
+        get(uri + "/custom/rest").then().assertThat().statusCode(200)
                 .body(is("Hello, World!"));
+
+        get(uri + "/rest").then().assertThat().statusCode(404);
     }
+
 }

@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package org.hammock.test;
+package org.hammock.test.cxf;
 
-import org.hammock.rest.tck.BaseURITest;
+import org.hammock.rest.tck.CustomURITest;
 
-public class ResteasyTest extends BaseURITest{
+public class CXFCustomTest extends CustomURITest {
 }

@@ -90,6 +90,7 @@
         <module>web-undertow</module>
         <module>web-jetty</module>
         <module>web-tomcat</module>
+        <module>jaxrs-rest-tck</module>
         <module>rest-cxf</module>
         <module>rest-jersey</module>
         <module>rest-resteasy</module>
@@ -115,7 +116,7 @@
             <dependency>
                 <groupId>javax.enterprise</groupId>
                 <artifactId>cdi-api</artifactId>
-                <version>1.2</version>
+                <version>${cdi-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.logging</groupId>
@@ -277,12 +278,6 @@
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-json_1.0_spec</artifactId>
                 <version>${geronimo-json_1.0_spec.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.enterprise</groupId>
-                <artifactId>cdi-api</artifactId>
-                <version>${cdi-api.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>

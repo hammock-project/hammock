@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.hammock.test;
+package org.hammock.rest.tck;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -27,9 +27,6 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.test.support.HammockArchive;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 import java.net.URI;
 
 import static io.restassured.RestAssured.get;
@@ -37,10 +34,10 @@ import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
 @EnableRandomWebServerPort
-public class ResteasyDiscreetURITest {
+public class BaseURITest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().classes(RestController.class, CustomRestApp.class).jar();
+        return new HammockArchive().classes(RestController.class, RestApp.class).jar();
     }
 
     @ArquillianResource
@@ -48,15 +45,8 @@ public class ResteasyDiscreetURITest {
 
     @Test
     public void shouldBeAbleToRetrieveRestEndpoint() throws Exception {
-        get(uri + "/custom/rest").then().assertThat().statusCode(200)
+        get(uri + "/rest").then().assertThat().statusCode(200)
                 .body(is("Hello, World!"));
-
-        get(uri + "/rest").then().assertThat().statusCode(404);
-    }
-
-    @ApplicationPath("/custom")
-    @ApplicationScoped
-    public class CustomRestApp extends Application {
     }
 
 }

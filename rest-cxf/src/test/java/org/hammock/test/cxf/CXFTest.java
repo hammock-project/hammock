@@ -16,13 +16,9 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.cxf;
+package org.hammock.test.cxf;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import org.hammock.rest.tck.BaseURITest;
 
-@ApplicationPath("/")
-@ApplicationScoped
-public class RestApp extends Application{
+public class CXFTest extends BaseURITest {
 }

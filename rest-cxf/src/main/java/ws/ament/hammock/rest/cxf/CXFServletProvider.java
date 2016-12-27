@@ -26,8 +26,9 @@ import javax.enterprise.inject.Produces;
 
 @ApplicationScoped
 public class CXFServletProvider {
+    private static final String DEFAULT_PATH = "/*";
     @Produces
     public ServletDescriptor cxfServlet() {
-        return new ServletDescriptor("CXF",null, new String[]{"/*"},1,null,true,CXFCdiServlet.class);
+        return new ServletDescriptor("CXF",null, new String[]{DEFAULT_PATH},1,null,true,CXFCdiServlet.class);
     }
 }

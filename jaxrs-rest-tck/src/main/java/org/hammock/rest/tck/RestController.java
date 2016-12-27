@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.hammock.test;
+package org.hammock.rest.tck;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
