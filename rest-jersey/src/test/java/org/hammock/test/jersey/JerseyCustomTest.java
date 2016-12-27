@@ -16,11 +16,9 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.jersey;
+package org.hammock.test.jersey;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import org.hammock.rest.tck.CustomURITest;
 
-@ApplicationPath("/")
-public class RestApp extends Application {
+public class JerseyCustomTest extends CustomURITest {
 }

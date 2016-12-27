@@ -29,6 +29,7 @@ import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import ws.ament.hammock.utils.ClassUtils;
 import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
 import ws.ament.hammock.web.spi.ServletDescriptor;
 
@@ -51,13 +52,13 @@ public class JerseyContainerConfigurator implements ServletContextAttributeProvi
 
     @Produces
     public ServletDescriptor jerseyServlet() {
-        final String urlPattern;
-        if (!applicationInstance.isUnsatisfied() && !applicationInstance.isAmbiguous() &&
-                applicationInstance.get().getClass().getAnnotation(ApplicationPath.class) != null) {
-            String path = applicationInstance.get().getClass().getAnnotation(ApplicationPath.class).value();
-            urlPattern = path.endsWith("/") ? path + "*" : path + "/*";
-        } else {
-            urlPattern = "/*";
+        String urlPattern = "/*";
+        if (!applicationInstance.isUnsatisfied() && !applicationInstance.isAmbiguous()) {
+            ApplicationPath annotation = ClassUtils.getAnnotation(applicationInstance.get().getClass(), ApplicationPath.class);
+            if(annotation != null) {
+                String path = annotation.value();
+                urlPattern = path.endsWith("/") ? path + "*" : path + "/*";
+            }
         }
         return new ServletDescriptor(SERVLET_NAME, null, new String[] { urlPattern }, 1, null, true, ServletContainer.class);
     }
