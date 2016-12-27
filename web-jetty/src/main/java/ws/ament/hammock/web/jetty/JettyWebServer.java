@@ -49,6 +49,7 @@ public class JettyWebServer extends AbstractWebServer {
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
         context.setResourceBase(webServerConfiguration.getFileDir());
+        context.getObjectFactory().addDecorator(new HammockDecorator());
         super.getInitParams().forEach(context::setInitParameter);
         getListeners().forEach(c -> {
             try {
@@ -59,7 +60,9 @@ public class JettyWebServer extends AbstractWebServer {
         });
 
         getServletContextAttributes().forEach(context::setAttribute);
+        context.setAttribute("org.eclipse.jetty.util.DecoratedObjectFactory", new HammockDecorator());
         ServletHolderMapper mapper = new ServletHolderMapper(context.getServletHandler());
+        context.getServletHandler().getServletContext();
         getServletDescriptors().forEach(mapper::apply);
 
         for(FilterDescriptor filterDescriptor : getFilterDescriptors()) {
