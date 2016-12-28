@@ -30,6 +30,17 @@ public class OWBBootstrapper implements Bootstrapper {
     public void start() {
         lifecycle = WebBeansContext.currentInstance().getService(ContainerLifecycle.class);
         lifecycle.startApplication(null);
+        Thread t = new Thread(() -> {
+            while(true) {
+                try {
+                    Thread.sleep(Long.MAX_VALUE-1);
+                } catch (InterruptedException e) {
+
+                }
+            }
+        });
+        t.setDaemon(false);
+        t.start();
     }
 
     @Override
