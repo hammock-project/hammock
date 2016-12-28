@@ -81,6 +81,8 @@
         <eclipselink.version>2.6.4</eclipselink.version>
         <activemq.artemis.version>1.5.1</activemq.artemis.version>
         <rabbitmq-amqp-client.version>4.0.0</rabbitmq-amqp-client.version>
+        <javax.annotation-api.version>1.3</javax.annotation-api.version>
+        <owb.version>1.7.0</owb.version>
     </properties>
     <modules>
         <module>core</module>
@@ -341,6 +343,32 @@
                 <artifactId>geronimo-jta_1.2_spec</artifactId>
                 <version>${geronimo-jta_1.2_spec.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>${javax.annotation-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.openwebbeans.arquillian</groupId>
+                <artifactId>owb-arquillian-standalone</artifactId>
+                <version>${owb.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.openwebbeans</groupId>
+                <artifactId>openwebbeans-impl</artifactId>
+                <version>${owb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.openwebbeans</groupId>
+                <artifactId>openwebbeans-web</artifactId>
+                <version>${owb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.openwebbeans</groupId>
+                <artifactId>openwebbeans-resource</artifactId>
+                <version>${owb.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sparkjava</groupId>
