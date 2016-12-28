@@ -16,18 +16,18 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa.flyway;
+package ws.ament.hammock.flyway;
 
 import javax.annotation.sql.DataSourceDefinition;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.sql.DataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.assertj.core.api.Assertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -38,8 +38,6 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.jpa.DataSourceDefinitionBuilder;
 import ws.ament.hammock.jpa.DataSourceExtension;
 import ws.ament.hammock.jpa.Database;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 @DataSourceDefinition(name="__default",className = "",url="jdbc:h2:./target/hammocktest")
@@ -63,7 +61,7 @@ public class FlywayTest {
           ResultSet rs = preparedStatement.executeQuery()) {
          rs.next();
          int anInt = rs.getInt(1);
-         assertThat(anInt).isEqualTo(1);
+         Assertions.assertThat(anInt).isEqualTo(1);
       }
 
    }

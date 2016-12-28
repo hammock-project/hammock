@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa;
+package ws.ament.hammock.bootstrap.weld.jpa;
 
 import org.jboss.logging.Logger;
 import org.jboss.weld.injection.spi.JpaInjectionServices;

@@ -18,6 +18,8 @@
 
 package ws.ament.hammock.jpa;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
@@ -59,7 +61,7 @@ public class DefaultPersistenceUnitBean implements Bean<PersistenceUnitInfo> {
 
     @Override
     public PersistenceUnitInfo create(CreationalContext<PersistenceUnitInfo> creationalContext) {
-        DataSource dataSource = CDI.current().select(DataSource.class).select(database(defaultDataSourceName)).get();
+        DataSource dataSource = BeanProvider.getContextualReference(CDI.current().getBeanManager(), DataSource.class, false, database(defaultDataSourceName));
 
         return new PersistenceUnitBuilder()
                 .withClasses(jpaExtension.getEntityClasses())

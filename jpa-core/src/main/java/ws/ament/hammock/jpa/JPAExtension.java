@@ -19,6 +19,7 @@
 package ws.ament.hammock.jpa;
 
 import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
@@ -78,6 +79,6 @@ public class JPAExtension implements Extension {
     }
 
     PersistenceUnitInfo getPersistenceUnitInfo(String name) {
-        return persistenceUnitInfos.computeIfAbsent(name, s -> CDI.current().select(PersistenceUnitInfo.class).select(database(s)).get());
+        return persistenceUnitInfos.computeIfAbsent(name, s -> BeanProvider.getContextualReference(PersistenceUnitInfo.class, database(s)));
     }
 }

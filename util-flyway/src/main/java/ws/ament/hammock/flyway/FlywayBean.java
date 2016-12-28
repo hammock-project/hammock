@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa.flyway;
+package ws.ament.hammock.flyway;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;

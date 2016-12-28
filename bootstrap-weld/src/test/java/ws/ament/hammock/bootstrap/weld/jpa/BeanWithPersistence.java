@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa;
+package ws.ament.hammock.bootstrap.weld.jpa;
 
 import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;

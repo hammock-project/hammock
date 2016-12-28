@@ -16,43 +16,47 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa;
+package ws.ament.hammock.bootstrap.weld.jpa;
 
 import org.jboss.weld.injection.spi.ResourceReference;
 import org.jboss.weld.injection.spi.ResourceReferenceFactory;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Implementation of {@link ResourceReferenceFactory} to provide {@link EntityManagerFactory} instances
+ * Implementation of {@link ResourceReferenceFactory} to provide {@link EntityManager} instances
  *
  * @author Antoine Sabot-Durand
  */
-class EntityManagerFactoryReferenceFactory implements ResourceReferenceFactory<EntityManagerFactory> {
+public class EntityManagerReferenceFactory implements ResourceReferenceFactory<EntityManager> {
 
     private final String unitName;
+    private EntityManagerFactory emf;
 
-    EntityManagerFactoryReferenceFactory(String unitName) {
+    EntityManagerReferenceFactory(String unitName) {
         this.unitName = unitName;
     }
 
     @Override
-    public ResourceReference<EntityManagerFactory> createResource() {
-        return new ResourceReference<EntityManagerFactory>() {
+    public ResourceReference<EntityManager> createResource() {
+        return new ResourceReference<EntityManager>() {
 
-            private EntityManagerFactory emf;
+            private EntityManager em;
 
             @Override
-            public EntityManagerFactory getInstance() {
+            public EntityManager getInstance() {
                 if (emf == null)
                     emf = Persistence.createEntityManagerFactory(unitName);
-                return emf;
+                if (em == null)
+                    em = emf.createEntityManager();
+                return em;
             }
 
             @Override
             public void release() {
-                emf.close();
+                em.close();
             }
         };
     }

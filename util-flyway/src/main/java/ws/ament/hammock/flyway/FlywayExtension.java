@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.jpa.flyway;
+package ws.ament.hammock.flyway;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterBeanDiscovery;
@@ -27,7 +27,7 @@ import org.flywaydb.core.Flyway;
 import org.jboss.logging.Logger;
 
 public class FlywayExtension implements Extension{
-   private static Logger LOG = Logger.getLogger(FlywayBean.class);
+   private static Logger LOG = Logger.getLogger(FlywayExtension.class);
    private boolean foundFlywayBean = false;
    public void findFlywayBean(@Observes ProcessBean<Flyway> flywayProcessBean) {
       this.foundFlywayBean = true;
@@ -35,13 +35,8 @@ public class FlywayExtension implements Extension{
 
    public void addFlywayBean(@Observes AfterBeanDiscovery afterBeanDiscovery) {
       if(!foundFlywayBean) {
-         try{
-            Class.forName("org.flywaydb.core.Flyway");
-            afterBeanDiscovery.addBean(new FlywayBean());
-         }
-         catch (Exception e) {
-            LOG.info("Flyway not on the classpath, not performing any integration",e);
-         }
+         LOG.info("Installing default Flyway bean");
+         afterBeanDiscovery.addBean(new FlywayBean());
       }
    }
 

@@ -1,3 +1,2 @@
 ws.ament.hammock.jpa.JPAExtension
 ws.ament.hammock.jpa.DataSourceExtension
-ws.ament.hammock.jpa.flyway.FlywayExtension

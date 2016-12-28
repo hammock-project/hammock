@@ -108,6 +108,7 @@
         <module>jpa-eclipselink</module>
         <module>messaging-artemis</module>
         <module>messaging-rabbitmq</module>
+        <module>util-flyway</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -419,8 +420,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-core</artifactId>
                 <version>${flyway.version}</version>
-                <optional>true</optional>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.activemq</groupId>
@@ -474,7 +473,10 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
-
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
