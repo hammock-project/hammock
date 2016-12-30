@@ -16,20 +16,24 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.rest.cxf;
+package ws.ament.hammock.web.spi;
 
-import org.apache.cxf.cdi.CXFCdiServlet;
-import ws.ament.hammock.web.api.ServletDescriptor;
-import ws.ament.hammock.web.spi.RestServerConfiguration;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
 @ApplicationScoped
-public class CXFServletProvider {
-    @Produces
-    public ServletDescriptor cxfServlet(RestServerConfiguration restServerConfiguration) {
-        String servletMapping = restServerConfiguration.getRestServletMapping();
-        return new ServletDescriptor("CXF",null, new String[]{servletMapping},1,null,true,CXFCdiServlet.class);
+public class RestServerConfiguration {
+    @Inject
+    @ConfigProperty(name="rest.uri.path", defaultValue = "/")
+    private String restUriPath;
+
+    public String getRestServletMapping() {
+        String propertyValue = restUriPath;
+        if(!propertyValue.endsWith("/")) {
+            propertyValue += "/";
+        }
+        return propertyValue + "*";
     }
 }

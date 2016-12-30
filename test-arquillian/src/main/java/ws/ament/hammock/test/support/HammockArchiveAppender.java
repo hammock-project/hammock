@@ -28,8 +28,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 public class HammockArchiveAppender implements ApplicationArchiveProcessor {
 
     private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"annotated\"/>");
-    private static final StringAsset ASSET = new StringAsset("ws.ament.hammock.test.support.RandomWebServerPortConfigSourceProvider");
-    private static final String SERVICE_PATH = "services/" + ConfigSourceProvider.class.getName();
 
     @Override
     public void process(Archive<?> archive, TestClass testClass) {
@@ -40,7 +38,7 @@ public class HammockArchiveAppender implements ApplicationArchiveProcessor {
            .addAsManifestResource(BEANS_XML, "beans.xml");
 
         if(annotation != null) {
-            jar.addAsManifestResource(ASSET, SERVICE_PATH);
+            jar.addAsServiceProviderAndClasses(ConfigSourceProvider.class, RandomWebServerPortConfigSourceProvider.class);
         }
     }
 }
