@@ -22,6 +22,7 @@ import org.jboss.resteasy.cdi.ResteasyCdiExtension;
 import org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import ws.ament.hammock.utils.ClassUtils;
+import ws.ament.hammock.web.spi.RestServerConfiguration;
 import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebParam;
@@ -43,6 +44,8 @@ public class ResteasyServletContextAttributeProvider implements ServletContextAt
     private ResteasyCdiExtension resteasyCdiExtension;
     @Inject
     private Instance<Application> applicationInstance;
+    @Inject
+    private RestServerConfiguration restServerConfiguration;
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -58,14 +61,14 @@ public class ResteasyServletContextAttributeProvider implements ServletContextAt
 
     @Produces
     public ServletDescriptor resteasyServlet() {
-        String path = "/";
+        String path = restServerConfiguration.getRestServerUri();
         if( !(applicationInstance.isUnsatisfied() || applicationInstance.isAmbiguous())) {
             ApplicationPath appPath = ClassUtils.getAnnotation(applicationInstance.get().getClass(), ApplicationPath.class);
             if(appPath != null) {
                 path = appPath.value();
             }
         }
-        String pattern = path.equals("/") ? "/*" : path + "/*";
+        String pattern = path.endsWith("/") ? path + "*" : path + "/*";
         WebInitParam param = new WebParam("resteasy.servlet.mapping.prefix", path);
         return new ServletDescriptor("ResteasyServlet",new String[]{pattern}, new String[]{pattern},
                 1,new WebInitParam[]{param},true,HttpServlet30Dispatcher.class);

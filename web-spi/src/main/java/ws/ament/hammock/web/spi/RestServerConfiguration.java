@@ -29,6 +29,10 @@ public class RestServerConfiguration {
     @ConfigProperty(name="rest.uri.path", defaultValue = "/")
     private String restUriPath;
 
+    public String getRestServerUri() {
+        return restUriPath;
+    }
+
     public String getRestServletMapping() {
         String propertyValue = restUriPath;
         if(!propertyValue.endsWith("/")) {
