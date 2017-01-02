@@ -21,7 +21,7 @@
     <parent>
         <artifactId>container-aware</artifactId>
         <groupId>ws.ament.hammock</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
         <relativePath>../container-aware</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
