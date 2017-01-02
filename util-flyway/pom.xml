@@ -46,10 +46,6 @@
             <artifactId>assertj-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>jpa-core</artifactId>
             <version>${project.version}</version>
