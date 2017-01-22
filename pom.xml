@@ -49,10 +49,10 @@
         <weld3.version>3.0.0.Beta1</weld3.version>
         <resteasy.version>3.1.0.Final</resteasy.version>
         <arquillian.version>1.1.11.Final</arquillian.version>
-        <undertow.version>1.4.7.Final</undertow.version>
+        <undertow.version>1.4.8.Final</undertow.version>
         <jetty.version>9.4.0.v20161208</jetty.version>
         <arquillian.weld.version>2.0.0.Beta4</arquillian.weld.version>
-        <slf4j.version>1.7.21</slf4j.version>
+        <slf4j.version>1.7.22</slf4j.version>
         <junit.version>4.12</junit.version>
         <deltaspike.version>1.7.2</deltaspike.version>
         <assertj.version>3.6.1</assertj.version>
@@ -72,8 +72,8 @@
         <spark.version>2.5.4</spark.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <javax.persistence.version>2.1.1</javax.persistence.version>
-        <hibernate.version>5.2.5.Final</hibernate.version>
-        <openjpa.version>2.4.1</openjpa.version>
+        <hibernate.version>5.2.6.Final</hibernate.version>
+        <openjpa.version>2.4.2</openjpa.version>
         <jersey.version>2.25</jersey.version>
         <mockito-core.version>2.3.0</mockito-core.version>
         <HikariCP.version>2.5.1</HikariCP.version>
@@ -82,9 +82,9 @@
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <eclipselink.version>2.6.4</eclipselink.version>
         <activemq.artemis.version>1.5.1</activemq.artemis.version>
-        <rabbitmq-amqp-client.version>4.0.0</rabbitmq-amqp-client.version>
+        <rabbitmq-amqp-client.version>4.0.1</rabbitmq-amqp-client.version>
         <javax.annotation-api.version>1.3</javax.annotation-api.version>
-        <owb.version>1.7.0</owb.version>
+        <owb.version>1.7.1</owb.version>
     </properties>
     <modules>
         <module>core</module>
