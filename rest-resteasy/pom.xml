@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
-            <artifactId>async-http-servlet-3.0</artifactId>
+            <artifactId>resteasy-servlet-initializer</artifactId>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
