@@ -3,7 +3,7 @@ Hammock
 
 [![Gitter chat](https://badges.gitter.im/hammock-project/gitter.png)](https://gitter.im/hammock-project/Lobby)
 [![Build Status](https://travis-ci.org/hammock-project/hammock.png)](https://travis-ci.org/hammock-project/hammock)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ws.ament.hammock/hammock/badge.png?style=flat)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
+[![Maven Central](https://img.shields.io/maven-central/v/ws.ament.hammock/hammock-core.svg)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
 [![Dependency Status](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad/badge.svg?style=flat)](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad)
 
 _Building Microservices so easily you're laying in a Hammock!_
@@ -26,7 +26,7 @@ Both containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-undertow</artifactId>
-    <version>0.5.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -36,7 +36,7 @@ Both containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-jetty</artifactId>
-    <version>0.5.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ Next, you'll want to add a REST Runtime to your application.  The default is to 
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>rest-resteasy</artifactId>
-    <version>0.5.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -56,7 +56,7 @@ But you can also use CXF
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>rest-cxf</artifactId>
-    <version>0.5.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
@@ -105,7 +105,7 @@ To add the security runtime to your app, just include this dependency.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>security-spi</artifactId>
-    <version>0.5.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 
