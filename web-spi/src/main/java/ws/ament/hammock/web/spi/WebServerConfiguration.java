@@ -23,10 +23,15 @@ import org.apache.deltaspike.core.api.config.ConfigProperty;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 public class WebServerConfiguration {
+    private static final Logger LOGGER = Logger.getLogger(WebServerConfiguration.class.getName());
+
     @Inject
     @ConfigProperty(name="webserver.port",defaultValue = "8080")
     private int port;
@@ -69,7 +74,18 @@ public class WebServerConfiguration {
 
     @PostConstruct
     public void logPort() {
-        Logger.getLogger(WebServerConfiguration.class.getName()).info("Starting webserver on http://" + address + ":" + port + (securedPort != 0 ? " https://" +address  + ":" + securedPort + " " :""));
+        LOGGER.info("Starting webserver on http://" + getDisplayAddress() + ":" + port + (securedPort != 0 ? " https://" +getDisplayAddress()  + ":" + securedPort + " " :""));
+    }
+
+    private String getDisplayAddress() {
+        if(address.equals("0.0.0.0")) {
+            try {
+                return InetAddress.getLocalHost().getHostName();
+            } catch (UnknownHostException e) {
+                LOGGER.log(Level.WARNING,"Unable to read hostname",e);
+            }
+        }
+        return address;
     }
 
     public int getPort() {
