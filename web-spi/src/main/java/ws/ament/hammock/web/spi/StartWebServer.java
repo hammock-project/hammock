@@ -24,6 +24,7 @@ import ws.ament.hammock.bootstrap.Bootstrapper;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.api.WebServer;
+import ws.ament.hammock.web.extension.WebServerExtension;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
@@ -46,10 +47,11 @@ public class StartWebServer {
     private WebServer webServer;
     private final Logger logger = LoggerFactory.getLogger(StartWebServer.class);
 
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object obj, BeanManager beanManager) {
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object obj, BeanManager beanManager, WebServerExtension extension) {
         WebServer webServer = resolveWebServer(beanManager);
         Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
         bootstrapper.configure(webServer);
+        extension.processListeners(webServer::addListener);
         processInstances(beanManager, ServletDescriptor.class, webServer::addServlet);
         processInstances(beanManager, FilterDescriptor.class, webServer::addFilter);
         processInstances(beanManager, ServletContextAttributeProvider.class,
