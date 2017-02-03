@@ -45,8 +45,8 @@
         <connection>scm:git:https://github.com/hammock-project/hammock.git</connection>
     </scm>
     <properties>
-        <weld.version>2.4.1.Final</weld.version>
-        <weld3.version>3.0.0.Beta1</weld3.version>
+        <weld.version>2.4.2.Final</weld.version>
+        <weld3.version>3.0.0.CR1</weld3.version>
         <resteasy.version>3.1.0.Final</resteasy.version>
         <arquillian.version>1.1.11.Final</arquillian.version>
         <undertow.version>1.4.8.Final</undertow.version>
