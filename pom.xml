@@ -59,7 +59,7 @@
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <tomcat.version>8.5.9</tomcat.version>
-        <jacoco.version>0.7.7.201606060606</jacoco.version>
+        <jacoco.version>0.7.8</jacoco.version>
         <johnzon.version>1.0.0</johnzon.version>
         <metrics.version>3.1.2</metrics.version>
         <metrics.cdi.verison>1.3.6</metrics.cdi.verison>
@@ -75,7 +75,7 @@
         <hibernate.version>5.2.6.Final</hibernate.version>
         <openjpa.version>2.4.2</openjpa.version>
         <jersey.version>2.25</jersey.version>
-        <mockito-core.version>2.3.0</mockito-core.version>
+        <mockito-core.version>2.6.2</mockito-core.version>
         <HikariCP.version>2.5.1</HikariCP.version>
         <h2.version>1.4.193</h2.version>
         <flyway.version>4.0.3</flyway.version>
@@ -488,7 +488,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.0</version>
+                    <version>3.6.1</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
@@ -496,7 +496,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.18.1</version>
+                    <version>2.19.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>
