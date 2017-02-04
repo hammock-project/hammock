@@ -48,7 +48,7 @@
         <weld.version>2.4.2.Final</weld.version>
         <weld3.version>3.0.0.CR1</weld3.version>
         <resteasy.version>3.1.0.Final</resteasy.version>
-        <arquillian.version>1.1.11.Final</arquillian.version>
+        <arquillian.version>1.1.12.Final</arquillian.version>
         <undertow.version>1.4.8.Final</undertow.version>
         <jetty.version>9.4.0.v20161208</jetty.version>
         <arquillian.weld.version>2.0.0.Beta4</arquillian.weld.version>
@@ -93,6 +93,7 @@
         <module>bootstrap-owb</module>
         <module>container-aware</module>
         <module>web-spi</module>
+        <module>test-arquillian</module>
         <module>web-tck</module>
         <module>web-undertow</module>
         <module>web-jetty</module>
@@ -106,7 +107,6 @@
         <module>security-spi</module>
         <module>dist-microprofile</module>
         <module>dist-microprofile-cochise</module>
-        <module>test-arquillian</module>
         <module>jpa-core</module>
         <module>jpa-hibernate</module>
         <module>jpa-openjpa</module>
@@ -207,6 +207,24 @@
             <dependency>
                 <groupId>org.jboss.arquillian.junit</groupId>
                 <artifactId>arquillian-junit-container</artifactId>
+                <version>${arquillian.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-container-spi</artifactId>
+                <version>${arquillian.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-container-test-spi</artifactId>
+                <version>${arquillian.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.testenricher</groupId>
+                <artifactId>arquillian-testenricher-cdi</artifactId>
                 <version>${arquillian.version}</version>
                 <scope>test</scope>
             </dependency>
