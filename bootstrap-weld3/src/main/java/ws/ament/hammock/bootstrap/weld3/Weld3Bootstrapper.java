@@ -18,35 +18,34 @@
 
 package ws.ament.hammock.bootstrap.weld3;
 
-import org.jboss.weld.bootstrap.api.helpers.RegistrySingletonProvider;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.environment.servlet.Listener;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
 import org.jboss.weld.manager.BeanManagerImpl;
 import ws.ament.hammock.bootstrap.Bootstrapper;
 import ws.ament.hammock.web.api.WebServer;
 
+import javax.enterprise.inject.se.SeContainer;
+import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.enterprise.inject.spi.CDI;
 
 import static org.jboss.weld.environment.servlet.Container.CONTEXT_PARAM_CONTAINER_CLASS;
 
 public class Weld3Bootstrapper implements Bootstrapper{
-    private Weld weld;
-    private WeldContainer container;
+    private SeContainer seContainer;
+    private SeContainerInitializer seContainerInitializer;
 
     public Weld3Bootstrapper() {
-        weld = new Weld(RegistrySingletonProvider.STATIC_INSTANCE);
+        seContainerInitializer = SeContainerInitializer.newInstance();
     }
 
     @Override
     public void start() {
-        container = weld.initialize();
+        seContainer = seContainerInitializer.initialize();
     }
 
     @Override
     public void stop() {
-        container.close();
+        seContainer.close();
     }
 
     @Override
