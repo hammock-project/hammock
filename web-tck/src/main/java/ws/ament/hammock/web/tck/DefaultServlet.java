@@ -18,21 +18,18 @@
 
 package ws.ament.hammock.web.tck;
 
-import ws.ament.hammock.web.api.ServletDescriptor;
-import ws.ament.hammock.web.spi.WebParam;
-
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@ApplicationScoped
+@Dependent
+@WebServlet(name = "Default",urlPatterns = {"/"},loadOnStartup = 1,initParams = {@WebInitParam(name="name",value="value")})
 public class DefaultServlet extends HttpServlet {
     @Inject
     private MessageProvider messageProvider;
@@ -42,8 +39,4 @@ public class DefaultServlet extends HttpServlet {
         resp.getWriter().println(messageProvider.getMessage());
         resp.getWriter().println(", "+getInitParameter("name"));
     }
-
-    @Produces
-    @Dependent
-    private ServletDescriptor descriptor = new ServletDescriptor("Default",null,new String[]{"/"},1,new WebInitParam[]{new WebParam("name","value")},true,DefaultServlet.class);
 }

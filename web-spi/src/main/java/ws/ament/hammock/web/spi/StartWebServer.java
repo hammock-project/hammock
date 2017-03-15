@@ -21,6 +21,7 @@ package ws.ament.hammock.web.spi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ws.ament.hammock.bootstrap.Bootstrapper;
+import ws.ament.hammock.utils.ClassUtils;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.api.WebServer;
@@ -31,8 +32,15 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
+import javax.servlet.Filter;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -44,6 +52,14 @@ import java.util.function.Consumer;
  */
 @ApplicationScoped
 public class StartWebServer {
+    @Inject
+    @Any
+    private Instance<HttpServlet> servlets;
+
+    @Inject
+    @Any
+    private Instance<Filter> filters;
+
     private WebServer webServer;
     private final Logger logger = LoggerFactory.getLogger(StartWebServer.class);
 
@@ -54,11 +70,12 @@ public class StartWebServer {
         extension.processListeners(webServer::addListener);
         processInstances(beanManager, ServletDescriptor.class, webServer::addServlet);
         processInstances(beanManager, FilterDescriptor.class, webServer::addFilter);
+        this.webServer = webServer;
+        this.processFilters();
+        this.procesServlets();
         processInstances(beanManager, ServletContextAttributeProvider.class,
                 s -> s.getAttributes().forEach(webServer::addServletContextAttribute));
         webServer.start();
-
-        this.webServer = webServer;
     }
 
     @PreDestroy
@@ -85,5 +102,30 @@ public class StartWebServer {
     private <T> void processInstances(BeanManager beanManager, Class<T> clazz, Consumer<T> consumer) {
         Set<Bean<?>> beans = beanManager.getBeans(clazz);
         beans.stream().map(bean -> (T) beanManager.getReference(bean, clazz, beanManager.createCreationalContext(bean))).forEach(consumer);
+    }
+
+    private void processFilters() {
+        filters.forEach(filter -> {
+            WebFilter webFilter = ClassUtils.getAnnotation(filter.getClass(), WebFilter.class);
+            if(webFilter != null) {
+                FilterDescriptor filterDescriptor = new FilterDescriptor(webFilter.filterName(),
+                        webFilter.value(), webFilter.urlPatterns(), webFilter.dispatcherTypes(),
+                        webFilter.initParams(), webFilter.asyncSupported(), webFilter.servletNames(),
+                        filter.getClass());
+                webServer.addFilter(filterDescriptor);
+            }
+        });
+    }
+
+    private void procesServlets() {
+        servlets.forEach(servlet -> {
+            WebServlet webServlet = ClassUtils.getAnnotation(servlet.getClass(), WebServlet.class);
+            if(webServlet != null) {
+                ServletDescriptor servletDescriptor = new ServletDescriptor(webServlet.name(),
+                        webServlet.value(), webServlet.urlPatterns(), webServlet.loadOnStartup(),
+                        webServlet.initParams(),webServlet.asyncSupported(),servlet.getClass());
+                webServer.addServlet(servletDescriptor);
+            }
+        });
     }
 }

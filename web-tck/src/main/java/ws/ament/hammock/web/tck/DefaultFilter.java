@@ -18,15 +18,13 @@
 
 package ws.ament.hammock.web.tck;
 
-import ws.ament.hammock.web.api.FilterDescriptor;
-
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@ApplicationScoped
+@Dependent
+@WebFilter(filterName = "Default",urlPatterns = "/*", dispatcherTypes = DispatcherType.REQUEST)
 public class DefaultFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -42,8 +40,4 @@ public class DefaultFilter implements Filter {
     public void destroy() {
 
     }
-
-    @Produces
-    @Dependent
-    private FilterDescriptor filterDescriptor = new FilterDescriptor("Default", null, new String[]{"/*"}, new DispatcherType[]{DispatcherType.REQUEST}, null, true, null, DefaultFilter.class);
 }
