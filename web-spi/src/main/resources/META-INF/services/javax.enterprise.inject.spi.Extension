@@ -1,1 +1,2 @@
 ws.ament.hammock.web.extension.WebServerExtension
+ws.ament.hammock.web.extension.StartWebServerExtension
