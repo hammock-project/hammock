@@ -20,6 +20,7 @@ package ws.ament.hammock.bootstrap.weld;
 
 import org.junit.Test;
 import ws.ament.hammock.bootstrap.weld3.Weld3Bootstrapper;
+import ws.ament.hammock.utils.Unmanageable;
 
 import javax.enterprise.inject.spi.CDI;
 
@@ -32,6 +33,16 @@ public class Weld3BootstrapperTest {
         bootstrapper.start();
         SomeBean someBean = CDI.current().select(SomeBean.class).get();
         assertThat(someBean).isNotNull();
+        bootstrapper.stop();
+    }
+
+    @Test
+    public void shouldHaveUsableUnmanageable() {
+        Weld3Bootstrapper bootstrapper = new Weld3Bootstrapper();
+        bootstrapper.start();
+        try(Unmanageable<SomeBean> unmanageable = new Unmanageable<>(SomeBean.class)) {
+            assertThat(unmanageable.get()).isNotNull();
+        }
         bootstrapper.stop();
     }
 }

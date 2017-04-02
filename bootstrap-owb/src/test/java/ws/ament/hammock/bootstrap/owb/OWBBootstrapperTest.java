@@ -19,6 +19,7 @@
 package ws.ament.hammock.bootstrap.owb;
 
 import org.junit.Test;
+import ws.ament.hammock.utils.Unmanageable;
 
 import javax.enterprise.inject.spi.CDI;
 
@@ -31,6 +32,16 @@ public class OWBBootstrapperTest {
         bootstrapper.start();
         SomeBean someBean = CDI.current().select(SomeBean.class).get();
         assertThat(someBean).isNotNull();
+        bootstrapper.stop();
+    }
+
+    @Test
+    public void shouldHaveUsableUnmanageable() {
+        OWBBootstrapper bootstrapper = new OWBBootstrapper();
+        bootstrapper.start();
+        try(Unmanageable<SomeBean> unmanageable = new Unmanageable<>(SomeBean.class)) {
+            assertThat(unmanageable.get()).isNotNull();
+        }
         bootstrapper.stop();
     }
 }
