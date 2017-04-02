@@ -21,16 +21,18 @@ package ws.ament.hammock.rest.spark;
 import spark.servlet.SparkApplication;
 import spark.servlet.SparkFilter;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
+@Singleton
+@WebFilter(urlPatterns = {"${spark.filter}"},filterName = "Spark")
 public class CDISparkFilter extends SparkFilter{
     @Inject
     @Any

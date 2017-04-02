@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.web.spi;
 
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ws.ament.hammock.bootstrap.Bootstrapper;
@@ -40,10 +41,11 @@ import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import java.util.ServiceLoader;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * A component that starts a standard application server component.
@@ -51,6 +53,9 @@ import java.util.function.Consumer;
  */
 @ApplicationScoped
 public class StartWebServer {
+    public static final String PREFIX = "${";
+    public static final String PREFIX_REGEX = "\\$\\{";
+    public static final String SUFFIX = "}";
     @Inject
     @Any
     private Instance<HttpServlet> servlets;
@@ -118,7 +123,7 @@ public class StartWebServer {
             WebFilter webFilter = ClassUtils.getAnnotation(filter.getClass(), WebFilter.class);
             if(webFilter != null) {
                 FilterDescriptor filterDescriptor = new FilterDescriptor(webFilter.filterName(),
-                        webFilter.value(), webFilter.urlPatterns(), webFilter.dispatcherTypes(),
+                        webFilter.value(), mapUrls(webFilter.urlPatterns()), webFilter.dispatcherTypes(),
                         webFilter.initParams(), webFilter.asyncSupported(), webFilter.servletNames(),
                         filter.getClass());
                 webServer.addFilter(filterDescriptor);
@@ -131,10 +136,25 @@ public class StartWebServer {
             WebServlet webServlet = ClassUtils.getAnnotation(servlet.getClass(), WebServlet.class);
             if(webServlet != null) {
                 ServletDescriptor servletDescriptor = new ServletDescriptor(webServlet.name(),
-                        webServlet.value(), webServlet.urlPatterns(), webServlet.loadOnStartup(),
+                        webServlet.value(), mapUrls(webServlet.urlPatterns()), webServlet.loadOnStartup(),
                         webServlet.initParams(),webServlet.asyncSupported(),servlet.getClass());
                 webServer.addServlet(servletDescriptor);
             }
         });
+    }
+
+    private static String[] mapUrls(String[] urls) {
+        List<String> patterns = Arrays.stream(urls)
+                .map(s -> {
+                    if(s.startsWith(PREFIX) && s.endsWith(SUFFIX)) {
+                        String key = s.replaceFirst(PREFIX_REGEX,"").replace(SUFFIX,"");
+                        return ConfigResolver.getPropertyValue(key, s);
+                    }
+                    else {
+                        return s;
+                    }
+                })
+                .collect(toList());
+                return patterns.toArray(new String[urls.length]);
     }
 }

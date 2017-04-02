@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 @Dependent
-@WebFilter(filterName = "Default",urlPatterns = "/*", dispatcherTypes = DispatcherType.REQUEST)
+@WebFilter(filterName = "Default",urlPatterns = "${default.filter}", dispatcherTypes = DispatcherType.REQUEST)
 public class DefaultFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

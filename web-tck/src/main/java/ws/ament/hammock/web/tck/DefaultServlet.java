@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Dependent
-@WebServlet(name = "Default",urlPatterns = {"/"},loadOnStartup = 1,initParams = {@WebInitParam(name="name",value="value")})
+@WebServlet(name = "Default",urlPatterns = {"${default.servlet}"},loadOnStartup = 1,initParams = {@WebInitParam(name="name",value="value")})
 public class DefaultServlet extends HttpServlet {
     @Inject
     private MessageProvider messageProvider;
