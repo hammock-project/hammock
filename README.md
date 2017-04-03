@@ -14,49 +14,29 @@ Read through some of the basics to get started, or view the [wiki](https://githu
 
 ## Getting Started
 
-First, add some dependencies to your project.  You can choose between Undertow and Jetty presently
+First, add some dependencies to your project.  Easiest way to start is with a Micrprofile Distribution - Standard or Cochise
 
 ### Using Maven
 
-Both containers bring in transitive dependencies to bring up your runtime.
+Containers bring in transitive dependencies to bring up your runtime.
 
-#### Using Undertow
+#### Using Undertow, Weld, Apache Johnzon, RestEasy
 
 ```xml
 <dependency>
     <groupId>ws.ament.hammock</groupId>
-    <artifactId>web-undertow</artifactId>
-    <version>1.1</version>
+    <artifactId>dist-microprofile</artifactId>
+    <version>1.2</version>
 </dependency>
 ```
 
-#### Using Jetty
+#### Using Apache Tomcat, OpenWebBeans, Johnzon, CXF
 
 ```xml
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>web-jetty</artifactId>
-    <version>1.1</version>
-</dependency>
-```
-
-Next, you'll want to add a REST Runtime to your application.  The default is to use RestEasy.
-
-```xml
-<dependency>
-    <groupId>ws.ament.hammock</groupId>
-    <artifactId>rest-resteasy</artifactId>
-    <version>1.1</version>
-</dependency>
-```
-
-But you can also use CXF
-
-```xml
-<dependency>
-    <groupId>ws.ament.hammock</groupId>
-    <artifactId>rest-cxf</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 
@@ -66,28 +46,33 @@ Now that you have your dependencies in order, you can launch your first app.
 
 #### Using Hammock's Bootstrap
 
-Hammock has a bootstrap class, `ws.ament.hammock.Bootstrap` which will start Weld for you.  It just wraps a call to Weld's boostrap
+Hammock has a bootstrap class, `ws.ament.hammock.Bootstrap` which will start CDI for you.  It uses implementations of `Bootstrapper` to start the appropriate container.
 
-#### Using Weld's Bootstrap
+#### Using Your Container's Bootstrap
 
-You can also bootstrap Weld directly.  Since Hammock is implemented as a suite of CDI components, no extra work is required.
+You can also bootstrap your container directly.  Since Hammock is implemented as a suite of CDI components, no extra work is required.
 
 #### Use your own Bootstrap
 
 You may want your own bootstrap, to do some pre-flight checks.  Just make sure you either initialize Hammock or Weld when you're done.  Your main might look as simple as
 
 ```java
-public class Bootstrap {
-    public static void main(String[] args) {
+public class CustomBootstrapper implements Bootstrapper {
+
+    public void start() {
         new PreflightChecks().verify();
         new Weld().initialize();
     }
+
+    public void stop() { }
 }
 ```
 
+Make sure you add this to the `ServiceLoader`
+
 #### Executable JARs
 
-You'll likely want to create an executable JAR.  Just shade in all dependencies using your favorite build tool, and set the main class to your choice of main class.
+You'll likely want to create an executable JAR.  Just shade in all dependencies using your favorite build tool, and set the main class to your choice of main class.  I recommend using [Capsule](http://www.capsule.io/)
 
 ### Configuration
 
@@ -105,7 +90,7 @@ To add the security runtime to your app, just include this dependency.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>security-spi</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 
