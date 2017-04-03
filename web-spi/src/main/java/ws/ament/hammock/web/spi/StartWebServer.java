@@ -31,7 +31,9 @@ import ws.ament.hammock.web.extension.WebServerExtension;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.Bean;
@@ -88,7 +90,7 @@ public class StartWebServer {
         webServer.start();
     }
 
-    public void start() {
+    public void start(@Observes @Initialized(ApplicationScoped.class) Object obj) {
 
     }
 
