@@ -21,13 +21,13 @@
     <parent>
         <artifactId>container-aware</artifactId>
         <groupId>ws.ament.hammock</groupId>
-        <version>1.2-SNAPSHOT</version>
+        <version>1.2</version>
         <relativePath>../container-aware</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jpa-hibernate</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
 
     <dependencies>
         <dependency>
