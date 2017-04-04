@@ -29,7 +29,7 @@
     <dependencies>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
-            <artifactId>bootstrap-weld</artifactId>
+            <artifactId>bootstrap-weld3</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

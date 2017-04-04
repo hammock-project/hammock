@@ -30,9 +30,6 @@
     <profiles>
         <profile>
             <id>Weld</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <dependencies>
                 <dependency>
                     <groupId>javax.annotation</groupId>
@@ -68,6 +65,9 @@
         </profile>
         <profile>
             <id>Weld3</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>javax.annotation</groupId>
