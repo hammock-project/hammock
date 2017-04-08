@@ -63,10 +63,7 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>Weld</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <id>Weld2</id>
             <dependencies>
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
@@ -92,6 +89,9 @@
         </profile>
         <profile>
             <id>Weld3</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
