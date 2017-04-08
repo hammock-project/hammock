@@ -35,7 +35,7 @@ Containers bring in transitive dependencies to bring up your runtime.
 ```xml
 <dependency>
     <groupId>ws.ament.hammock</groupId>
-    <artifactId>web-jetty</artifactId>
+    <artifactId>dist-microprofile-cochise</artifactId>
     <version>1.2.1</version>
 </dependency>
 ```
