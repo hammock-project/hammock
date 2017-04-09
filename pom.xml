@@ -114,6 +114,7 @@
         <module>messaging-artemis</module>
         <module>messaging-rabbitmq</module>
         <module>util-flyway</module>
+        <module>util-camel</module>
     </modules>
     <dependencyManagement>
         <dependencies>
