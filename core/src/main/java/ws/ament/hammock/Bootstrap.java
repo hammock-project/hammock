@@ -18,12 +18,19 @@
 
 package ws.ament.hammock;
 
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import ws.ament.hammock.bootstrap.Bootstrapper;
 
 import java.util.ServiceLoader;
 
 public class Bootstrap {
+
+    public static final String DEFAULT_LOGGING = "true";
+
     public static void main(String... args) {
+        if(DEFAULT_LOGGING.equals(ConfigResolver.getPropertyValue("enable.log4j2.integration",DEFAULT_LOGGING))) {
+            System.setProperty("java.util.logging.manager","org.apache.logging.log4j.jul.LogManager");
+        }
         Bootstrapper bootstrapper = ServiceLoader.load(Bootstrapper.class).iterator().next();
         bootstrapper.start();
     }

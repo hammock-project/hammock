@@ -86,6 +86,7 @@
         <javax.annotation-api.version>1.3</javax.annotation-api.version>
         <owb.version>1.7.2</owb.version>
         <camel.version>2.18.3</camel.version>
+        <log4j.version>2.8.2</log4j.version>
     </properties>
     <modules>
         <module>core</module>
@@ -488,6 +489,21 @@
                 <groupId>org.apache.camel</groupId>
                 <artifactId>camel-servlet</artifactId>
                 <version>${camel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jul</artifactId>
+                <version>${log4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
