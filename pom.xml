@@ -87,6 +87,8 @@
         <owb.version>1.7.2</owb.version>
         <camel.version>2.18.3</camel.version>
         <log4j.version>2.8.2</log4j.version>
+        <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
+        <javax.el.version>3.0.1-b08</javax.el.version>
     </properties>
     <modules>
         <module>core</module>
@@ -117,6 +119,7 @@
         <module>messaging-rabbitmq</module>
         <module>util-flyway</module>
         <module>util-camel</module>
+        <module>util-beanvalidation</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -504,6 +507,16 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-jul</artifactId>
                 <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator-cdi</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
