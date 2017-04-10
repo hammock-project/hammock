@@ -85,6 +85,7 @@
         <rabbitmq-amqp-client.version>4.1.0</rabbitmq-amqp-client.version>
         <javax.annotation-api.version>1.3</javax.annotation-api.version>
         <owb.version>1.7.2</owb.version>
+        <camel.version>2.18.3</camel.version>
     </properties>
     <modules>
         <module>core</module>
@@ -477,6 +478,16 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito-core.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-cdi</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-servlet</artifactId>
+                <version>${camel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
