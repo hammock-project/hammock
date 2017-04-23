@@ -30,8 +30,6 @@
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jaxrs_2.0_spec</artifactId>
-            <version>1.0-alpha-1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
