@@ -18,6 +18,8 @@
 
 package ws.ament.hammock.brave;
 
+import ws.ament.hammock.HammockRuntime;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -29,11 +31,13 @@ import javax.ws.rs.client.ClientBuilder;
 public class SimpleResource {
     @Inject
     private BraveCDIFeature braveCDIFeature;
+    @Inject
+    private HammockRuntime hammockRuntime;
     @GET
     public String sayHello() {
         ClientBuilder.newClient()
                 .register(braveCDIFeature)
-                .target("http://localhost:8080/simple/second").request().get();
+                .target( hammockRuntime.getMachineURL() + "/simple/second").request().get();
         return "hello";
     }
     @GET

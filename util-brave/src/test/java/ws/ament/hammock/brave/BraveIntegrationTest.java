@@ -28,6 +28,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import zipkin.Span;
 
 import javax.inject.Inject;
@@ -38,6 +39,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class BraveIntegrationTest {
     @Inject
     private SpanReporter spanReporter;
