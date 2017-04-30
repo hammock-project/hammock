@@ -45,7 +45,8 @@ public class BraveIntegrationTest {
     public static Archive<?> archive() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClasses(BraveTracingFeatureProvider.class, BraveProducers.class, SpanReporter.class);
+                .addClasses(BraveTracingFeatureProvider.class, BraveProducers.class, SpanReporter.class,
+                        BraveServletContextListener.class);
     }
 
     @Test

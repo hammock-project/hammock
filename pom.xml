@@ -543,6 +543,11 @@
                 <artifactId>brave-jaxrs2</artifactId>
                 <version>${zipkin-brave.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.zipkin.brave</groupId>
+                <artifactId>brave-web-servlet-filter</artifactId>
+                <version>${zipkin-brave.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
