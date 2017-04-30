@@ -22,12 +22,12 @@ import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
 
 @ApplicationScoped
 public class HammockRuntime {
@@ -44,16 +44,16 @@ public class HammockRuntime {
     @ConfigProperty(name="webserver.secured.port", defaultValue="0")
     private int securedPort;
 
-    @PostConstruct
-    public void logPort() {
+    void init(@Observes @Initialized(ApplicationScoped.class) Object obj) {
         LOGGER.info("Starting webserver on "+getMachineURL());
         if(isSecuredConfigured()) {
-            LOGGER.info("Running securely on "+getSecureURL());
+            LOGGER.info("Running securely on " + getSecureURL());
         }
     }
 
     public String getMachineURL() {
-        return String.format("http://%s:%d", getServerName(), port);
+        String serverName = getServerName();
+        return String.format("http://%s:%d", serverName, port);
     }
 
     public String getSecureURL() {

@@ -38,7 +38,12 @@ public class RandomWebServerPortConfigSourceProvider implements ConfigSourceProv
    }
 
    private final class RandomPortConfigSource implements ConfigSource {
-      private final Random random = new Random();
+      private final String port;
+
+      RandomPortConfigSource() {
+         Random random = new Random();
+         this.port = Integer.toString(4000 + random.nextInt(500));
+      }
       @Override
       public int getOrdinal() {
          return 10000;
@@ -46,13 +51,13 @@ public class RandomWebServerPortConfigSourceProvider implements ConfigSourceProv
 
       @Override
       public Map<String, String> getProperties() {
-         return singletonMap(WEBSERVER_PORT, getPropertyValue(WEBSERVER_PORT));
+         return singletonMap(WEBSERVER_PORT, port);
       }
 
       @Override
       public String getPropertyValue(String key) {
          if(key.equals(WEBSERVER_PORT)) {
-            return Integer.toString(4000 + random.nextInt(500));
+            return port;
          }
          return null;
       }

@@ -20,6 +20,7 @@ package ws.ament.hammock.test.support;
 
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
+import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.inject.spi.CDI;
@@ -29,8 +30,8 @@ import java.net.URI;
 public class HammockURIProvider implements ResourceProvider {
     @Override
     public Object lookup(ArquillianResource arquillianResource, Annotation... annotations) {
-        WebServerConfiguration webServerConfiguration = CDI.current().select(WebServerConfiguration.class).get();
-        return URI.create("http://localhost:" + webServerConfiguration.getPort());
+        HammockRuntime hammockRuntime = CDI.current().select(HammockRuntime.class).get();
+        return URI.create(hammockRuntime.getMachineURL());
     }
 
     @Override

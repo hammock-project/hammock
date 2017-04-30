@@ -28,6 +28,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import zipkin.Span;
 
@@ -43,6 +44,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BraveIntegrationTest {
     @Inject
     private SpanReporter spanReporter;
+    @Inject
+    private HammockRuntime hammockRuntime;
+
     @Deployment
     public static Archive<?> archive() {
         return ShrinkWrap.create(JavaArchive.class)
@@ -53,7 +57,8 @@ public class BraveIntegrationTest {
 
     @Test
     public void shouldCreateSpan() {
-        RestAssured.get("/simple");
+        String path = hammockRuntime.getMachineURL() + "/simple";
+        RestAssured.get(path);
         assertThat(spanReporter.getSpans()).hasSize(3);
         Long traceId = spanReporter.getSpans().get(0).traceId;
         assertThat(spanReporter.getSpans()).extracting((Function<Span, Long>) span -> span.traceId).containsExactly(new Tuple(traceId), new Tuple(traceId), new Tuple(traceId));

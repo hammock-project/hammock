@@ -24,7 +24,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Client;
 
 @Path("/simple")
 @RequestScoped
@@ -33,11 +33,12 @@ public class SimpleResource {
     private BraveCDIFeature braveCDIFeature;
     @Inject
     private HammockRuntime hammockRuntime;
+    @Inject
+    private Client client;
     @GET
     public String sayHello() {
-        ClientBuilder.newClient()
-                .register(braveCDIFeature)
-                .target( hammockRuntime.getMachineURL() + "/simple/second").request().get();
+        String requestURL = hammockRuntime.getMachineURL() + "/simple/second";
+        client.target(requestURL).request().get();
         return "hello";
     }
     @GET
