@@ -18,23 +18,19 @@
 
 package ws.ament.hammock.web.jetty;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import ws.ament.hammock.HammockRuntime;
-import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.FilterDescriptor;
+import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.servlet.DispatcherType;
+import javax.servlet.ServletContextListener;
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -55,13 +51,7 @@ public class JettyWebServer extends AbstractWebServer {
         context.setResourceBase(webServerConfiguration.getFileDir());
         context.getObjectFactory().addDecorator(new HammockDecorator());
         super.getInitParams().forEach(context::setInitParameter);
-        getListeners().forEach(c -> {
-            try {
-                context.addEventListener(c.newInstance());
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException("Unable to instantiate listener "+c, e);
-            }
-        });
+        getListeners().stream().map(JettyWebServer::getOrCreateListener).forEach(context::addEventListener);
 
         getServletContextAttributes().forEach(context::setAttribute);
         context.setAttribute("org.eclipse.jetty.util.DecoratedObjectFactory", new HammockDecorator());
@@ -118,6 +108,20 @@ public class JettyWebServer extends AbstractWebServer {
                 jetty = null;
             } catch (Exception e) {
                 throw new RuntimeException("Unable to stop server", e);
+            }
+        }
+    }
+
+    private static ServletContextListener getOrCreateListener(Class<? extends ServletContextListener> clazz) {
+        try {
+            return CDI.current().select(clazz).get();
+        }
+        catch (Exception e) {
+            try {
+                return clazz.newInstance();
+            } catch (ReflectiveOperationException e1) {
+                throw new RuntimeException("Unable to instantiate listener "+clazz+ " "
+                        +e1.getMessage()+" "+e.getMessage(), e);
             }
         }
     }
