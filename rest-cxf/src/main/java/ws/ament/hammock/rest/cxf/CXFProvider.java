@@ -26,7 +26,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
 @ApplicationScoped
-public class CXFServletProvider {
+public class CXFProvider {
     @Produces
     public ServletDescriptor cxfServlet(RestServerConfiguration restServerConfiguration) {
         String servletMapping = restServerConfiguration.getRestServletMapping();

@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.test.support.HammockArchive;
 
+import javax.inject.Inject;
 import java.net.URI;
 
 import static io.restassured.RestAssured.get;
@@ -37,8 +38,11 @@ import static org.hamcrest.CoreMatchers.is;
 public class BaseURITest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().classes(RestController.class, RestApp.class).jar();
+        return new HammockArchive().classes(RestController.class, RestApp.class, LoadCustomClient.class).jar();
     }
+
+    @Inject
+    private LoadCustomClient loadCustomClient;
 
     @ArquillianResource
     private URI uri;
@@ -49,4 +53,8 @@ public class BaseURITest {
                 .body(is("Hello, World!"));
     }
 
+    @Test
+    public void shouldLoadAndDestroyClient() {
+        loadCustomClient.verifyLoadCustomClient();
+    }
 }

@@ -19,14 +19,26 @@
 package ws.ament.hammock.brave;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.client.ClientBuilder;
 
 @Path("/simple")
 @RequestScoped
 public class SimpleResource {
+    @Inject
+    private BraveCDIFeature braveCDIFeature;
     @GET
     public String sayHello() {
+        ClientBuilder.newClient()
+                .register(braveCDIFeature)
+                .target("http://localhost:8080/simple/second").request().get();
         return "hello";
+    }
+    @GET
+    @Path("/second")
+    public String saySecond() {
+        return "second";
     }
 }

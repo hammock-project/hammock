@@ -19,20 +19,27 @@
 package ws.ament.hammock.brave;
 
 import com.github.kristofa.brave.jaxrs2.BraveTracingFeature;
+import ws.ament.hammock.annotations.Configuring;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.ext.Provider;
 
 @ApplicationScoped
 @Provider
-public class SimpleExtension implements Feature {
+public class BraveCDIFeature implements Feature {
     @Inject
     private BraveTracingFeature braveTracingFeature;
     @Override
     public boolean configure(FeatureContext featureContext) {
         return braveTracingFeature.configure(featureContext);
+    }
+
+    public void configureClient(@Observes @Configuring Client client) {
+        client.register(this);
     }
 }
