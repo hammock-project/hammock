@@ -36,7 +36,6 @@ import javax.inject.Inject;
 
 import java.util.function.Function;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -58,7 +57,7 @@ public class BraveIntegrationTest {
     @Test
     public void shouldCreateSpan() {
         String path = hammockRuntime.getMachineURL() + "/simple";
-        RestAssured.get(path);
+        RestAssured.get(path).then().assertThat().statusCode(200);
         assertThat(spanReporter.getSpans()).hasSize(3);
         Long traceId = spanReporter.getSpans().get(0).traceId;
         assertThat(spanReporter.getSpans()).extracting((Function<Span, Long>) span -> span.traceId).containsExactly(new Tuple(traceId), new Tuple(traceId), new Tuple(traceId));

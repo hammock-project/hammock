@@ -22,7 +22,7 @@ import com.github.kristofa.brave.Brave;
 import com.github.kristofa.brave.servlet.BraveServletFilter;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import javax.enterprise.inject.spi.CDI;
 import javax.servlet.DispatcherType;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -32,10 +32,9 @@ import java.util.EnumSet;
 @WebListener
 @ApplicationScoped
 public class BraveServletContextListener implements ServletContextListener {
-    @Inject
-    private Brave brave;
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        Brave brave = CDI.current().select(Brave.class).get();
         servletContextEvent
                 .getServletContext()
                     .addFilter("BraveServletFilter", BraveServletFilter.create(brave))
