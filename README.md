@@ -20,7 +20,7 @@ First, add some dependencies to your project.  Easiest way to start is with a Mi
 
 Containers bring in transitive dependencies to bring up your runtime.
 
-#### Using Undertow, Weld, Apache Johnzon, RestEasy
+#### Using Undertow, Weld, Apache Johnzon, CXF
 
 ```xml
 <dependency>
