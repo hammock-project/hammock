@@ -19,18 +19,17 @@
 package ws.ament.hammock.web.spi;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ws.ament.hammock.HammockRuntime;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 public class WebServerConfiguration {
-    private static final Logger LOGGER = Logger.getLogger(WebServerConfiguration.class.getName());
+    private final Logger LOGGER = LogManager.getLogger(HammockRuntime.class.getName());
 
     @Inject
     @ConfigProperty(name="webserver.port",defaultValue = "8080")
@@ -72,32 +71,12 @@ public class WebServerConfiguration {
     @ConfigProperty(name="file.dir",defaultValue = "/tmp")
     private String fileDir;
 
-    @PostConstruct
-    public void logPort() {
-        LOGGER.info("Starting webserver on http://" + getDisplayAddress() + ":" + port + (securedPort != 0 ? " https://" +getDisplayAddress()  + ":" + securedPort + " " :""));
-    }
-
-    private String getDisplayAddress() {
-        if(address.equals("0.0.0.0")) {
-            try {
-                return InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException e) {
-                LOGGER.log(Level.WARNING,"Unable to read hostname",e);
-            }
-        }
-        return address;
-    }
-
     public int getPort() {
         return port;
     }
     
     public String getAddress() {
         return address;
-    }
-    
-    public boolean isSecuredConfigured(){
-    	return securedPort != 0;
     }
     
     public int getSecuredPort(){

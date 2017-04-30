@@ -26,6 +26,7 @@ import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
+import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
@@ -45,10 +46,10 @@ import static java.util.Arrays.stream;
 @ApplicationScoped
 public class TomcatWebServer extends AbstractWebServer{
     @Inject
-    private BeanManager beanManager;
+    private WebServerConfiguration webServerConfiguration;
 
     @Inject
-    private WebServerConfiguration webServerConfiguration;
+    private HammockRuntime hammockRuntime;
 
     private Tomcat tomcat;
 
@@ -58,7 +59,7 @@ public class TomcatWebServer extends AbstractWebServer{
         tomcat.setPort(webServerConfiguration.getPort());
         //init http connector
         tomcat.getConnector();
-        if (webServerConfiguration.isSecuredConfigured()){
+        if (hammockRuntime.isSecuredConfigured()){
         	Connector connector = new Connector();
         	connector.setScheme("https");
             connector.setPort(webServerConfiguration.getSecuredPort());

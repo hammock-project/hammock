@@ -27,6 +27,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
+import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
@@ -43,6 +44,9 @@ public class JettyWebServer extends AbstractWebServer {
 
     @Inject
     private WebServerConfiguration webServerConfiguration;
+
+    @Inject
+    private HammockRuntime hammockRuntime;
 
     @Override
     public void start() {
@@ -79,7 +83,7 @@ public class JettyWebServer extends AbstractWebServer {
     		ServerConnector connector = new ServerConnector(server);
     		connector.setPort(webServerConfiguration.getPort());
     		
-    		if (webServerConfiguration.isSecuredConfigured()){
+    		if (hammockRuntime.isSecuredConfigured()){
 	    		HttpConfiguration https = new HttpConfiguration();
 	    		https.addCustomizer(new SecureRequestCustomizer());
 	    		SslContextFactory sslContextFactory = new SslContextFactory();

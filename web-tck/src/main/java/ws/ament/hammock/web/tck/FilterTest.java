@@ -27,6 +27,7 @@ import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
@@ -41,7 +42,7 @@ public abstract class FilterTest {
     public static JavaArchive createArchive(Class<?>...classes) {
         SSLBypass.disableSSLChecks();
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(DefaultFilter.class, MessageProvider.class, WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
+                .addClasses(DefaultFilter.class, HammockRuntime.class, MessageProvider.class, WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
                 .addClasses(classes)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }

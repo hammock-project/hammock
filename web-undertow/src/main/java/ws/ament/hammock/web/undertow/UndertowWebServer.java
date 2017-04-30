@@ -27,6 +27,7 @@ import io.undertow.server.handlers.resource.ClassPathResourceManager;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.*;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
@@ -60,6 +61,8 @@ public class UndertowWebServer extends AbstractWebServer {
     private UndertowWebSocketExtension extension;
     @Inject
     private WebServerConfiguration webServerConfiguration;
+    @Inject
+    private HammockRuntime hammockRuntime;
     private Set<ServletInfo> servlets = new HashSet<>();
     private Undertow undertow;
 
@@ -113,7 +116,7 @@ public class UndertowWebServer extends AbstractWebServer {
             Builder undertowBuilder = Undertow.builder()
                     .addHttpListener(webServerConfiguration.getPort(), webServerConfiguration.getAddress())
                     .setHandler(path);
-            if (webServerConfiguration.isSecuredConfigured()){
+            if (hammockRuntime.isSecuredConfigured()){
             	KeyManager[] keyManagers = loadKeyManager();
             	TrustManager[] trustManagers = loadTrustManager();
             	SSLContext sslContext = SSLContext.getInstance("TLS");
