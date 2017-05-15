@@ -46,7 +46,7 @@
     </scm>
     <properties>
         <weld.version>2.4.3.Final</weld.version>
-        <weld3.version>3.0.0.CR2</weld3.version>
+        <weld3.version>3.0.0.Final</weld3.version>
         <resteasy.version>3.1.2.Final</resteasy.version>
         <arquillian.version>1.1.13.Final</arquillian.version>
         <undertow.version>1.4.14.Final</undertow.version>
