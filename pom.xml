@@ -60,7 +60,7 @@
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <tomcat.version>9.0.0.M21</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
-        <johnzon.version>1.1.0</johnzon.version>
+        <johnzon.version>1.1.1</johnzon.version>
         <metrics.version>3.2.2</metrics.version>
         <metrics.cdi.verison>1.3.6</metrics.cdi.verison>
         <geronimo-json_1.0_spec.version>1.0-alpha-1</geronimo-json_1.0_spec.version>
