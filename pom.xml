@@ -92,6 +92,7 @@
         <zipkin-brave.version>4.4.0</zipkin-brave.version>
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
+        <nimbus-jose-jwt.version>4.23</nimbus-jose-jwt.version>
     </properties>
     <modules>
         <module>core</module>
@@ -124,6 +125,7 @@
         <module>jpa-eclipselink</module>
         <module>messaging-artemis</module>
         <module>messaging-rabbitmq</module>
+        <module>security-jose</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -547,6 +549,11 @@
                 <groupId>io.zipkin.brave</groupId>
                 <artifactId>brave-web-servlet-filter</artifactId>
                 <version>${zipkin-brave.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
