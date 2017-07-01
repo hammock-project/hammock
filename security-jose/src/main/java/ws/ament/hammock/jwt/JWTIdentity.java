@@ -23,6 +23,10 @@ import ws.ament.hammock.security.api.Identity;
 public class JWTIdentity implements Identity{
     private final JWTPrincipal principal;
 
+    JWTIdentity() {
+        this(null);
+    }
+
     public JWTIdentity(JWTPrincipal principal) {
         this.principal = principal;
     }
