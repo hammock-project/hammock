@@ -20,6 +20,9 @@ package ws.ament.hammock.jwt;
 
 import ws.ament.hammock.security.api.Identity;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class JWTIdentity implements Identity{
     private final JWTPrincipal principal;
 
