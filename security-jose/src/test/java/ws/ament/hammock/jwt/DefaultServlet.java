@@ -18,8 +18,10 @@
 
 package ws.ament.hammock.jwt;
 
+import ws.ament.hammock.security.api.NotLoggedInException;
+
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,8 +32,16 @@ import java.io.IOException;
 @Dependent
 @WebServlet(urlPatterns = {"/*"}, name = "DefaultServlet")
 public class DefaultServlet extends HttpServlet{
+    @Inject
+    private RequiredLoggedIn requiredLoggedIn;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println(req.getUserPrincipal().getName());
+        try {
+            requiredLoggedIn.shouldRequireLogin();
+            resp.getWriter().println(req.getUserPrincipal().getName());
+        }
+        catch (NotLoggedInException e) {
+            resp.sendError(401);
+        }
     }
 }

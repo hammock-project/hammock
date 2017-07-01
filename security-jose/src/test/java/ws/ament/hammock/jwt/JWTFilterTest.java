@@ -63,6 +63,12 @@ public class JWTFilterTest {
         assertThat(body).isEqualTo("admin");
     }
 
+    @Test
+    public void shouldReturnNon200WhenNotLoggedIn() throws Exception {
+        given().get("http://localhost:"+webServerConfiguration.getPort())
+                .then().statusCode(401);
+    }
+
     private String createJWT() throws IOException{
         try(InputStream stream = JWTFilterTest.class.getResourceAsStream("/samplejwt.txt")) {
             return IOUtils.toString(stream, Charset.forName("UTF-8"));

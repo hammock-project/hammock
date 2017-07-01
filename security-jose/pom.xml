@@ -58,6 +58,11 @@
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
+            <artifactId>security-spi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ws.ament.hammock</groupId>
             <artifactId>test-arquillian</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

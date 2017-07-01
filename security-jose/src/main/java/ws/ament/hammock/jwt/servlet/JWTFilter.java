@@ -19,7 +19,9 @@
 package ws.ament.hammock.jwt.servlet;
 
 import ws.ament.hammock.jwt.JWTConfiguration;
+import ws.ament.hammock.jwt.JWTIdentity;
 import ws.ament.hammock.jwt.JWTPrincipal;
+import ws.ament.hammock.jwt.bean.JWTIdentityHolder;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
@@ -38,6 +40,9 @@ public class JWTFilter implements Filter {
     private static final String BEARER = "Bearer";
     @Inject
     private JWTConfiguration jwtConfiguration;
+
+    @Inject
+    private JWTIdentityHolder jwtIdentityHolder;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -63,6 +68,7 @@ public class JWTFilter implements Filter {
             if(jwt != null) {
                 Map<String, Object> jwtBody = jwtConfiguration.getJwtProcessor().process(jwt);
                 JWTPrincipal principal = new JWTPrincipal(jwtBody);
+                jwtIdentityHolder.setJwtIdentity(new JWTIdentity(principal));
                 servletRequest = new JWTRequest(principal, httpServletRequest);
             }
         }
