@@ -25,7 +25,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ws.ament.hammock.jwt.servlet.JWTFilter;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
@@ -36,7 +35,6 @@ import java.nio.charset.Charset;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(Arquillian.class)
 @EnableRandomWebServerPort
