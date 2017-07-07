@@ -93,6 +93,7 @@
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
         <nimbus-jose-jwt.version>4.23</nimbus-jose-jwt.version>
+        <keycloak.version>3.2.0.Final</keycloak.version>
     </properties>
     <modules>
         <module>core</module>
@@ -126,6 +127,7 @@
         <module>messaging-artemis</module>
         <module>messaging-rabbitmq</module>
         <module>security-jose</module>
+        <module>security-keycloak</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -554,6 +556,26 @@
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
                 <version>${nimbus-jose-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-core</artifactId>
+                <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-adapter-spi</artifactId>
+                <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-adapter-core</artifactId>
+                <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-authz-client</artifactId>
+                <version>${keycloak.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
