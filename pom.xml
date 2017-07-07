@@ -49,7 +49,7 @@
         <weld3.version>3.0.0.Final</weld3.version>
         <resteasy.version>3.1.3.Final</resteasy.version>
         <arquillian.version>1.1.13.Final</arquillian.version>
-        <undertow.version>1.4.16.Final</undertow.version>
+        <undertow.version>1.4.18.Final</undertow.version>
         <jetty.version>9.4.6.v20170531</jetty.version>
         <arquillian.weld.version>2.0.0.Beta4</arquillian.weld.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -61,13 +61,13 @@
         <tomcat.version>9.0.0.M21</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
         <johnzon.version>1.1.1</johnzon.version>
-        <metrics.version>3.2.2</metrics.version>
+        <metrics.version>3.2.3</metrics.version>
         <metrics.cdi.verison>1.3.6</metrics.cdi.verison>
         <geronimo-json_1.0_spec.version>1.0-alpha-1</geronimo-json_1.0_spec.version>
         <geronimo-jta_1.2_spec.version>1.0-alpha-1</geronimo-jta_1.2_spec.version>
         <cdi-api.version>1.2</cdi-api.version>
         <cdi2.version>2.0</cdi2.version>
-        <cxf.version>3.1.11</cxf.version>
+        <cxf.version>3.1.12</cxf.version>
         <rest-assured.version>3.0.3</rest-assured.version>
         <spark.version>2.6.0</spark.version>
         <jboss-logging.version>3.3.1.Final</jboss-logging.version>
@@ -75,9 +75,9 @@
         <hibernate.version>5.2.10.Final</hibernate.version>
         <openjpa.version>2.4.2</openjpa.version>
         <jersey.version>2.25.1</jersey.version>
-        <mockito-core.version>2.8.9</mockito-core.version>
+        <mockito-core.version>2.8.47</mockito-core.version>
         <HikariCP.version>2.6.3</HikariCP.version>
-        <h2.version>1.4.195</h2.version>
+        <h2.version>1.4.196</h2.version>
         <flyway.version>4.2.0</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <eclipselink.version>2.6.4</eclipselink.version>
@@ -92,7 +92,7 @@
         <zipkin-brave.version>4.4.0</zipkin-brave.version>
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
-        <nimbus-jose-jwt.version>4.23</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>4.39.1</nimbus-jose-jwt.version>
         <keycloak.version>3.2.0.Final</keycloak.version>
     </properties>
     <modules>
