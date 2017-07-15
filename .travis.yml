@@ -26,3 +26,9 @@ matrix:
     script: mvn -q install -PWeld3 -Ptomcat-test
   - jdk: oraclejdk8
     script: mvn -q install -PWeld3 -Pjetty-test
+  - jdk: oraclejdk8
+    script: mvn -q install -POWB2 -Pundertow-test
+  - jdk: oraclejdk8
+    script: mvn -q install -POWB2 -Ptomcat-test
+  - jdk: oraclejdk8
+    script: mvn -q install -POWB2 -Pjetty-test
