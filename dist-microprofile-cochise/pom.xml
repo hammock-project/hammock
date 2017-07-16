@@ -30,7 +30,7 @@
     <dependencies>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
-            <artifactId>bootstrap-owb</artifactId>
+            <artifactId>bootstrap-owb2</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -44,7 +44,6 @@ public class OWBBootstrapper implements Bootstrapper {
     public void stop() {
         seContainer.close();
     }
-    private ContainerLifecycle lifecycle;
 
     private void initThread() {
         Thread t = new Thread(() -> {
