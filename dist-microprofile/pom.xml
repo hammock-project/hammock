@@ -52,7 +52,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-json_1.0_spec</artifactId>
+            <artifactId>geronimo-json_1.1_spec</artifactId>
         </dependency>
     </dependencies>
 
