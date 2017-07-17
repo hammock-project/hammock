@@ -49,12 +49,6 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-container-test-spi</artifactId>
-            <version>${arquillian.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-container-test-impl-base</artifactId>
             <version>${arquillian.version}</version>
             <scope>provided</scope>
