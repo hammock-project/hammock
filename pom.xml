@@ -45,7 +45,6 @@
         <connection>scm:git:https://github.com/hammock-project/hammock.git</connection>
     </scm>
     <properties>
-        <weld.version>2.4.4.Final</weld.version>
         <weld3.version>3.0.0.Final</weld3.version>
         <resteasy.version>3.1.3.Final</resteasy.version>
         <arquillian.version>1.1.13.Final</arquillian.version>
@@ -65,7 +64,6 @@
         <metrics.cdi.verison>1.3.6</metrics.cdi.verison>
         <geronimo-json_1.1_spec.version>1.0</geronimo-json_1.1_spec.version>
         <geronimo-jta_1.2_spec.version>1.0-alpha-1</geronimo-jta_1.2_spec.version>
-        <cdi-api.version>1.2</cdi-api.version>
         <cdi2.version>2.0</cdi2.version>
         <cxf.version>3.1.12</cxf.version>
         <rest-assured.version>3.0.3</rest-assured.version>
@@ -84,7 +82,6 @@
         <activemq.artemis.version>1.5.4</activemq.artemis.version>
         <rabbitmq-amqp-client.version>4.1.1</rabbitmq-amqp-client.version>
         <javax.annotation-api.version>1.3</javax.annotation-api.version>
-        <owb.version>1.7.4</owb.version>
         <openwebbeans2.version>2.0.0</openwebbeans2.version>
         <camel.version>2.19.1</camel.version>
         <log4j.version>2.8.2</log4j.version>
@@ -98,9 +95,7 @@
     </properties>
     <modules>
         <module>core</module>
-        <module>bootstrap-weld</module>
         <module>bootstrap-weld3</module>
-        <module>bootstrap-owb</module>
         <module>bootstrap-owb2</module>
         <module>container-aware</module>
         <module>web-spi</module>
@@ -147,7 +142,7 @@
             <dependency>
                 <groupId>javax.enterprise</groupId>
                 <artifactId>cdi-api</artifactId>
-                <version>${cdi-api.version}</version>
+                <version>${cdi2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jboss.logging</groupId>
@@ -395,23 +390,23 @@
             <dependency>
                 <groupId>org.apache.openwebbeans.arquillian</groupId>
                 <artifactId>owb-arquillian-standalone</artifactId>
-                <version>${owb.version}</version>
+                <version>${openwebbeans2.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.openwebbeans</groupId>
                 <artifactId>openwebbeans-impl</artifactId>
-                <version>${owb.version}</version>
+                <version>${openwebbeans2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.openwebbeans</groupId>
                 <artifactId>openwebbeans-web</artifactId>
-                <version>${owb.version}</version>
+                <version>${openwebbeans2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.openwebbeans</groupId>
                 <artifactId>openwebbeans-resource</artifactId>
-                <version>${owb.version}</version>
+                <version>${openwebbeans2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sparkjava</groupId>

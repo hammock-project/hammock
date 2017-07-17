@@ -9,18 +9,6 @@ cache:
 matrix:
   include:
   - jdk: oraclejdk8
-    script: mvn -q install -PWeld2 -Pundertow-test
-  - jdk: oraclejdk8
-    script: mvn -q install -PWeld2 -Ptomcat-test
-  - jdk: oraclejdk8
-    script: mvn -q install -PWeld2 -Pjetty-test
-  - jdk: oraclejdk8
-    script: mvn -q install -POWB -Pundertow-test
-  - jdk: oraclejdk8
-    script: mvn -q install -POWB -Ptomcat-test
-  - jdk: oraclejdk8
-    script: mvn -q install -POWB -Pjetty-test
-  - jdk: oraclejdk8
     script: mvn -q install -PWeld3 -Pundertow-test
   - jdk: oraclejdk8
     script: mvn -q install -PWeld3 -Ptomcat-test

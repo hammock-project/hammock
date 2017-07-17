@@ -56,22 +56,18 @@
         <dependency>
             <groupId>org.apache.openwebbeans</groupId>
             <artifactId>openwebbeans-impl</artifactId>
-            <version>${openwebbeans2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.openwebbeans</groupId>
             <artifactId>openwebbeans-web</artifactId>
-            <version>${openwebbeans2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.openwebbeans</groupId>
             <artifactId>openwebbeans-resource</artifactId>
-            <version>${openwebbeans2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.openwebbeans</groupId>
             <artifactId>openwebbeans-se</artifactId>
-            <version>${openwebbeans2.version}</version>
         </dependency>
     </dependencies>
 </project>
