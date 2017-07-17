@@ -18,8 +18,26 @@
 
 package ws.ament.hammock.bootstrap.weld;
 
+import org.apache.deltaspike.core.api.config.ConfigProperty;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class SomeBean {
+    @Inject
+    @ConfigProperty(name="key1")
+    private String key1;
+
+    @Inject
+    @ConfigProperty(name="key2")
+    private String key2;
+
+    public String getKey1() {
+        return key1;
+    }
+
+    public String getKey2() {
+        return key2;
+    }
 }

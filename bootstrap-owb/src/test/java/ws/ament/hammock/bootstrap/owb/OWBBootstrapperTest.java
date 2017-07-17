@@ -40,7 +40,10 @@ public class OWBBootstrapperTest {
         OWBBootstrapper bootstrapper = new OWBBootstrapper();
         bootstrapper.start();
         try(Unmanageable<SomeBean> unmanageable = new Unmanageable<>(SomeBean.class)) {
-            assertThat(unmanageable.get()).isNotNull();
+            SomeBean actual = unmanageable.get();
+            assertThat(actual).isNotNull();
+            assertThat(actual.getKey1()).isEqualTo("prop1");
+            assertThat(actual.getKey2()).isEqualTo("prop2");
         }
         bootstrapper.stop();
     }

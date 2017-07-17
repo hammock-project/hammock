@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hammock and its contributors
+ * Copyright 2017 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,21 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.bootstrap.owb;
+package ws.ament.hammock.core.config;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.apache.deltaspike.core.api.config.PropertyFileConfig;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import javax.enterprise.inject.Vetoed;
 
-@ApplicationScoped
-public class SomeBean {
-    @Inject
-    @ConfigProperty(name="key1")
-    private String key1;
-
-    @Inject
-    @ConfigProperty(name="key2")
-    private String key2;
-
-    public String getKey1() {
-        return key1;
+@Vetoed
+public class MetaInfMicroprofilePropertyFileConfig implements PropertyFileConfig {
+    @Override
+    public String getPropertyFileName() {
+        return "META-INF/microprofile.properties";
     }
 
-    public String getKey2() {
-        return key2;
+    @Override
+    public boolean isOptional() {
+        return true;
     }
 }

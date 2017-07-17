@@ -20,6 +20,9 @@ package ws.ament.hammock.core.config;
 
 import org.apache.deltaspike.core.api.config.PropertyFileConfig;
 
+import javax.enterprise.inject.Vetoed;
+
+@Vetoed
 public class HammockPropertyFileConfig implements PropertyFileConfig {
     @Override
     public String getPropertyFileName() {
