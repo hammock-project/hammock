@@ -30,6 +30,8 @@ import org.keycloak.representations.adapters.config.AdapterConfig;
 import ws.ament.hammock.core.config.ConfigLoader;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -68,6 +70,8 @@ public class KeycloakConfiguration implements KeycloakConfigResolver{
         }
     }
 
+    @Produces
+    @RequestScoped
     private AdapterConfig getAdapterConfig() {
         Map<String, String> properties = ConfigLoader.loadAllProperties("keycloak",true);
         try {

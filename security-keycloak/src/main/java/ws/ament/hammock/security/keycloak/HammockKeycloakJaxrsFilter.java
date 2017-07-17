@@ -40,12 +40,14 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.util.Set;
 
 @ApplicationScoped
 @PreMatching
 @Priority(Priorities.AUTHENTICATION)
+@Provider
 public class HammockKeycloakJaxrsFilter implements ContainerRequestFilter {
     private final static Logger log = LogManager.getLogger(HammockKeycloakJaxrsFilter.class);
 
