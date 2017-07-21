@@ -74,7 +74,7 @@ public class DataSourceExtension implements Extension {
                     .get();
             return dataSourceDefinition.getDataSource();
         })).forEach(afterBeanDiscovery::addBean);
-        if(defaultBean == null && defaultDataSource == null) {
+        if (defaultBean == null && defaultDataSource == null) {
             afterBeanDiscovery.addBean(new DefaultDataSourceBean());
         }
     }
@@ -100,22 +100,4 @@ public class DataSourceExtension implements Extension {
             .properties(dataSourceDefinition.properties())
             .url(dataSourceDefinition.url())
             .build();
-
-    private static final class DatabaseProducer {
-        private final String name;
-        private final Producer<ws.ament.hammock.jpa.DataSourceDefinition> producer;
-
-        public DatabaseProducer(String name, Producer<ws.ament.hammock.jpa.DataSourceDefinition> producer) {
-            this.producer = producer;
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Producer<ws.ament.hammock.jpa.DataSourceDefinition> getProducer() {
-            return producer;
-        }
-    }
 }

@@ -27,7 +27,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class HammockArchiveAppender implements ApplicationArchiveProcessor {
 
-    private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"annotated\"/>");
+    private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"2.0\" bean-discovery-mode=\"all\"><trim/></beans>");
 
     @Override
     public void process(Archive<?> archive, TestClass testClass) {

@@ -18,11 +18,13 @@
 
 package ws.ament.hammock.web.tck;
 
+import javax.enterprise.context.Dependent;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
+@Dependent
 public class DefaultListener implements ServletContextListener {
     static boolean INITIALIZED = false;
     @Override
