@@ -18,38 +18,40 @@
 
 package ws.ament.hammock.core.config;
 
-import org.apache.deltaspike.core.impl.config.PropertiesConfigSource;
-import org.apache.deltaspike.core.spi.config.ConfigSource;
-import org.apache.deltaspike.core.spi.config.ConfigSourceProvider;
+import org.apache.geronimo.config.configsource.PropertyFileConfigSource;
+import org.apache.geronimo.config.configsource.PropertyFileConfigSourceProvider;
+import org.eclipse.microprofile.config.spi.ConfigSource;
+import org.eclipse.microprofile.config.spi.ConfigSourceProvider;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public class HammockConfigSourceProvider implements ConfigSourceProvider{
-    @Override
-    public List<ConfigSource> getConfigSources() {
+import static java.util.Arrays.asList;
+
+public class HammockConfigSourceProvider {
+    private static final List<String> defaultPropertyFiles = asList("hammock.properties", "microprofile.properties");
+
+    public List<ConfigSource> getConfigSources(ClassLoader classLoader, String[] args) {
         List<ConfigSource> configSources = new ArrayList<>();
-        ConfigSource cli = CLIPropertySource.parseMainArgs();
+        ConfigSource cli = CLIPropertySource.parseMainArgs(args);
         configSources.add(cli);
-        String propertyValue = cli.getPropertyValue("hammock.external.config");
+        String propertyValue = cli.getValue("hammock.external.config");
         if(propertyValue != null) {
-            try(FileInputStream fis = new FileInputStream(propertyValue)) {
-                Properties props = new Properties();
-                props.load(fis);
-                configSources.add(new PropertiesConfigSource(props) {
-                    @Override
-                    public String getConfigName() {
-                        return propertyValue;
-                    }
-                });
-            }
-            catch (IOException e) {
+            try {
+                URL url = Paths.get(propertyValue).toUri().toURL();
+                configSources.add(new PropertyFileConfigSource(url));
+            } catch (MalformedURLException e) {
                 throw new RuntimeException("Unable to load "+propertyValue,e);
             }
         }
+
+        for(String prop : defaultPropertyFiles) {
+            configSources.addAll(new PropertyFileConfigSourceProvider(prop, true, classLoader).getConfigSources(classLoader));
+        }
+
         return configSources;
     }
 }

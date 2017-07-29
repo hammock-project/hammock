@@ -18,9 +18,9 @@
 
 package ws.ament.hammock;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;

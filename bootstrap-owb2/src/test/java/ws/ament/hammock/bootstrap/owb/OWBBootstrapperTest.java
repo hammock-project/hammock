@@ -18,14 +18,25 @@
 
 package ws.ament.hammock.bootstrap.owb;
 
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import ws.ament.hammock.utils.Unmanageable;
 
 import javax.enterprise.inject.spi.CDI;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ws.ament.hammock.Bootstrap.setupConfig;
 
 public class OWBBootstrapperTest {
+
+    @BeforeClass
+    public static void setup() {
+        Config config = setupConfig(new String[0]);
+        ConfigProviderResolver.instance().registerConfig(config, null);
+    }
+
     @Test
     public void shouldCreateOWBContainer() {
         OWBBootstrapper bootstrapper = new OWBBootstrapper();

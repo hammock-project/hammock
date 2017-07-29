@@ -18,11 +18,13 @@
 
 package ws.ament.hammock.core.config;
 
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
+
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import org.apache.deltaspike.core.api.config.ConfigResolver;
+import java.util.stream.StreamSupport;
 
 public final class ConfigLoader {
 
@@ -31,13 +33,18 @@ public final class ConfigLoader {
    }
 
    public static Map<String, String> loadAllProperties(String prefix, boolean strip) {
-      return ConfigResolver.getAllProperties()
-         .entrySet().stream()
-         .filter(e -> e.getKey().startsWith(prefix))
-         .collect(Collectors.toMap(new PrefixStripper(strip, prefix), Map.Entry::getValue));
+      Config config = ConfigProvider.getConfig();
+
+      Iterable<String> propertyNames = config.getPropertyNames();
+
+      return StreamSupport.stream(propertyNames.spliterator(), false)
+         .filter(e -> e.startsWith(prefix))
+         .collect(Collectors.toMap(
+                 new PrefixStripper(strip, prefix),
+                 s -> config.getValue(s, String.class)));
    }
 
-   private static class PrefixStripper implements Function<Map.Entry<String, String>, String> {
+   private static class PrefixStripper implements Function<String, String> {
       private String toRemove;
       private Function<String, String> delegate;
 
@@ -52,8 +59,8 @@ public final class ConfigLoader {
       }
 
       @Override
-      public String apply(Map.Entry<String, String> s) {
-         return delegate.apply(s.getKey());
+      public String apply(String s) {
+         return delegate.apply(s);
       }
    }
 }

@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.bootstrap.owb;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

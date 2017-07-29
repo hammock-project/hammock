@@ -18,8 +18,6 @@
 
 package ws.ament.hammock.annotations;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
-
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Qualifier;
 import java.lang.annotation.ElementType;
