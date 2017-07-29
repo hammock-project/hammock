@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.test.support;
 
-import org.apache.deltaspike.core.spi.config.ConfigSourceProvider;
+import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
@@ -38,7 +38,7 @@ public class HammockArchiveAppender implements ApplicationArchiveProcessor {
            .addAsManifestResource(BEANS_XML, "beans.xml");
 
         if(annotation != null) {
-            jar.addAsServiceProviderAndClasses(ConfigSourceProvider.class, RandomWebServerPortConfigSourceProvider.class);
+            jar.addAsServiceProviderAndClasses(ConfigSource.class, RandomPortConfigSource.class);
         }
     }
 }

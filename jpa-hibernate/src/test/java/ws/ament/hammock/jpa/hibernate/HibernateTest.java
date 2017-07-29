@@ -18,8 +18,6 @@
 
 package ws.ament.hammock.jpa.hibernate;
 
-import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
-import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -53,8 +51,7 @@ public class HibernateTest {
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(Employee.class, EmployeeService.class, HibernateTest.class, SimpleEmployeeService.class)
-           .addClass(DefaultConfigPropertyProducer.class)
-           .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class, DataSourceExtension.class, JPAExtension.class)
+           .addAsServiceProviderAndClasses(Extension.class, DataSourceExtension.class, JPAExtension.class)
                 .addPackage(EntityManagerProducer.class.getPackage())
                 .addAsManifestResource("META-INF/beans.xml", "beans.xml")
                 .addAsManifestResource("META-INF/load.sql")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hammock and its contributors
+ * Copyright 2017 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,35 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.core.config;
+package ws.ament.hammock;
 
-import org.apache.deltaspike.core.spi.config.ConfigSource;
+import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.junit.Test;
+import ws.ament.hammock.HammockConfigSourceProvider;
 
 import static org.junit.Assert.assertEquals;
 
 public class HammockConfigSourceProviderTest {
+
     @Test
     public void shouldCreateTwoConfigSourcesWhenPropertyConfigured() {
-        System.setProperty("sun.java.command","somejar.jar --hammock.external.config=src/test/resources/testing.properties");
+        Bootstrap.ARGS = new String[]{"--hammock.external.config=src/test/resources/testing.properties"};
         HammockConfigSourceProvider hammockConfigSourceProvider = new HammockConfigSourceProvider();
-        assertEquals(2,hammockConfigSourceProvider.getConfigSources().size());
+        assertEquals(2,hammockConfigSourceProvider.getConfigSources(getClass().getClassLoader()).size());
     }
 
     @Test
     public void shouldOnlyCreateOneConfigSource() {
-        System.setProperty("sun.java.command","--cli=true");
+        Bootstrap.ARGS = new String[]{"--cli=true"};
         HammockConfigSourceProvider hammockConfigSourceProvider = new HammockConfigSourceProvider();
-        assertEquals(1,hammockConfigSourceProvider.getConfigSources().size());
+        assertEquals(1,hammockConfigSourceProvider.getConfigSources(getClass().getClassLoader()).size());
     }
 
     @Test
     public void shouldHaveCorrectPropertiesInFile() {
-        System.setProperty("main.args","--hammock.external.config=src/test/resources/testing.properties");
+        Bootstrap.ARGS = new String[]{"--hammock.external.config=src/test/resources/testing.properties"};
         HammockConfigSourceProvider hammockConfigSourceProvider = new HammockConfigSourceProvider();
-        ConfigSource configSource = hammockConfigSourceProvider.getConfigSources().get(1);
-        assertEquals("1492", configSource.getPropertyValue("something.random"));
+        ConfigSource configSource = hammockConfigSourceProvider.getConfigSources(getClass().getClassLoader()).get(1);
+        assertEquals("1492", configSource.getValue("something.random"));
     }
 }

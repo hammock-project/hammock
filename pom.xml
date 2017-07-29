@@ -60,12 +60,11 @@
         <weld3.version>3.0.0.Final</weld3.version>
         <resteasy.version>3.1.4.Final</resteasy.version>
         <arquillian.version>1.1.13.Final</arquillian.version>
-        <undertow.version>1.4.18.Final</undertow.version>
+        <undertow.version>1.4.17.Final</undertow.version>
         <jetty.version>9.4.6.v20170531</jetty.version>
         <arquillian.weld.version>2.0.0.Beta5</arquillian.weld.version>
         <slf4j.version>1.7.25</slf4j.version>
         <junit.version>4.12</junit.version>
-        <deltaspike.version>1.8.0</deltaspike.version>
         <assertj.version>3.8.0</assertj.version>
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
@@ -104,6 +103,7 @@
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
         <nimbus-jose-jwt.version>4.39.1</nimbus-jose-jwt.version>
         <keycloak.version>3.2.1.Final</keycloak.version>
+        <geronimo-config.version>1.1-SNAPSHOT</geronimo-config.version>
     </properties>
     <modules>
         <module>core</module>
@@ -275,14 +275,9 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.apache.deltaspike.core</groupId>
-                <artifactId>deltaspike-core-api</artifactId>
-                <version>${deltaspike.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.deltaspike.core</groupId>
-                <artifactId>deltaspike-core-impl</artifactId>
-                <version>${deltaspike.version}</version>
+                <groupId>org.apache.geronimo.config</groupId>
+                <artifactId>geronimo-config-impl</artifactId>
+                <version>${geronimo-config.version}</version>
             </dependency>
             <dependency>
                 <groupId>ws.ament.hammock</groupId>

@@ -16,21 +16,28 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.core.config;
+package org.hammock.rest.tck;
 
-import org.apache.deltaspike.core.api.config.PropertyFileConfig;
+import org.apache.geronimo.config.configsource.BaseConfigSource;
 
-import javax.enterprise.inject.Vetoed;
+import java.util.Collections;
+import java.util.Map;
 
-@Vetoed
-public class MetaInfMicroprofilePropertyFileConfig implements PropertyFileConfig {
+public class URIConfigSource extends BaseConfigSource {
+    private final Map<String, String> properties = Collections.singletonMap("rest.uri.path", "/custom-uri");
+
     @Override
-    public String getPropertyFileName() {
-        return "META-INF/microprofile.properties";
+    public Map<String, String> getProperties() {
+        return properties;
     }
 
     @Override
-    public boolean isOptional() {
-        return true;
+    public String getValue(String s) {
+        return properties.get(s);
+    }
+
+    @Override
+    public String getName() {
+        return "uri";
     }
 }

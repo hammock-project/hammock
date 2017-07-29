@@ -16,19 +16,25 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.extension;
+package ws.ament.hammock.jwt;
 
-import ws.ament.hammock.web.spi.StartWebServer;
+import org.eclipse.microprofile.config.spi.Converter;
+import ws.ament.hammock.jwt.processor.JWTProcessor;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.enterprise.inject.spi.BeanManager;
+import javax.annotation.Priority;
 import javax.enterprise.inject.spi.CDI;
-import javax.enterprise.inject.spi.Extension;
 
-public class StartWebServerExtension implements Extension{
-    public void startWebTier(@Observes AfterDeploymentValidation adv, BeanManager beanManager) {
-        StartWebServer startWebServer = CDI.current().select(StartWebServer.class).get();
-        startWebServer.start();
+@Priority(1)
+public class JWTProcessorConverter implements Converter<JWTProcessor> {
+    public static final Converter<JWTProcessor> INSTANCE = new JWTProcessorConverter();
+
+    @Override
+    public JWTProcessor convert(String s) {
+        try {
+            Class<JWTProcessor> aClass = (Class<JWTProcessor>)Class.forName(s);
+            return CDI.current().select(aClass).get();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("No class "+s,e);
+        }
     }
 }

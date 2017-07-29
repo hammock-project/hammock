@@ -26,6 +26,7 @@ import javax.enterprise.inject.spi.CDI;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWBBootstrapperTest {
+
     @Test
     public void shouldCreateOWBContainer() {
         OWBBootstrapper bootstrapper = new OWBBootstrapper();

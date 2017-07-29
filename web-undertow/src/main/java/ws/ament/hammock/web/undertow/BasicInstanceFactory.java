@@ -16,21 +16,24 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.core.config;
+package ws.ament.hammock.web.undertow;
 
-import org.apache.deltaspike.core.api.config.PropertyFileConfig;
+import io.undertow.servlet.api.InstanceHandle;
 
-import javax.enterprise.inject.Vetoed;
+public class BasicInstanceFactory<T> implements InstanceHandle<T> {
+    private final T instance;
 
-@Vetoed
-public class MicroprofilePropertyFileConfig implements PropertyFileConfig {
-    @Override
-    public String getPropertyFileName() {
-        return "microprofile.properties";
+    public BasicInstanceFactory(T instance) {
+        this.instance = instance;
     }
 
     @Override
-    public boolean isOptional() {
-        return true;
+    public T getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void release() {
+
     }
 }

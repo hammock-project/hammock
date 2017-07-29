@@ -30,7 +30,6 @@ import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
-import org.apache.deltaspike.core.util.StringUtils;
 import ws.ament.hammock.jwt.JWTConfiguration;
 import ws.ament.hammock.jwt.JWTException;
 
@@ -72,7 +71,8 @@ public class DefaultValidatingJWTProcessor implements JWTProcessor{
     }
 
     private JWKSource<SecurityContext> lookupJWKSource() throws IOException, ParseException {
-        if(StringUtils.isNotEmpty(jwtConfiguration.getJwkSourceUrl())) {
+        if(jwtConfiguration.getJwkSourceUrl() != null &&
+                !"".equals(jwtConfiguration.getJwkSourceUrl())) {
             return new RemoteJWKSet<>(new URL(jwtConfiguration.getJwkSourceUrl()));
         }
         else {

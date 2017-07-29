@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.core.config;
 
-import org.apache.deltaspike.core.spi.config.ConfigSource;
+import org.eclipse.microprofile.config.spi.ConfigSource;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -27,11 +27,11 @@ public class CLIPropertySourceTest {
 
     @Test
     public void shouldReadPropertiesFromDefinedLocation() {
-        System.setProperty("sun.java.command","somejar.jar --key=value -s j");
-        ConfigSource cliPropertySource = CLIPropertySource.parseMainArgs();
-        String key = cliPropertySource.getPropertyValue("key");
+        String[] args = {"--key=value","-s","j"};
+        ConfigSource cliPropertySource = CLIPropertySource.parseMainArgs(args);
+        String key = cliPropertySource.getValue("key");
         assertEquals(key, "value");
-        String s = cliPropertySource.getPropertyValue("s");
+        String s = cliPropertySource.getValue("s");
         assertEquals("j", s);
     }
 }

@@ -73,7 +73,7 @@ public class DataSourceDelegateBean implements Bean<DataSource> {
 
     @Override
     public Set<Annotation> getQualifiers() {
-        return singleton(database(getName()));
+        return singleton(database(name));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class DataSourceDelegateBean implements Bean<DataSource> {
 
     @Override
     public String getName() {
-        return name;
+        return null;
     }
 
     @Override

@@ -18,18 +18,30 @@
 
 package ws.ament.hammock.web.jetty;
 
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.eclipse.jetty.util.Decorator;
+import ws.ament.hammock.utils.Unmanageable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HammockDecorator implements Decorator {
-
+    private final Map<Object,Unmanageable> unmanageableMap = new HashMap<>();
     @Override
     public <T> T decorate(T obj) {
-        return BeanProvider.injectFields(obj);
+        try {
+            Unmanageable<T> unmanageable = new Unmanageable<T>((Class<T>) obj.getClass());
+            return unmanageable.get();
+        }
+        catch (Exception e) {
+            return obj;
+        }
     }
 
     @Override
     public void destroy(Object o) {
-
+        Unmanageable unmanageable = unmanageableMap.remove(o);
+        if(unmanageable != null) {
+            unmanageable.close();
+        }
     }
 }

@@ -31,13 +31,18 @@ import java.util.Map;
 public class HammockInstanceManager implements InstanceManager {
     private final BeanManager beanManager = CDI.current().getBeanManager();
     private final Map<Object, Unmanaged.UnmanagedInstance> instanceMap = new HashMap<>();
+
     @Override
     public Object newInstance(Class<?> clazz) throws IllegalAccessException, InvocationTargetException, NamingException, InstantiationException {
-        Unmanaged.UnmanagedInstance<?> instance = new Unmanaged<>(beanManager, clazz).newInstance();
-        instance.produce().inject().postConstruct();
-        Object o = instance.get();
-        instanceMap.put(o, instance);
-        return o;
+        try {
+            Unmanaged.UnmanagedInstance<?> instance = new Unmanaged<>(beanManager, clazz).newInstance();
+            instance.produce().inject().postConstruct();
+            Object o = instance.get();
+            instanceMap.put(o, instance);
+            return o;
+        } catch (Exception e) {
+            return clazz.newInstance();
+        }
     }
 
     @Override
@@ -57,7 +62,7 @@ public class HammockInstanceManager implements InstanceManager {
     @Override
     public void destroyInstance(Object o) throws IllegalAccessException, InvocationTargetException {
         Unmanaged.UnmanagedInstance remove = instanceMap.remove(o);
-        if(remove != null) {
+        if (remove != null) {
             remove.preDestroy();
             remove.dispose();
         }

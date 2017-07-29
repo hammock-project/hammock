@@ -18,19 +18,19 @@
 
 package ws.ament.hammock.jpa;
 
-import org.apache.deltaspike.core.api.config.ConfigResolver;
 
+import static org.eclipse.microprofile.config.ConfigProvider.getConfig;
 import static ws.ament.hammock.jpa.EntityManagerFactoryProvider.DEFAULT_EMF;
 
 public class DefaultDataSourceBean extends DataSourceDelegateBean{
 
     DefaultDataSourceBean() {
-        super(ConfigResolver.getPropertyValue("hammock.jpa.__default.datasource", DEFAULT_EMF),
+        super(getConfig().getOptionalValue("hammock.jpa.__default.datasource", String.class).orElse(DEFAULT_EMF),
                 () -> new DataSourceDefinitionBuilder()
-                .url(ConfigResolver.getPropertyValue("hammock.datasource.__default.url"))
-                .user(ConfigResolver.getPropertyValue("hammock.datasource.__default.user"))
-                .password(ConfigResolver.getPropertyValue("hammock.datasource.__default.password"))
-                .name(ConfigResolver.getPropertyValue("hammock.jpa.__default.datasource", DEFAULT_EMF))
+                .url(getConfig().getValue("hammock.datasource.__default.url", String.class))
+                .user(getConfig().getOptionalValue("hammock.datasource.__default.user", String.class).orElse(null))
+                .password(getConfig().getOptionalValue("hammock.datasource.__default.password", String.class).orElse(null))
+                .name(getConfig().getOptionalValue("hammock.jpa.__default.datasource", String.class).orElse(DEFAULT_EMF))
                 .build()
                 .getDataSource());
     }

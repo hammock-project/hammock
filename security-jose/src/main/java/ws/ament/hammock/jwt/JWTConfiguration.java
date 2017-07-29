@@ -19,12 +19,10 @@
 package ws.ament.hammock.jwt;
 
 import com.nimbusds.jose.JWSAlgorithm;
-import org.apache.deltaspike.core.api.config.ConfigProperty;
-import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.jwt.processor.JWTProcessor;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -71,7 +69,7 @@ public class JWTConfiguration {
     }
 
     public JWTProcessor getJwtProcessor() {
-        return new JWTProcessorConverter().convert(jwtProcessor);
+        return JWTProcessorConverter.INSTANCE.convert(jwtProcessor);
     }
 
     public JWSAlgorithm getAlgorithm() {
@@ -84,18 +82,5 @@ public class JWTConfiguration {
 
     public String getJwkSourceFile() {
         return jwkSourceFile.equals(UNSET_VALUE) ? "" : jwkSourceFile;
-    }
-
-    private static class JWTProcessorConverter implements ConfigResolver.Converter<JWTProcessor> {
-
-        @Override
-        public JWTProcessor convert(String s) {
-            try {
-                Class<JWTProcessor> aClass = (Class<JWTProcessor>)Class.forName(s);
-                return CDI.current().select(aClass).get();
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("No class "+s,e);
-            }
-        }
     }
 }

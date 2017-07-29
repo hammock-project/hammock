@@ -18,14 +18,14 @@
 
 package ws.ament.hammock.web.cors;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ws.ament.hammock.web.base.BaseAlwaysPostRequestFilter;
 
-@ApplicationScoped
+@Dependent
 public class CORSFilter extends BaseAlwaysPostRequestFilter {
 
    @Inject

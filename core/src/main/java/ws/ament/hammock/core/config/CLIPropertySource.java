@@ -18,8 +18,8 @@
 
 package ws.ament.hammock.core.config;
 
-import org.apache.deltaspike.core.impl.config.MapConfigSource;
-import org.apache.deltaspike.core.spi.config.ConfigSource;
+import org.apache.geronimo.config.configsource.BaseConfigSource;
+import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,13 +29,15 @@ import java.util.Map;
  * PropertySource that allows to add the programs main arguments as configuration entries. Unix syntax using '--' and
  * '-' params is supported.
  */
-public class CLIPropertySource extends MapConfigSource {
+public class CLIPropertySource extends BaseConfigSource {
+
+    private final Map<String, String> cli;
 
     /**
      * Creates a new instance.
      */
     private CLIPropertySource(Map<String, String> cliProps) {
-        super(cliProps);
+        this.cli = cliProps;
     }
 
     /**
@@ -44,12 +46,7 @@ public class CLIPropertySource extends MapConfigSource {
      *
      * @return the parsed main arguments as key/value pairs.
      */
-    public static ConfigSource parseMainArgs() {
-        String argsProp = System.getProperty("sun.java.command");
-        String[] args = null;
-        if (argsProp != null) {
-            args = argsProp.split("\\s");
-        }
+    public static ConfigSource parseMainArgs(String...args) {
         Map<String, String> result;
         if (args == null) {
             result = Collections.emptyMap();
@@ -84,7 +81,17 @@ public class CLIPropertySource extends MapConfigSource {
     }
 
     @Override
-    public String getConfigName() {
+    public Map<String, String> getProperties() {
+        return Collections.unmodifiableMap(cli);
+    }
+
+    @Override
+    public String getValue(String s) {
+        return cli.get(s);
+    }
+
+    @Override
+    public String getName() {
         return "cli";
     }
 }

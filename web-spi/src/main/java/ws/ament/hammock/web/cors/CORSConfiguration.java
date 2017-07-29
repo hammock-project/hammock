@@ -24,8 +24,10 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.annotation.WebInitParam;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.web.api.FilterDescriptor;
+
+import java.util.Optional;
 
 import static ws.ament.hammock.web.base.Constants.DISPATCHER_TYPES;
 
@@ -34,23 +36,23 @@ public class CORSConfiguration {
 
 
    @Inject
-   @ConfigProperty(name = "cors.enabled")
+   @ConfigProperty(name = "cors.enabled",defaultValue = "false")
    private boolean enabled;
    @Inject
    @ConfigProperty(name = "cors.origin")
-   private String origin;
+   private Optional<String> origin;
    @Inject
    @ConfigProperty(name = "cors.headers")
-   private String headers;
+   private Optional<String> headers;
    @Inject
    @ConfigProperty(name = "cors.credentials")
-   private String credentials;
+   private Optional<String> credentials;
    @Inject
    @ConfigProperty(name = "cors.methods")
-   private String methods;
+   private Optional<String> methods;
    @Inject
    @ConfigProperty(name = "cors.maxAge")
-   private String maxAge;
+   private Optional<String> maxAge;
 
    @Produces
    @Dependent
@@ -63,22 +65,22 @@ public class CORSConfiguration {
    }
 
    public String getOrigin() {
-      return origin;
+      return origin.orElse(null);
    }
 
    public String getHeaders() {
-      return headers;
+      return headers.orElse(null);
    }
 
    public String getCredentials() {
-      return credentials;
+      return credentials.orElse(null);
    }
 
    public String getMethods() {
-      return methods;
+      return methods.orElse(null);
    }
 
    public String getMaxAge() {
-      return maxAge;
+      return maxAge.orElse(null);
    }
 }

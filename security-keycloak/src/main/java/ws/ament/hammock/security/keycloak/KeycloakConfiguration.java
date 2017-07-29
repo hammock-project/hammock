@@ -18,10 +18,8 @@
 
 package ws.ament.hammock.security.keycloak;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.deltaspike.core.api.config.ConfigProperty;
-import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.KeycloakDeployment;
 import org.keycloak.adapters.KeycloakDeploymentBuilder;

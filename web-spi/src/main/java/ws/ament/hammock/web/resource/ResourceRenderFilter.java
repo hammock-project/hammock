@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.web.resource;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ import java.io.InputStream;
 
 import ws.ament.hammock.web.base.BaseInsteadOfRequestFilter;
 
-@RequestScoped
+@Dependent
 public class ResourceRenderFilter extends BaseInsteadOfRequestFilter {
 
    @Inject
