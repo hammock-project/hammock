@@ -21,8 +21,6 @@ package ws.ament.hammock.rabbitmq;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MetricsCollector;
 import com.rabbitmq.client.impl.StandardMetricsCollector;
-import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
-import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -43,9 +41,9 @@ public class RabbitMQConfigurationTest {
     @Deployment
     public static JavaArchive create() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(RabbitMQConfiguration.class, ConnectionFactoryProducer.class, DefaultConfigPropertyProducer.class)
+                .addClasses(RabbitMQConfiguration.class, ConnectionFactoryProducer.class)
                 .addPackage("io.astefanutti.metrics.cdi")
-                .addAsServiceProviderAndClasses(Extension.class, ConfigurationExtension.class)
+                .addAsServiceProviderAndClasses(Extension.class)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
 

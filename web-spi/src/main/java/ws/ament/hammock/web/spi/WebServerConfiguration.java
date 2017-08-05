@@ -25,6 +25,7 @@ import ws.ament.hammock.HammockRuntime;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @ApplicationScoped
 public class WebServerConfiguration {
@@ -44,27 +45,27 @@ public class WebServerConfiguration {
     
     @Inject
     @ConfigProperty(name="webserver.keystore.path")
-    private String keystorePath;
+    private Optional<String> keystorePath;
     
     @Inject
     @ConfigProperty(name="webserver.keystore.type")
-    private String keystoreType;
+    private Optional<String> keystoreType;
 
     @Inject
     @ConfigProperty(name="webserver.keystore.password")
-    private String keystorePassword;
+    private Optional<String> keystorePassword;
     
     @Inject
     @ConfigProperty(name="webserver.truststore.path")
-    private String truststorePath;
+    private Optional<String> truststorePath;
     
     @Inject
     @ConfigProperty(name="webserver.truststore.type")
-    private String truststoreType;
+    private Optional<String> truststoreType;
 
     @Inject
     @ConfigProperty(name="webserver.truststore.password")
-    private String truststorePassword;
+    private Optional<String> truststorePassword;
 
     @Inject
     @ConfigProperty(name="file.dir",defaultValue = "/tmp")
@@ -87,26 +88,26 @@ public class WebServerConfiguration {
     }
 
 	public String getKeystorePath() {
-		return keystorePath;
+		return keystorePath.orElse(null);
 	}
 
 	public String getKeystoreType() {
-		return keystoreType;
+		return keystoreType.orElse(null);
 	}
 
 	public String getKeystorePassword() {
-		return keystorePassword;
+		return keystorePassword.orElse(null);
 	}
 
 	public String getTruststorePath() {
-		return truststorePath;
+		return truststorePath.orElse(null);
 	}
 
 	public String getTruststoreType() {
-		return truststoreType;
+		return truststoreType.orElse(null);
 	}
 
 	public String getTruststorePassword() {
-		return truststorePassword;
+		return truststorePassword.orElse(null);
 	}
 }

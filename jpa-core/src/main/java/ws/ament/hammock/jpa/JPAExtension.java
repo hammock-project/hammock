@@ -18,8 +18,7 @@
 
 package ws.ament.hammock.jpa;
 
-import org.apache.deltaspike.core.api.config.ConfigResolver;
-import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
@@ -62,7 +61,7 @@ public class JPAExtension implements Extension {
     }
     public void addEntityManagerBeans(@Observes AfterBeanDiscovery afterBeanDiscovery) {
         persistenceUnits.stream().map(EntityManagerBean::new).forEach(afterBeanDiscovery::addBean);
-        final String defaultDataSourceName = ConfigResolver.getPropertyValue("hammock.jpa.__default.datasource", DEFAULT_EMF);
+        final String defaultDataSourceName = ConfigProvider.getConfig().getOptionalValue("hammock.jpa.__default.datasource", String.class).orElse(DEFAULT_EMF);
         if(!persistenceUnits.contains(defaultDataSourceName)) {
             afterBeanDiscovery.addBean(new DefaultPersistenceUnitBean(this,defaultDataSourceName));
             afterBeanDiscovery.addBean(new EntityManagerBean(defaultDataSourceName));
@@ -79,6 +78,8 @@ public class JPAExtension implements Extension {
     }
 
     PersistenceUnitInfo getPersistenceUnitInfo(String name) {
-        return persistenceUnitInfos.computeIfAbsent(name, s -> BeanProvider.getContextualReference(PersistenceUnitInfo.class, database(s)));
+        return persistenceUnitInfos.computeIfAbsent(name, s -> CDI.current().select(PersistenceUnitInfo.class, database(s)).get());
     }
+
+
 }

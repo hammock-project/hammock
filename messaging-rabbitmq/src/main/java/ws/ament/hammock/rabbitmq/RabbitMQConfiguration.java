@@ -32,6 +32,7 @@ import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -54,8 +55,8 @@ public class RabbitMQConfiguration {
     @ConfigProperty(name = "rabbitmq.port", defaultValue = "-1")
     private int port;
     @Inject
-    @ConfigProperty(name="rabbitmq.uri", defaultValue = "")
-    private String uri;
+    @ConfigProperty(name="rabbitmq.uri")
+    private Optional<String> uri;
     @Inject
     @ConfigProperty(name = "rabbitmq.requestedChannelMax", defaultValue = "0")
     private int requestedChannelMax;
@@ -210,6 +211,6 @@ public class RabbitMQConfiguration {
     }
 
     public URI getUri() {
-        return URI.create(uri);
+        return URI.create(uri.orElse(null));
     }
 }

@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.flywaydb.core.Flyway;
 import org.jboss.logging.Logger;
 import ws.ament.hammock.core.config.ConfigLoader;
@@ -51,7 +51,8 @@ public class FlywayBean implements Bean<Flyway> {
    }
 
    private void postCreate() {
-      String executions = ConfigResolver.getProjectStageAwarePropertyValue("flyway.execute","migrate");
+      String executions = ConfigProvider.getConfig().getOptionalValue("flyway.execute",String.class)
+              .orElse("migrate");
       String[] methods = executions.split(",");
       for(String method :methods) {
          switch (method.toLowerCase()) {

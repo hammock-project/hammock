@@ -22,8 +22,6 @@ import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import org.apache.deltaspike.core.impl.config.ConfigurationExtension;
-import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -40,10 +38,9 @@ public class DataSourceTest {
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(BeanWithDataSource.class, BuilderBackedBean.class, DataSourceDefinitionBuilder.class)
-                .addClasses(DefaultConfigPropertyProducer.class)
                 .addPackage(DataSourceDelegateBean.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsServiceProvider(Extension.class, DataSourceExtension.class, ConfigurationExtension.class);
+                .addAsServiceProvider(Extension.class, DataSourceExtension.class);
     }
 
     @Inject

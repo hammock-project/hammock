@@ -19,7 +19,7 @@
 package ws.ament.hammock.messaging.artemis;
 
 import org.apache.artemis.client.cdi.configuration.ArtemisClientConfiguration;
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,19 +27,19 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class HammockClientConfiguration implements ArtemisClientConfiguration {
     @Inject
-    @ConfigProperty(name = "hammock.messaging.username")
+    @ConfigProperty(name = "hammock.messaging.username",defaultValue = "")
     private String username;
     @Inject
-    @ConfigProperty(name = "hammock.messaging.passwod")
+    @ConfigProperty(name = "hammock.messaging.password", defaultValue = "")
     private String password;
     @Inject
-    @ConfigProperty(name = "hammock.messaging.url")
+    @ConfigProperty(name = "hammock.messaging.url", defaultValue = "")
     private String url;
     @Inject
-    @ConfigProperty(name = "hammock.messaging.host")
+    @ConfigProperty(name = "hammock.messaging.host", defaultValue = "")
     private String host;
     @Inject
-    @ConfigProperty(name = "hammock.messaging.port")
+    @ConfigProperty(name = "hammock.messaging.port", defaultValue = "")
     private int port;
     @Inject
     @ConfigProperty(name = "hammock.messaging.connectorFactory",

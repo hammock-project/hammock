@@ -48,6 +48,8 @@ public abstract class FilterTest {
 
     @Test
     public void shouldBootWebServerWithOnlyFilter() throws Exception {
+        System.out.println("open http://localhost:8080/");
+//        Thread.sleep(20000);
         try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
             String data = IOUtils.toString(stream).trim();
             assertThat(data).isEqualTo("Hello, world!");

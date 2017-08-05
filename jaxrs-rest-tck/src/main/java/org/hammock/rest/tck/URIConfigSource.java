@@ -16,46 +16,28 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.test.support;
+package org.hammock.rest.tck;
 
-import org.eclipse.microprofile.config.spi.ConfigSource;
+import org.apache.geronimo.config.configsource.BaseConfigSource;
 
+import java.util.Collections;
 import java.util.Map;
-import java.util.Random;
 
-import static java.util.Collections.singletonMap;
-
-public class RandomPortConfigSource implements ConfigSource {
-    private static final String WEBSERVER_PORT = "webserver.port";
-
-    private final String port;
-
-    public RandomPortConfigSource() {
-        Random random = new Random();
-        this.port = Integer.toString(4000 + random.nextInt(500));
-    }
-
-    @Override
-    public int getOrdinal() {
-        return 10000;
-    }
+public class URIConfigSource extends BaseConfigSource {
+    private final Map<String, String> properties = Collections.singletonMap("rest.uri.path", "/custom-uri");
 
     @Override
     public Map<String, String> getProperties() {
-        return singletonMap(WEBSERVER_PORT, port);
+        return properties;
     }
 
     @Override
-    public String getValue(String key) {
-        if (key.equals(WEBSERVER_PORT)) {
-            return port;
-        }
-        return null;
+    public String getValue(String s) {
+        return properties.get(s);
     }
 
     @Override
     public String getName() {
-        return "random-port";
+        return "uri";
     }
-
 }
