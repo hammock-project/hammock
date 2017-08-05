@@ -18,12 +18,11 @@
 
 package ws.ament.hammock.web.spi;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.HammockRuntime;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

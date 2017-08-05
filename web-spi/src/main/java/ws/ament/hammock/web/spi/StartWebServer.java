@@ -18,7 +18,8 @@
 
 package ws.ament.hammock.web.spi;
 
-import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ws.ament.hammock.bootstrap.Bootstrapper;
@@ -143,11 +144,12 @@ public class StartWebServer {
     }
 
     private static String[] mapUrls(String[] urls) {
+        final Config config = ConfigProvider.getConfig();
         List<String> patterns = Arrays.stream(urls)
                 .map(s -> {
                     if(s.startsWith(PREFIX) && s.endsWith(SUFFIX)) {
                         String key = s.replaceFirst(PREFIX_REGEX,"").replace(SUFFIX,"");
-                        return ConfigResolver.getPropertyValue(key, s);
+                        return config.getOptionalValue(key, String.class).orElse(s);
                     }
                     else {
                         return s;

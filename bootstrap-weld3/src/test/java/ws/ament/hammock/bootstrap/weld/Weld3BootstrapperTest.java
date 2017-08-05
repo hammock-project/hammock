@@ -18,9 +18,6 @@
 
 package ws.ament.hammock.bootstrap.weld;
 
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import ws.ament.hammock.bootstrap.weld3.Weld3Bootstrapper;
 import ws.ament.hammock.utils.Unmanageable;
@@ -28,14 +25,8 @@ import ws.ament.hammock.utils.Unmanageable;
 import javax.enterprise.inject.spi.CDI;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ws.ament.hammock.Bootstrap.setupConfig;
 
 public class Weld3BootstrapperTest {
-    @BeforeClass
-    public static void setup() {
-        Config config = setupConfig(new String[0]);
-        ConfigProviderResolver.instance().registerConfig(config, null);
-    }
     @Test
     public void shouldCreateWeldContainer() {
         Weld3Bootstrapper bootstrapper = new Weld3Bootstrapper();

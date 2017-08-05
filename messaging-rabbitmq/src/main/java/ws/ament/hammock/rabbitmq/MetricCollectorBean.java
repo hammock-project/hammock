@@ -19,10 +19,10 @@
 package ws.ament.hammock.rabbitmq;
 
 import com.rabbitmq.client.MetricsCollector;
-import org.apache.deltaspike.core.api.literal.DefaultLiteral;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.inject.spi.InjectionTarget;
@@ -66,7 +66,7 @@ abstract class MetricCollectorBean implements Bean<MetricsCollector> {
 
     @Override
     public Set<Annotation> getQualifiers() {
-        return singleton(new DefaultLiteral());
+        return singleton(Default.Literal.INSTANCE);
     }
 
     @Override

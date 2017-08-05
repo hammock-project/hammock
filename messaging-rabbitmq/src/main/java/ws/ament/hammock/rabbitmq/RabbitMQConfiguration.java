@@ -24,7 +24,7 @@ import com.rabbitmq.client.SaslConfig;
 import com.rabbitmq.client.SocketConfigurator;
 import com.rabbitmq.client.impl.AMQConnection;
 import com.rabbitmq.client.impl.nio.NioParams;
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

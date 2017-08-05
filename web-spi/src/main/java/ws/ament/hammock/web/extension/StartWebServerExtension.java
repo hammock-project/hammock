@@ -18,17 +18,17 @@
 
 package ws.ament.hammock.web.extension;
 
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 import ws.ament.hammock.web.spi.StartWebServer;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.inject.spi.Extension;
 
 public class StartWebServerExtension implements Extension{
     public void startWebTier(@Observes AfterDeploymentValidation adv, BeanManager beanManager) {
-        StartWebServer startWebServer = BeanProvider.getContextualReference(beanManager, StartWebServer.class, false);
+        StartWebServer startWebServer = CDI.current().select(StartWebServer.class).get();
         startWebServer.start();
     }
 }

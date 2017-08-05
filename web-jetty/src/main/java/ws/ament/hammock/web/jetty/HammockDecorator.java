@@ -18,14 +18,15 @@
 
 package ws.ament.hammock.web.jetty;
 
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.eclipse.jetty.util.Decorator;
+import ws.ament.hammock.utils.Unmanageable;
 
 public class HammockDecorator implements Decorator {
 
     @Override
     public <T> T decorate(T obj) {
-        return BeanProvider.injectFields(obj);
+        Unmanageable<T> unmanageable = new Unmanageable<T>((Class<T>) obj.getClass());
+        return unmanageable.get();
     }
 
     @Override

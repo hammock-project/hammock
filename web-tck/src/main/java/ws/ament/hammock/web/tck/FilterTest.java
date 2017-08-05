@@ -19,8 +19,6 @@
 package ws.ament.hammock.web.tck;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
@@ -42,7 +40,7 @@ public abstract class FilterTest {
     public static JavaArchive createArchive(Class<?>...classes) {
         SSLBypass.disableSSLChecks();
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(DefaultFilter.class, HammockRuntime.class, MessageProvider.class, WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
+                .addClasses(DefaultFilter.class, HammockRuntime.class, MessageProvider.class, WebServerConfiguration.class, StartWebServer.class)
                 .addClasses(classes)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }

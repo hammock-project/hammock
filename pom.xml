@@ -55,16 +55,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>geronimo-config-1.1</id>
-            <url>https://repository.apache.org/content/repositories/orgapachegeronimo-1035/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </repositories>
     <properties>
         <weld3.version>3.0.0.Final</weld3.version>

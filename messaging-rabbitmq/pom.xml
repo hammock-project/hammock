@@ -30,6 +30,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>hammock-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
         </dependency>

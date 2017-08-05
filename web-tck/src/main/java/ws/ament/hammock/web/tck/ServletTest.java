@@ -19,15 +19,12 @@
 package ws.ament.hammock.web.tck;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.deltaspike.core.impl.config.DefaultConfigPropertyProducer;
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ws.ament.hammock.Bootstrap;
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.bootstrap.Bootstrapper;
 import ws.ament.hammock.web.spi.StartWebServer;
@@ -46,7 +43,7 @@ public abstract class ServletTest {
         String property = System.getProperty(Bootstrapper.class.getName());
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, MessageProvider.class, HammockRuntime.class,
-                        WebServerConfiguration.class, DefaultConfigPropertyProducer.class, StartWebServer.class)
+                        WebServerConfiguration.class, StartWebServer.class)
                 .addClasses(classes)
                 .addAsServiceProvider(Bootstrapper.class.getName(), property)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");

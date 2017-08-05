@@ -24,7 +24,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.annotation.WebInitParam;
 
-import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.web.api.FilterDescriptor;
 
 import static ws.ament.hammock.web.base.Constants.DISPATCHER_TYPES;
