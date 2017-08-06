@@ -59,7 +59,7 @@ public class DefaultPersistenceUnitBean implements Bean<PersistenceUnitInfo> {
 
     @Override
     public PersistenceUnitInfo create(CreationalContext<PersistenceUnitInfo> creationalContext) {
-        DataSource dataSource = CDI.current().select(DataSource.class, database(defaultDataSourceName)).get();
+        DataSource dataSource = CDI.current().select(DataSource.class).select(database(defaultDataSourceName)).get();
 
         return new PersistenceUnitBuilder()
                 .withClasses(jpaExtension.getEntityClasses())

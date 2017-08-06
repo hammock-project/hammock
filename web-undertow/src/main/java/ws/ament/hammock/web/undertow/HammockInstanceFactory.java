@@ -35,6 +35,15 @@ class HammockInstanceFactory<T> implements InstanceFactory<T> {
 
     @Override
     public InstanceHandle<T> createInstance() {
-        return new HammockInstanceHandle<>(new Unmanaged<>(beanManager, clazz).newInstance());
+        try {
+            return new HammockInstanceHandle<>(new Unmanaged<>(beanManager, clazz).newInstance());
+        }
+        catch (Exception e) {
+            try {
+                return new BasicInstanceFactory<T>(clazz.newInstance());
+            } catch (Exception ex) {
+                throw new RuntimeException("Unable to instantiate "+clazz, ex);
+            }
+        }
     }
 }

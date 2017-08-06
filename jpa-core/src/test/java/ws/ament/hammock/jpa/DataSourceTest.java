@@ -37,7 +37,8 @@ public class DataSourceTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(BeanWithDataSource.class, BuilderBackedBean.class, DataSourceDefinitionBuilder.class)
+                .addClasses(BeanWithDataSource.class, BuilderBackedBean.class,
+                        DataSourceDefinitionBuilder.class)
                 .addPackage(DataSourceDelegateBean.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(Extension.class, DataSourceExtension.class);

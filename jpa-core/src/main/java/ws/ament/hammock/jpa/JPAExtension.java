@@ -67,10 +67,10 @@ public class JPAExtension implements Extension {
             afterBeanDiscovery.addBean(new EntityManagerBean(defaultDataSourceName));
         }
     }
-    public void load(@Observes final AfterDeploymentValidation event, final BeanManager beanManager) {
-        persistenceUnitInfos = persistenceUnitInfoBeans.stream().map(bean -> (PersistenceUnitInfo) beanManager.getReference(
-                bean, bean.getBeanClass(), beanManager.createCreationalContext(bean)
-        )).collect(Collectors.toMap(PersistenceUnitInfo::getPersistenceUnitName, Function.identity()));
+    public void load(@Observes final AfterDeploymentValidation event) {
+        persistenceUnitInfos = persistenceUnitInfoBeans.stream().map(bean ->
+                CDI.current().select(PersistenceUnitInfo.class).select(bean.getQualifiers().toArray(new Annotation[1])).get()
+        ).collect(Collectors.toMap(PersistenceUnitInfo::getPersistenceUnitName, Function.identity()));
     }
 
     Set<String> getEntityClasses() {
@@ -78,7 +78,7 @@ public class JPAExtension implements Extension {
     }
 
     PersistenceUnitInfo getPersistenceUnitInfo(String name) {
-        return persistenceUnitInfos.computeIfAbsent(name, s -> CDI.current().select(PersistenceUnitInfo.class, database(s)).get());
+        return persistenceUnitInfos.computeIfAbsent(name, s -> CDI.current().select(PersistenceUnitInfo.class).select(database(s)).get());
     }
 
 
