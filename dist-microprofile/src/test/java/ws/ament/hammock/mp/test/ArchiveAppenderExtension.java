@@ -16,19 +16,14 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.web.extension;
+package ws.ament.hammock.mp.test;
 
-import ws.ament.hammock.web.spi.StartWebServer;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.core.spi.LoadableExtension;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
-import javax.enterprise.inject.spi.Extension;
-
-public class StartWebServerExtension implements Extension{
-    public void startWebTier(@Observes AfterDeploymentValidation adv) {
-        StartWebServer startWebServer = CDI.current().select(StartWebServer.class).get();
-        startWebServer.start();
+public class ArchiveAppenderExtension implements LoadableExtension {
+    @Override
+    public void register(ExtensionBuilder extensionBuilder) {
+        extensionBuilder.service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class);
     }
 }

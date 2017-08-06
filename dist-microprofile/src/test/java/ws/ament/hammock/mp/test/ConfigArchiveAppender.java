@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hammock and its contributors
+ * Copyright 2017 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,24 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.test.support;
+package ws.ament.hammock.mp.test;
 
-import org.eclipse.microprofile.config.spi.ConfigSource;
+import org.apache.geronimo.config.ConfigImpl;
+import org.apache.geronimo.config.DefaultConfigProvider;
+import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
+import org.eclipse.microprofile.config.spi.Converter;
+import org.eclipse.microprofile.config.tck.converters.DuckConverter;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-public class HammockArchiveAppender implements ApplicationArchiveProcessor {
-
-    private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"all\"/>");
-
+public class ConfigArchiveAppender implements ApplicationArchiveProcessor {
     @Override
     public void process(Archive<?> archive, TestClass testClass) {
-        EnableRandomWebServerPort annotation = testClass.getJavaClass().getAnnotation(EnableRandomWebServerPort.class);
-        JavaArchive jar = archive.as(JavaArchive.class)
-           .addPackages(true, "ws.ament.hammock")
-           .addPackage("io.astefanutti.metrics.cdi")
-           .addAsManifestResource(BEANS_XML, "beans.xml");
-
-        if(annotation != null) {
-            jar.addAsServiceProviderAndClasses(ConfigSource.class, RandomPortConfigSource.class);
-        }
+        archive.as(JavaArchive.class)
+            .addPackages(true, ConfigImpl.class.getPackage())
+            .addAsServiceProvider(Converter.class, DuckConverter.class)
+            .addAsServiceProvider(ConfigProviderResolver.class, DefaultConfigProvider.class);
     }
 }

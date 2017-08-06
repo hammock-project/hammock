@@ -54,6 +54,64 @@
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-json_1.1_spec</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.config</groupId>
+            <artifactId>geronimo-config-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.config</groupId>
+            <artifactId>microprofile-config-tck</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.9</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>test-arquillian</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.testng</groupId>
+            <artifactId>arquillian-testng-container</artifactId>
+            <version>${arquillian.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-weld-embedded</artifactId>
+        </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <dependenciesToScan>
+                        <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
+                    </dependenciesToScan>
+                    <environmentVariables>
+                        <CDPATH>value-for-tck-since-we-ignore-empty</CDPATH>
+                        <GLOBIGNORE>value-for-tck-since-we-ignore-empty</GLOBIGNORE>
+                        <GNOME_KEYRING_CONTROL>value-for-tck-since-we-ignore-empty</GNOME_KEYRING_CONTROL>
+                        <GNOME_KEYRING_PID>value-for-tck-since-we-ignore-empty</GNOME_KEYRING_PID>
+                        <HISTIGNORE>value-for-tck-since-we-ignore-empty</HISTIGNORE>
+                        <HISTTIMEFORMAT>value-for-tck-since-we-ignore-empty</HISTTIMEFORMAT>
+                        <INSTANCE>value-for-tck-since-we-ignore-empty</INSTANCE>
+                        <UPSTART_INSTANCE>value-for-tck-since-we-ignore-empty</UPSTART_INSTANCE>
+                    </environmentVariables>
+                    <systemPropertyVariables>
+                        <org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>false</org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
