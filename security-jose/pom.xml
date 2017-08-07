@@ -60,6 +60,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jaxrs_2.0_spec</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>test-arquillian</artifactId>
             <version>${project.version}</version>
