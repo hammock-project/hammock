@@ -60,6 +60,11 @@
             <artifactId>geronimo-config-impl</artifactId>
         </dependency>
         <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>security-jose</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-tck</artifactId>
             <version>${microprofile.config.version}</version>

@@ -18,8 +18,12 @@
 
 package ws.ament.hammock.security.api;
 
+import java.security.Principal;
+
 public interface Identity {
     boolean isLoggedIn();
 
     boolean hasRole(String x);
+
+    Principal getPrincipal();
 }

@@ -21,25 +21,101 @@ package ws.ament.hammock.jwt;
 import net.minidev.json.JSONObject;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.singleton;
 
-public class JWTPrincipal implements Principal {
+public class JWTPrincipal implements org.eclipse.microprofile.jwt.JWTPrincipal {
     private final Map<String,Object> jwt;
+    private final String stringForm;
     private final List<String> roles;
 
-    public JWTPrincipal(Map<String,Object> jwt) {
+    public JWTPrincipal(Map<String,Object> jwt, String stringForm) {
         this.jwt = jwt;
+        this.stringForm = stringForm;
         Map<String, List<String>> realmAccess = (Map<String, List<String>>) jwt.getOrDefault("realm_access", emptyMap());
         roles = realmAccess.getOrDefault("roles", emptyList());
     }
 
     @Override
     public String getName() {
-        return (String)jwt.get("preferred_username");
+        String username = (String)jwt.get(PRINCIPAL_NAME);
+        if(username == null) {
+            return (String)jwt.get("preferred_username");
+        }
+        else {
+            return username;
+        }
+    }
+
+    @Override
+    public String getRawToken() {
+        return stringForm;
+    }
+
+    @Override
+    public String getIssuer() {
+        return (String)jwt.get(ISSUER);
+    }
+
+    @Override
+    public Set<String> getAudience() {
+        return singleton((String)jwt.get(AUDIENCE));
+    }
+
+    @Override
+    public String getSubject() {
+        return (String)jwt.get(SUBJECT);
+    }
+
+    @Override
+    public String getTokenID() {
+        return (String)jwt.get(TOKEN_ID);
+    }
+
+    @Override
+    public long getExpirationTime() {
+        return (Long)jwt.get(EXPIRY);
+    }
+
+    @Override
+    public long getIssuedAtTime() {
+        return (Long)jwt.get(ISSURE_TIME);
+    }
+
+    @Override
+    public Set<String> getGroups() {
+        Object groups = jwt.get(GROUPS);
+        if(groups == null) {
+            return null;
+        }
+        if(groups instanceof String) {
+            return singleton((String)groups);
+        }
+        else if(groups instanceof Set) {
+            return (Set<String>)groups;
+        }
+        else if(groups instanceof List) {
+            return new HashSet<>((List<String>)groups);
+        }
+        else {
+            throw new IllegalStateException("Unable to parse groups "+groups);
+        }
+    }
+
+    @Override
+    public Set<String> getClaimNames() {
+        return jwt.keySet();
+    }
+
+    @Override
+    public Object getClaim(String s) {
+        return jwt.get(s);
     }
 
     public boolean isUserInRole(String role) {

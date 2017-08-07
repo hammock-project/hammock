@@ -35,6 +35,11 @@ public class JWTIdentity implements Identity{
     }
 
     @Override
+    public JWTPrincipal getPrincipal() {
+        return principal;
+    }
+
+    @Override
     public boolean isLoggedIn() {
         return principal.getName() != null;
     }

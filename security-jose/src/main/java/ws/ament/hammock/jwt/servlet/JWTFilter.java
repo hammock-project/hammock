@@ -67,7 +67,7 @@ public class JWTFilter implements Filter {
 
             if(jwt != null) {
                 Map<String, Object> jwtBody = jwtConfiguration.getJwtProcessor().process(jwt);
-                JWTPrincipal principal = new JWTPrincipal(jwtBody);
+                JWTPrincipal principal = new JWTPrincipal(jwtBody, jwt);
                 jwtIdentityHolder.setJwtIdentity(new JWTIdentity(principal));
                 servletRequest = new JWTRequest(principal, httpServletRequest);
             }
