@@ -97,6 +97,9 @@
                     <dependenciesToScan>
                         <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
                     </dependenciesToScan>
+                    <excludes>
+                        <exclude>org.eclipse.microprofile.config.tck.ConfigProviderTest.testEnvironmentConfigSource</exclude>
+                    </excludes>
                     <environmentVariables>
                         <CDPATH>value-for-tck-since-we-ignore-empty</CDPATH>
                         <GLOBIGNORE>value-for-tck-since-we-ignore-empty</GLOBIGNORE>
