@@ -34,6 +34,7 @@ import ws.ament.hammock.security.impl.HasAllRolesInterceptor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,11 @@ public class HasAllRolesTest {
         @Override
         public boolean hasRole(String x) {
             return roles.indexOf(x) >= 0;
+        }
+
+        @Override
+        public Principal getPrincipal() {
+            return null;
         }
 
         public void addRoles(String... newRoles) {

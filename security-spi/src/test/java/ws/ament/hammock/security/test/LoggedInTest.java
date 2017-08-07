@@ -34,6 +34,8 @@ import ws.ament.hammock.security.impl.LoggedInInterceptor;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import java.security.Principal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -82,6 +84,11 @@ public class LoggedInTest {
         @Override
         public boolean hasRole(String x) {
             return false;
+        }
+
+        @Override
+        public Principal getPrincipal() {
+            return null;
         }
 
         void setLoggedIn(boolean loggedIn) {
