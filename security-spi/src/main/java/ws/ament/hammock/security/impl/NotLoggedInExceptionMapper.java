@@ -21,6 +21,7 @@ package ws.ament.hammock.security.impl;
 import ws.ament.hammock.security.api.NotLoggedInException;
 
 import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -31,7 +32,7 @@ public class NotLoggedInExceptionMapper implements ExceptionMapper<NotLoggedInEx
     @Override
     public Response toResponse(NotLoggedInException e) {
         return Response.status(Response.Status.UNAUTHORIZED)
-                .header("WWW-Authenticate","Bearer")
+                .header(HttpHeaders.WWW_AUTHENTICATE,"Bearer")
                 .build();
     }
 }
