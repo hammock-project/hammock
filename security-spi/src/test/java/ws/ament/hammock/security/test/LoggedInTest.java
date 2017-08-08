@@ -29,9 +29,11 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.security.api.Identity;
 import ws.ament.hammock.security.api.LoggedIn;
 import ws.ament.hammock.security.api.NotLoggedInException;
-import ws.ament.hammock.security.impl.LoggedInInterceptor;
+import ws.ament.hammock.security.impl.SecurityInterceptor;
+import ws.ament.hammock.security.internal.SecurityExtension;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 
 import java.security.Principal;
@@ -48,7 +50,8 @@ public class LoggedInTest {
     public static Archive<?> deployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClasses(LoggedIn.class, LoggedInInterceptor.class);
+                .addClasses(LoggedIn.class, SecurityInterceptor.class)
+                .addAsServiceProviderAndClasses(Extension.class, SecurityExtension.class);
     }
 
     @Inject

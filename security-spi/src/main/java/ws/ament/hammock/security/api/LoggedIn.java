@@ -18,17 +18,19 @@
 
 package ws.ament.hammock.security.api;
 
-import javax.interceptor.InterceptorBinding;
-import java.lang.annotation.Documented;
+import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(value = RUNTIME)
 @Target({TYPE, METHOD})
-@Documented
-@InterceptorBinding
 public @interface LoggedIn {
+
+    LoggedIn INSTANCE = new LoggedInLiteral();
+
+    class LoggedInLiteral extends AnnotationLiteral<LoggedIn> implements LoggedIn{}
 }

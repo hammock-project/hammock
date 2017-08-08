@@ -18,7 +18,6 @@
 
 package ws.ament.hammock.security.test;
 
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -30,9 +29,11 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.security.api.HasAllRoles;
 import ws.ament.hammock.security.api.Identity;
 import ws.ament.hammock.security.api.MissingRolesException;
-import ws.ament.hammock.security.impl.HasAllRolesInterceptor;
+import ws.ament.hammock.security.impl.SecurityInterceptor;
+import ws.ament.hammock.security.internal.SecurityExtension;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -56,7 +57,8 @@ public class HasAllRolesTest {
     public static Archive<?> deployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClasses(HasAllRoles.class, HasAllRolesInterceptor.class);
+                .addClasses(HasAllRoles.class,  SecurityInterceptor.class)
+                .addAsServiceProviderAndClasses(Extension.class, SecurityExtension.class);
     }
 
     @Test

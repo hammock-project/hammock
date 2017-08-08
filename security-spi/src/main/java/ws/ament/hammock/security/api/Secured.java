@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hammock and its contributors
+ * Copyright 2017 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,23 @@
 
 package ws.ament.hammock.security.api;
 
+import javax.enterprise.util.AnnotationLiteral;
+import javax.interceptor.InterceptorBinding;
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Retention(RUNTIME)
+@InterceptorBinding
+@Retention(RetentionPolicy.RUNTIME)
 @Target({TYPE, METHOD})
-public @interface HasAllRoles {
-    String[] value();
+@Documented
+public @interface Secured {
+
+    Secured INSTANCE = new SecuredLiteral();
+
+    class SecuredLiteral extends AnnotationLiteral<Secured> implements Secured{}
 }
