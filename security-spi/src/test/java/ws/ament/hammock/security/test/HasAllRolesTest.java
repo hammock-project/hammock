@@ -32,6 +32,7 @@ import ws.ament.hammock.security.api.MissingRolesException;
 import ws.ament.hammock.security.impl.SecurityInterceptor;
 import ws.ament.hammock.security.internal.SecurityExtension;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
@@ -102,7 +103,8 @@ public class HasAllRolesTest {
 
     }
 
-    @HasAllRoles({"jane","bob","ralph"})
+    @HasAllRoles({"jane","bob"})
+    @RolesAllowed("ralph")
     @ApplicationScoped
     public static class Controller {
         String doWork() {

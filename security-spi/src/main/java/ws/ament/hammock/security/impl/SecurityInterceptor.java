@@ -22,12 +22,17 @@ import ws.ament.hammock.security.api.*;
 import ws.ament.hammock.security.internal.AnnotationUtil;
 
 import javax.annotation.Priority;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
 
 @Interceptor
 @Secured
@@ -54,8 +59,16 @@ public class SecurityInterceptor {
 
     private void checkRoles(InvocationContext invocationContext) {
         HasAllRoles hasAllRoles = AnnotationUtil.getAnnotation(invocationContext, HasAllRoles.class);
+        RolesAllowed rolesAllowed = AnnotationUtil.getAnnotation(invocationContext, RolesAllowed.class);
+        List<String> roles = new ArrayList<>();
         if(hasAllRoles != null) {
-            String missingRoles = Arrays.stream(hasAllRoles.value())
+            roles.addAll(asList(hasAllRoles.value()));
+        }
+        if(rolesAllowed != null) {
+            roles.addAll(asList(rolesAllowed.value()));
+        }
+        if(hasAllRoles != null) {
+            String missingRoles = roles.stream()
                     .filter(this::notHasRole)
                     .collect(Collectors.joining(", "));
             if (!missingRoles.isEmpty()) {
