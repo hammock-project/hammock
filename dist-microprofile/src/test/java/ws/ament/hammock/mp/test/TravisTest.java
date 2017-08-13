@@ -59,8 +59,8 @@ public class TravisTest extends Arquillian{
     public void testEnvironmentConfigSource() {
         Map<String, String> env = System.getenv();
         for (Map.Entry<String, String> envEntry : env.entrySet()) {
-            System.out.println("Discovered key "+envEntry.getKey()+" with value "+envEntry.getValue());
-            Assert.assertEquals(envEntry.getValue(), config.getValue(envEntry.getKey(), String.class));
+            Assert.assertEquals("Discovered key "+envEntry.getKey()+" with value "+envEntry.getValue(),
+                    envEntry.getValue(), config.getValue(envEntry.getKey(), String.class));
         }
     }
 }
