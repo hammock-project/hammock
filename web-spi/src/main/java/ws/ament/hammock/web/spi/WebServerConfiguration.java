@@ -18,19 +18,13 @@
 
 package ws.ament.hammock.web.spi;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import ws.ament.hammock.HammockRuntime;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.Optional;
 
 @ApplicationScoped
 public class WebServerConfiguration {
-    private final Logger LOGGER = LogManager.getLogger(HammockRuntime.class.getName());
-
     @Inject
     @ConfigProperty(name="webserver.port",defaultValue = "8080")
     private int port;
@@ -44,28 +38,28 @@ public class WebServerConfiguration {
     private int securedPort;
     
     @Inject
-    @ConfigProperty(name="webserver.keystore.path")
-    private Optional<String> keystorePath;
+    @ConfigProperty(name="webserver.keystore.path", defaultValue = "")
+    private String keystorePath;
     
     @Inject
-    @ConfigProperty(name="webserver.keystore.type")
-    private Optional<String> keystoreType;
+    @ConfigProperty(name="webserver.keystore.type", defaultValue = "")
+    private String keystoreType;
 
     @Inject
-    @ConfigProperty(name="webserver.keystore.password")
-    private Optional<String> keystorePassword;
+    @ConfigProperty(name="webserver.keystore.password", defaultValue = "")
+    private String keystorePassword;
     
     @Inject
-    @ConfigProperty(name="webserver.truststore.path")
-    private Optional<String> truststorePath;
+    @ConfigProperty(name="webserver.truststore.path", defaultValue = "")
+    private String truststorePath;
     
     @Inject
-    @ConfigProperty(name="webserver.truststore.type")
-    private Optional<String> truststoreType;
+    @ConfigProperty(name="webserver.truststore.type", defaultValue = "")
+    private String truststoreType;
 
     @Inject
-    @ConfigProperty(name="webserver.truststore.password")
-    private Optional<String> truststorePassword;
+    @ConfigProperty(name="webserver.truststore.password", defaultValue = "")
+    private String truststorePassword;
 
     @Inject
     @ConfigProperty(name="file.dir",defaultValue = "/tmp")
@@ -88,26 +82,26 @@ public class WebServerConfiguration {
     }
 
 	public String getKeystorePath() {
-		return keystorePath.orElse(null);
+		return keystorePath;
 	}
 
 	public String getKeystoreType() {
-		return keystoreType.orElse(null);
+		return keystoreType;
 	}
 
 	public String getKeystorePassword() {
-		return keystorePassword.orElse(null);
+		return keystorePassword;
 	}
 
 	public String getTruststorePath() {
-		return truststorePath.orElse(null);
+		return truststorePath;
 	}
 
 	public String getTruststoreType() {
-		return truststoreType.orElse(null);
+		return truststoreType;
 	}
 
 	public String getTruststorePassword() {
-		return truststorePassword.orElse(null);
+		return truststorePassword;
 	}
 }

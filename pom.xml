@@ -124,8 +124,8 @@
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
         <nimbus-jose-jwt.version>4.41</nimbus-jose-jwt.version>
         <keycloak.version>3.2.1.Final</keycloak.version>
-        <geronimo-config.version>1.1-SNAPSHOT</geronimo-config.version>
-        <microprofile.config.version>1.1-SNAPSHOT</microprofile.config.version>
+        <geronimo-config.version>1.0-SNAPSHOT</geronimo-config.version>
+        <microprofile.config.version>1.1-RC1</microprofile.config.version>
         <microprofile.jwt.version>1.0-SNAPSHOT</microprofile.jwt.version>
     </properties>
     <modules>
@@ -301,6 +301,17 @@
                 <groupId>org.apache.geronimo.config</groupId>
                 <artifactId>geronimo-config-impl</artifactId>
                 <version>${geronimo-config.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.eclipse.microprofile.config</groupId>
+                        <artifactId>microprofile-config-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.microprofile.config</groupId>
+                <artifactId>microprofile-config-api</artifactId>
+                <version>${microprofile.config.version}</version>
             </dependency>
             <dependency>
                 <groupId>ws.ament.hammock</groupId>

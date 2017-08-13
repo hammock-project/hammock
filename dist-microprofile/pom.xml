@@ -66,7 +66,7 @@
         <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-tck</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${microprofile.config.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -102,19 +102,6 @@
                     <dependenciesToScan>
                         <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
                     </dependenciesToScan>
-                    <excludes>
-                        <exclude>org.eclipse.microprofile.config.tck.ConfigProviderTest</exclude>
-                    </excludes>
-                    <environmentVariables>
-                        <CDPATH>value-for-tck-since-we-ignore-empty</CDPATH>
-                        <GLOBIGNORE>value-for-tck-since-we-ignore-empty</GLOBIGNORE>
-                        <GNOME_KEYRING_CONTROL>value-for-tck-since-we-ignore-empty</GNOME_KEYRING_CONTROL>
-                        <GNOME_KEYRING_PID>value-for-tck-since-we-ignore-empty</GNOME_KEYRING_PID>
-                        <HISTIGNORE>value-for-tck-since-we-ignore-empty</HISTIGNORE>
-                        <HISTTIMEFORMAT>value-for-tck-since-we-ignore-empty</HISTTIMEFORMAT>
-                        <INSTANCE>value-for-tck-since-we-ignore-empty</INSTANCE>
-                        <UPSTART_INSTANCE>value-for-tck-since-we-ignore-empty</UPSTART_INSTANCE>
-                    </environmentVariables>
                     <systemPropertyVariables>
                         <org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>false</org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>
                     </systemPropertyVariables>
