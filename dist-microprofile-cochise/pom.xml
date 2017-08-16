@@ -97,6 +97,9 @@
                     <dependenciesToScan>
                         <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
                     </dependenciesToScan>
+                    <excludes>
+                        <exclude>org.eclipse.microprofile.config.tck.ConfigProviderTest</exclude>
+                    </excludes>
                     <systemPropertyVariables>
                         <org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>false</org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>
                     </systemPropertyVariables>

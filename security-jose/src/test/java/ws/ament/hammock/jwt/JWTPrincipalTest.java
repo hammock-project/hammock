@@ -19,6 +19,7 @@
 package ws.ament.hammock.jwt;
 
 import net.minidev.json.JSONObject;
+import org.eclipse.microprofile.jwt.Claims;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
@@ -29,10 +30,10 @@ public class JWTPrincipalTest {
     @Test
     public void shouldBeValid() throws Exception{
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(JWTPrincipal.PRINCIPAL_NAME, "secure_user");
-        jsonObject.put(JWTPrincipal.ISSUER,"http;//issuer.com");
-        jsonObject.put(JWTPrincipal.SUBJECT,"24400320");
-        jsonObject.put(JWTPrincipal.AUDIENCE,"s6BhdRkqt3");
+        jsonObject.put(Claims.preferred_username.name(), "secure_user");
+        jsonObject.put(Claims.iss.name(),"http;//issuer.com");
+        jsonObject.put(Claims.sub.name(),"24400320");
+        jsonObject.put(Claims.aud.name(),"s6BhdRkqt3");
         jsonObject.put("nonce","n-0S6_WzA2Mj");
         jsonObject.put("exp",1311281970l);
         jsonObject.put("iat",1311280970l);

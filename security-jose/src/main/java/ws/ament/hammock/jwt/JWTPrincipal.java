@@ -18,19 +18,17 @@
 
 package ws.ament.hammock.jwt;
 
-import net.minidev.json.JSONObject;
+import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singleton;
+import static java.util.Collections.*;
 
-public class JWTPrincipal implements org.eclipse.microprofile.jwt.JWTPrincipal {
+public class JWTPrincipal implements JsonWebToken {
     private final Map<String,Object> jwt;
     private final String stringForm;
     private final List<String> roles;
@@ -44,7 +42,7 @@ public class JWTPrincipal implements org.eclipse.microprofile.jwt.JWTPrincipal {
 
     @Override
     public String getName() {
-        String username = (String)jwt.get(PRINCIPAL_NAME);
+        String username = (String)jwt.get(Claims.preferred_username.name());
         if(username == null) {
             return (String)jwt.get("preferred_username");
         }
@@ -60,37 +58,37 @@ public class JWTPrincipal implements org.eclipse.microprofile.jwt.JWTPrincipal {
 
     @Override
     public String getIssuer() {
-        return (String)jwt.get(ISSUER);
+        return (String)jwt.get(Claims.iss.name());
     }
 
     @Override
     public Set<String> getAudience() {
-        return singleton((String)jwt.get(AUDIENCE));
+        return singleton((String)jwt.get(Claims.aud.name()));
     }
 
     @Override
     public String getSubject() {
-        return (String)jwt.get(SUBJECT);
+        return (String)jwt.get(Claims.sub.name());
     }
 
     @Override
     public String getTokenID() {
-        return (String)jwt.get(TOKEN_ID);
+        return (String)jwt.get(Claims.jti.name());
     }
 
     @Override
     public long getExpirationTime() {
-        return (Long)jwt.get(EXPIRY);
+        return (Long)jwt.get(Claims.exp.name());
     }
 
     @Override
     public long getIssuedAtTime() {
-        return (Long)jwt.get(ISSURE_TIME);
+        return (Long)jwt.get(Claims.auth_time.name());
     }
 
     @Override
     public Set<String> getGroups() {
-        Object groups = jwt.get(GROUPS);
+        Object groups = jwt.get(Claims.groups.name());
         if(groups == null) {
             return null;
         }
