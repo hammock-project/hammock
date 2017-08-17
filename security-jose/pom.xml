@@ -83,7 +83,7 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.microprofile.jwt</groupId>
-            <artifactId>microprofile-jwt-auth</artifactId>
+            <artifactId>microprofile-jwt-auth-api</artifactId>
             <version>${microprofile.jwt.version}</version>
         </dependency>
     </dependencies>
