@@ -91,9 +91,9 @@
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <tomcat.version>9.0.0.M22</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
-        <johnzon.version>1.1.1</johnzon.version>
+        <johnzon.version>1.1.2</johnzon.version>
         <metrics.version>3.2.4</metrics.version>
-        <metrics.cdi.verison>1.3.6</metrics.cdi.verison>
+        <metrics.cdi.verison>1.4.0</metrics.cdi.verison>
         <geronimo-json_1.1_spec.version>1.0</geronimo-json_1.1_spec.version>
         <geronimo-jta_1.2_spec.version>1.0-alpha-1</geronimo-jta_1.2_spec.version>
         <cdi2.version>2.0</cdi2.version>
@@ -122,7 +122,7 @@
         <zipkin-brave.version>4.5.2</zipkin-brave.version>
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
-        <nimbus-jose-jwt.version>4.41</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>4.41.1</nimbus-jose-jwt.version>
         <keycloak.version>3.2.1.Final</keycloak.version>
         <geronimo-config.version>1.0-SNAPSHOT</geronimo-config.version>
         <microprofile.config.version>1.1-RC1</microprofile.config.version>
