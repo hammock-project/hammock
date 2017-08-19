@@ -19,12 +19,15 @@
 package ws.ament.hammock.mp.test;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.test.spi.TestClass;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import ws.ament.hammock.health.HealthCheckManager;
 
-public class ArchiveAppenderExtension implements LoadableExtension {
+public class HealthArchiveAppender implements ApplicationArchiveProcessor {
     @Override
-    public void register(ExtensionBuilder extensionBuilder) {
-        extensionBuilder.service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
+    public void process(Archive<?> archive, TestClass testClass) {
+        archive.as(JavaArchive.class)
+                .addPackages(true, HealthCheckManager.class.getPackage());
     }
 }
