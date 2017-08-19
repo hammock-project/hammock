@@ -160,6 +160,7 @@
         <module>messaging-rabbitmq</module>
         <module>security-jose</module>
         <module>security-keycloak</module>
+        <module>util-health</module>
     </modules>
     <dependencyManagement>
         <dependencies>
