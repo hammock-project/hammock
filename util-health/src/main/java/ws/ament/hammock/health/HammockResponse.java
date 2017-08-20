@@ -19,18 +19,33 @@
 package ws.ament.hammock.health;
 
 import org.eclipse.microprofile.health.Response;
-import org.eclipse.microprofile.health.ResponseBuilder;
-import org.eclipse.microprofile.health.spi.SPIFactory;
 
-import javax.enterprise.inject.Vetoed;
 import java.util.Map;
 import java.util.Optional;
 
-@Vetoed
-public class HammockSPIFactory implements SPIFactory {
-    @Override
-    public ResponseBuilder createResponseBuilder() {
-        return new HammockResponseBuilder();
+final class HammockResponse extends Response {
+    private final String name;
+    private final State state;
+    private final Map<String, Object> attributes;
+
+    HammockResponse(String name, State state, Map<String, Object> attributes) {
+        this.name = name;
+        this.state = state;
+        this.attributes = attributes;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public State getState() {
+        return state;
+    }
+
+    @Override
+    public Optional<Map<String, Object>> getAttributes() {
+        return Optional.ofNullable(attributes);
+    }
 }

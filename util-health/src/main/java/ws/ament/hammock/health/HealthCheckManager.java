@@ -22,10 +22,10 @@ import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.Response;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -41,15 +41,22 @@ public class HealthCheckManager {
             // no checks found
             return null;
         }
-        List<HealthResultModel> results = healthChecks.stream().map(HealthCheck::call)
+        final List<HealthCheck> checks = healthChecks.stream().collect(toList());
+        List<HealthResultModel> results = checks.stream().map(HealthCheck::call)
                 .map(r -> new HealthResultModel(r.getName(), r.getState().name(), r.getAttributes().orElse(null)))
                 .collect(toList());
         boolean anyDown = results.stream().anyMatch(r -> r.getResult().equalsIgnoreCase(Response.State.DOWN.name()));
-        if(anyDown) {
-            return new HealthCheckModel(Response.State.DOWN.name(), results);
+        try {
+            if (anyDown) {
+                return new HealthCheckModel(Response.State.DOWN.name(), results);
+            } else {
+                return new HealthCheckModel(Response.State.UP.name(), results);
+            }
         }
-        else {
-            return new HealthCheckModel(Response.State.UP.name(), results);
+        finally {
+            checks.stream()
+                    .filter(c -> c.getClass().isAnnotationPresent(Dependent.class))
+                    .forEach(healthChecks::destroy);
         }
     }
 }
