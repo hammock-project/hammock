@@ -161,6 +161,7 @@
         <module>security-jose</module>
         <module>security-keycloak</module>
         <module>util-health</module>
+        <module>microprofile-testing</module>
     </modules>
     <dependencyManagement>
         <dependencies>
