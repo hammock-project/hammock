@@ -6,6 +6,8 @@ Hammock
 [![Maven Central](https://img.shields.io/maven-central/v/ws.ament.hammock/hammock-core.svg)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
 [![Dependency Status](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad/badge.svg?style=flat)](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad)
 
+![Hammock](https://hammock-project.github.io/img/src/Large.png)
+
 _Building Microservices so easily you're laying in a Hammock!_
 
 Hammock is a simple to use framework for bootstrapping CDI, launching a web server and being able to deploy REST APIs.  It takes a best practice approach to creating a runtime for you, so that you can focus on the important stuff.
