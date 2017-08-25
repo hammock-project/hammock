@@ -18,20 +18,20 @@
 
 package ws.ament.hammock.health;
 
-import org.eclipse.microprofile.health.Response;
+import org.eclipse.microprofile.health.HealthCheckResponse;
 
 import java.util.Map;
 import java.util.Optional;
 
-final class HammockResponse extends Response {
+final class HammockResponse extends HealthCheckResponse {
     private final String name;
     private final State state;
-    private final Map<String, Object> attributes;
+    private final Map<String, Object> data;
 
-    HammockResponse(String name, State state, Map<String, Object> attributes) {
+    HammockResponse(String name, State state, Map<String, Object> data) {
         this.name = name;
         this.state = state;
-        this.attributes = attributes;
+        this.data = data;
     }
 
     @Override
@@ -45,7 +45,7 @@ final class HammockResponse extends Response {
     }
 
     @Override
-    public Optional<Map<String, Object>> getAttributes() {
-        return Optional.ofNullable(attributes);
+    public Optional<Map<String, Object>> getData() {
+        return Optional.ofNullable(data);
     }
 }

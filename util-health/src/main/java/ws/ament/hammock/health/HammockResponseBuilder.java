@@ -18,58 +18,66 @@
 
 package ws.ament.hammock.health;
 
-import org.eclipse.microprofile.health.Response;
-import org.eclipse.microprofile.health.ResponseBuilder;
+import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 
 import javax.enterprise.inject.Vetoed;
 import java.util.HashMap;
 import java.util.Map;
 
 @Vetoed
-class HammockResponseBuilder extends ResponseBuilder {
+class HammockResponseBuilder extends HealthCheckResponseBuilder {
     private String name;
-    private Map<String, Object> attributes = new HashMap<>();
+    private Map<String, Object> data = new HashMap<>();
+    private HealthCheckResponse.State state;
 
     @Override
-    public ResponseBuilder name(String name) {
+    public HealthCheckResponseBuilder name(String name) {
         this.name = name;
         return this;
     }
 
     @Override
-    public ResponseBuilder withAttribute(String key, String value) {
-        attributes.put(key, value);
+    public HealthCheckResponseBuilder withData(String key, String value) {
+        data.put(key, value);
         return this;
     }
 
     @Override
-    public ResponseBuilder withAttribute(String key, long value) {
-        attributes.put(key, value);
+    public HealthCheckResponseBuilder withData(String key, long value) {
+        data.put(key, value);
         return this;
     }
 
     @Override
-    public ResponseBuilder withAttribute(String key, boolean value) {
-        attributes.put(key, value);
+    public HealthCheckResponseBuilder withData(String key, boolean value) {
+        data.put(key, value);
         return this;
     }
 
     @Override
-    public Response up() {
-        return new HammockResponse(name, Response.State.UP, attributes);
+    public HealthCheckResponseBuilder up() {
+        this.state = HealthCheckResponse.State.UP;
+        return this;
     }
 
     @Override
-    public Response down() {
-        return new HammockResponse(name, Response.State.DOWN, attributes);
+    public HealthCheckResponseBuilder down() {
+        this.state = HealthCheckResponse.State.DOWN;
+        return this;
     }
 
     @Override
-    public Response state(boolean b) {
+    public HealthCheckResponseBuilder state(boolean b) {
         if (b) {
             return up();
         } else {
             return down();
         }
+    }
+
+    @Override
+    public HealthCheckResponse build() {
+        return new HammockResponse(name, state, data);
     }
 }

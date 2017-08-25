@@ -19,8 +19,8 @@
 package ws.ament.hammock.health;
 
 import org.eclipse.microprofile.health.HealthCheck;
-import org.eclipse.microprofile.health.Response;
-import org.eclipse.microprofile.health.ResponseBuilder;
+import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
@@ -61,10 +61,10 @@ public class InjectedResponseBuilderTest {
     @Dependent
     public static class InjectedCheck implements HealthCheck {
         @Inject
-        private ResponseBuilder responseBuilder;
+        private HealthCheckResponseBuilder responseBuilder;
         @Override
-        public Response call() {
-            return responseBuilder.up();
+        public HealthCheckResponse call() {
+            return responseBuilder.up().build();
         }
     }
 

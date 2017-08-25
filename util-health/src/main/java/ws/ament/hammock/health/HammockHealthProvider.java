@@ -18,18 +18,15 @@
 
 package ws.ament.hammock.health;
 
-import org.eclipse.microprofile.health.Response;
-import org.eclipse.microprofile.health.ResponseBuilder;
-import org.eclipse.microprofile.health.spi.SPIFactory;
+import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
+import org.eclipse.microprofile.health.spi.HealthCheckResponseProvider;
 
 import javax.enterprise.inject.Vetoed;
-import java.util.Map;
-import java.util.Optional;
 
 @Vetoed
-public class HammockSPIFactory implements SPIFactory {
+public class HammockHealthProvider implements HealthCheckResponseProvider {
     @Override
-    public ResponseBuilder createResponseBuilder() {
+    public HealthCheckResponseBuilder createResponseBuilder() {
         return new HammockResponseBuilder();
     }
 

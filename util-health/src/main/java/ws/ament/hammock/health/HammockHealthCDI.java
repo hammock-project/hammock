@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.health;
 
-import org.eclipse.microprofile.health.ResponseBuilder;
+import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
@@ -29,7 +29,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 public class HammockHealthCDI {
     @Produces
     @Dependent
-    public ResponseBuilder createResponseBuilder(InjectionPoint injectionPoint) {
+    public HealthCheckResponseBuilder createResponseBuilder(InjectionPoint injectionPoint) {
         String name = injectionPoint.getMember().getDeclaringClass().getSimpleName();
         return new HammockResponseBuilder().name(name);
     }

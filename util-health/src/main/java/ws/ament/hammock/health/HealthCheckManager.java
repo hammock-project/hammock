@@ -19,15 +19,17 @@
 package ws.ament.hammock.health;
 
 import org.eclipse.microprofile.health.HealthCheck;
-import org.eclipse.microprofile.health.Response;
+import org.eclipse.microprofile.health.HealthCheckResponse;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
@@ -43,14 +45,14 @@ public class HealthCheckManager {
         }
         final List<HealthCheck> checks = healthChecks.stream().collect(toList());
         List<HealthResultModel> results = checks.stream().map(HealthCheck::call)
-                .map(r -> new HealthResultModel(r.getName(), r.getState().name(), r.getAttributes().orElse(null)))
+                .map(r -> new HealthResultModel(r.getName(), r.getState().name(), r.getData().orElse(emptyMap())))
                 .collect(toList());
-        boolean anyDown = results.stream().anyMatch(r -> r.getResult().equalsIgnoreCase(Response.State.DOWN.name()));
+        boolean anyDown = results.stream().anyMatch(r -> r.getResult().equalsIgnoreCase(HealthCheckResponse.State.DOWN.name()));
         try {
             if (anyDown) {
-                return new HealthCheckModel(Response.State.DOWN.name(), results);
+                return new HealthCheckModel(HealthCheckResponse.State.DOWN.name(), results);
             } else {
-                return new HealthCheckModel(Response.State.UP.name(), results);
+                return new HealthCheckModel(HealthCheckResponse.State.UP.name(), results);
             }
         }
         finally {

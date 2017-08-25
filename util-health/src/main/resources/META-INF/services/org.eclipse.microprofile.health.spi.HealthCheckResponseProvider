@@ -16,4 +16,4 @@
 # limitations under the License.
 #
 
-ws.ament.hammock.health.HammockSPIFactory
+ws.ament.hammock.health.HammockHealthProvider

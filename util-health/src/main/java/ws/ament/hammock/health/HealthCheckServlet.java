@@ -18,7 +18,7 @@
 
 package ws.ament.hammock.health;
 
-import org.eclipse.microprofile.health.Response;
+import org.eclipse.microprofile.health.HealthCheckResponse;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -43,17 +43,13 @@ public class HealthCheckServlet extends HttpServlet {
         HealthCheckModel healthCheckModel = healthCheckManager.performHealthChecks();
         if(healthCheckModel == null) {
             resp.setStatus(204);
-            System.out.println("two oh 4");
         }
         else {
-            System.out.println("Checks: "+healthCheckModel);
-            if(healthCheckModel.getOutcome().equalsIgnoreCase(Response.State.UP.name())) {
+            if(healthCheckModel.getOutcome().equalsIgnoreCase(HealthCheckResponse.State.UP.name())) {
                 resp.setStatus(200);
-                System.out.println("two hundy");
             }
             else {
                 resp.setStatus(503);
-                System.out.println("five oh three");
             }
             jsonb.toJson(healthCheckModel, resp.getOutputStream());
         }
