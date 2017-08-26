@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.eclipse.microprofile.health</groupId>
             <artifactId>microprofile-health-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${microprofile.health.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

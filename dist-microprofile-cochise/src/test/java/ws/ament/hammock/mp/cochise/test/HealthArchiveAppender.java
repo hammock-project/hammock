@@ -18,11 +18,6 @@
 
 package ws.ament.hammock.mp.cochise.test;
 
-import org.apache.geronimo.config.ConfigImpl;
-import org.apache.geronimo.config.DefaultConfigProvider;
-import org.eclipse.microprofile.config.spi.ConfigProviderResolver;
-import org.eclipse.microprofile.config.spi.Converter;
-import org.eclipse.microprofile.config.tck.converters.DuckConverter;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
@@ -30,15 +25,14 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import ws.ament.hammock.health.HealthCheckManager;
 
-public class ConfigArchiveAppender implements ApplicationArchiveProcessor {
+public class HealthArchiveAppender implements ApplicationArchiveProcessor {
     @Override
     public void process(Archive<?> archive, TestClass testClass) {
         if (archive instanceof WebArchive) {
-            JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "geronimo-config.jar")
-                    .addPackages(true, ConfigImpl.class.getPackage())
-                    .addAsServiceProvider(Converter.class, DuckConverter.class)
-                    .addAsServiceProvider(ConfigProviderResolver.class, DefaultConfigProvider.class)
+            JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "util-health.jar")
+                    .addPackages(true, HealthCheckManager.class.getPackage())
                     .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
             archive.as(WebArchive.class).addAsLibrary(jar);
         }

@@ -65,9 +65,20 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>util-health</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-tck</artifactId>
             <version>${microprofile.config.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.health</groupId>
+            <artifactId>microprofile-health-tck</artifactId>
+            <version>${microprofile.health.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -96,6 +107,7 @@
                 <configuration>
                     <dependenciesToScan>
                         <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
+                        <!--<dependency>org.eclipse.microprofile.health:microprofile-health-tck</dependency>-->
                     </dependenciesToScan>
                     <excludes>
                         <exclude>org.eclipse.microprofile.config.tck.ConfigProviderTest</exclude>

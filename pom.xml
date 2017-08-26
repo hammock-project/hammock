@@ -127,6 +127,7 @@
         <geronimo-config.version>1.0-SNAPSHOT</geronimo-config.version>
         <microprofile.config.version>1.1-RC1</microprofile.config.version>
         <microprofile.jwt.version>1.0-RC3</microprofile.jwt.version>
+        <microprofile.health.version>1.0-SNAPSHOT</microprofile.health.version>
     </properties>
     <modules>
         <module>core</module>
