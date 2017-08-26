@@ -41,16 +41,12 @@ public class HealthCheckServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.newBuilder().build();
         HealthCheckModel healthCheckModel = healthCheckManager.performHealthChecks();
-        if(healthCheckModel == null) {
-            resp.setStatus(204);
+        if (healthCheckModel.getOutcome().equalsIgnoreCase(HealthCheckResponse.State.UP.name())) {
+            resp.setStatus(200);
+        } else {
+            resp.setStatus(503);
         }
-        else {
-            if(healthCheckModel.getOutcome().equalsIgnoreCase(HealthCheckResponse.State.UP.name())) {
-                resp.setStatus(200);
-            }
-            else {
-                resp.setStatus(503);
-            }
+        if (!healthCheckModel.getChecks().isEmpty()) {
             jsonb.toJson(healthCheckModel, resp.getOutputStream());
         }
     }

@@ -21,22 +21,22 @@ package ws.ament.hammock.health;
 import java.util.Map;
 
 public class HealthResultModel {
-    private final String id;
-    private final String result;
+    private final String name;
+    private final String state;
     private final Map<String, Object> data;
 
-    public HealthResultModel(String id, String result, Map<String, Object> data) {
-        this.id = id;
-        this.result = result;
+    public HealthResultModel(String name, String state, Map<String, Object> data) {
+        this.name = name;
+        this.state = state;
         this.data = data;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public String getResult() {
-        return result;
+    public String getState() {
+        return state;
     }
 
     public Map<String, Object> getData() {
@@ -46,8 +46,8 @@ public class HealthResultModel {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("HealthResultModel{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", result='").append(result).append('\'');
+        sb.append("name='").append(name).append('\'');
+        sb.append(", state='").append(state).append('\'');
         sb.append(", data=").append(data);
         sb.append('}');
         return sb.toString();

@@ -18,6 +18,8 @@
 
 package ws.ament.hammock.health;
 
+import org.apache.johnzon.mapper.JohnzonIgnore;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -40,10 +42,8 @@ public class HealthCheckModel {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("HealthCheckModel{");
-        sb.append("outcome='").append(outcome).append('\'');
-        sb.append(", checks=").append(checks);
-        sb.append('}');
-        return sb.toString();
+        return "HealthCheckModel{" + "outcome='" + outcome + '\'' +
+                ", checks=" + checks +
+                '}';
     }
 }

@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.health;
 
+import org.apache.geronimo.config.ConfigImpl;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
@@ -47,6 +48,7 @@ public class InjectedResponseBuilderTest {
     public static Archive<?> jar() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(TestWebServer.class, InjectedCheck.class)
+                .addPackages(true, ConfigImpl.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

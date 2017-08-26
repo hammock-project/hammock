@@ -18,15 +18,14 @@
 
 package ws.ament.hammock.health;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyMap;
@@ -34,20 +33,28 @@ import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
 public class HealthCheckManager {
+    public static final String REQUIRE_ANNOTATION = "hammock.health.require.annotation";
     @Inject
     @Any
     private Instance<HealthCheck> healthChecks;
 
+    @Inject
+    @ConfigProperty(name = REQUIRE_ANNOTATION, defaultValue = "false")
+    private boolean requireAnnotation;
+
     public HealthCheckModel performHealthChecks() {
-        if(healthChecks.isUnsatisfied()) {
-            // no checks found
-            return null;
+        Instance<HealthCheck> healthChecks = this.healthChecks;
+        if (requireAnnotation) {
+            healthChecks = this.healthChecks.select(HealthLiteral.INSTANCE);
         }
-        final List<HealthCheck> checks = healthChecks.stream().collect(toList());
-        List<HealthResultModel> results = checks.stream().map(HealthCheck::call)
+        List<HealthCheck> healthCheckBeans = healthChecks.stream()
+                .collect(toList());
+
+        List<HealthResultModel> results = healthCheckBeans.stream()
+                .map(HealthCheck::call)
                 .map(r -> new HealthResultModel(r.getName(), r.getState().name(), r.getData().orElse(emptyMap())))
                 .collect(toList());
-        boolean anyDown = results.stream().anyMatch(r -> r.getResult().equalsIgnoreCase(HealthCheckResponse.State.DOWN.name()));
+        boolean anyDown = results.stream().anyMatch(r -> r.getState().equalsIgnoreCase(HealthCheckResponse.State.DOWN.name()));
         try {
             if (anyDown) {
                 return new HealthCheckModel(HealthCheckResponse.State.DOWN.name(), results);
@@ -56,9 +63,8 @@ public class HealthCheckManager {
             }
         }
         finally {
-            checks.stream()
-                    .filter(c -> c.getClass().isAnnotationPresent(Dependent.class))
-                    .forEach(healthChecks::destroy);
+            healthCheckBeans.forEach(healthChecks::destroy);
         }
     }
+
 }

@@ -21,7 +21,9 @@ package ws.ament.hammock.mp.cochise.test;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -36,6 +38,9 @@ public class HammockArchiveAppender implements ApplicationArchiveProcessor {
                     .addPackage("io.astefanutti.metrics.cdi")
                     .addAsManifestResource(BEANS_XML, "beans.xml");
             archive.as(WebArchive.class).addAsLibrary(jar);
+            if(archive.as(WebArchive.class).get(ArchivePaths.create("/WEB-INF/beans.xml")) == null) {
+                archive.as(WebArchive.class).addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+            }
         }
     }
 }

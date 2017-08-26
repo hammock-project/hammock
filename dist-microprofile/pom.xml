@@ -112,7 +112,7 @@
                 <configuration>
                     <dependenciesToScan>
                         <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
-                        <!--<dependency>org.eclipse.microprofile.health:microprofile-health-tck</dependency>-->
+                        <dependency>org.eclipse.microprofile.health:microprofile-health-tck</dependency>
                     </dependenciesToScan>
                     <excludes>
                         <exclude>org.eclipse.microprofile.config.tck.ConfigProviderTest</exclude>
