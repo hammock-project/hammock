@@ -81,6 +81,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.microprofile.jwt</groupId>
+            <artifactId>microprofile-jwt-auth-tck</artifactId>
+            <version>${microprofile.jwt.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.9.9</version>
@@ -113,9 +119,12 @@
                     <dependenciesToScan>
                         <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
                         <dependency>org.eclipse.microprofile.health:microprofile-health-tck</dependency>
+                        <dependency>org.eclipse.microprofile.jwt:microprofile-jwt-auth-tck</dependency>
                     </dependenciesToScan>
                     <excludes>
                         <exclude>org.eclipse.microprofile.config.tck.ConfigProviderTest</exclude>
+                        <exclude>org.eclipse.microprofile.jwt.tck.container.ejb.EjbTest</exclude>
+                        <exclude>org.eclipse.microprofile.jwt.tck.container.jacc.SubjectTest</exclude>
                     </excludes>
                     <systemPropertyVariables>
                         <org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>false</org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>
