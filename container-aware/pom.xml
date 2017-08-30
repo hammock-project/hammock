@@ -71,8 +71,16 @@
             <id>OWB2</id>
             <dependencies>
                 <dependency>
-                    <groupId>javax.enterprise</groupId>
-                    <artifactId>cdi-api</artifactId>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-jcdi_2.0_spec</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-interceptor_1.2_spec</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-atinject_1.0_spec</artifactId>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>

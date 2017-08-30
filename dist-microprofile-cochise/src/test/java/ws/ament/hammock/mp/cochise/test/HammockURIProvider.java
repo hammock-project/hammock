@@ -18,18 +18,24 @@
 
 package ws.ament.hammock.mp.cochise.test;
 
-import org.jboss.arquillian.container.test.impl.enricher.resource.URIResourceProvider;
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
+import ws.ament.hammock.HammockRuntime;
 
-public class ArchiveAppenderExtension implements LoadableExtension {
+import javax.enterprise.inject.spi.CDI;
+import java.lang.annotation.Annotation;
+import java.net.URI;
+
+public class HammockURIProvider implements ResourceProvider {
     @Override
-    public void register(ExtensionBuilder extensionBuilder) {
-        extensionBuilder
-            .override(ResourceProvider.class, URIResourceProvider.class, HammockURIProvider.class)
-            .service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class)
-            .service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class)
-            .service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
+    public Object lookup(ArquillianResource arquillianResource, Annotation... annotations) {
+        HammockRuntime hammockRuntime = CDI.current().select(HammockRuntime.class).get();
+        return URI.create(hammockRuntime.getMachineURL());
     }
+
+    @Override
+    public boolean canProvide(Class<?> type) {
+        return type.isAssignableFrom(URI.class);
+    }
+
 }
