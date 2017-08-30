@@ -78,10 +78,10 @@
         </repository>
     </repositories>
     <properties>
-        <weld3.version>3.0.0.Final</weld3.version>
+        <weld3.version>3.0.1.Final</weld3.version>
         <resteasy.version>3.1.4.Final</resteasy.version>
         <arquillian.version>1.1.13.Final</arquillian.version>
-        <undertow.version>1.4.18.Final</undertow.version>
+        <undertow.version>1.4.19.Final</undertow.version>
         <jetty.version>9.4.6.v20170531</jetty.version>
         <arquillian.weld.version>2.0.0.Beta5</arquillian.weld.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -89,7 +89,7 @@
         <assertj.version>3.8.0</assertj.version>
         <commons-io.version>2.5</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <tomcat.version>9.0.0.M22</tomcat.version>
+        <tomcat.version>9.0.0.M26</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
         <johnzon.version>1.1.2</johnzon.version>
         <metrics.version>3.2.4</metrics.version>
@@ -105,24 +105,24 @@
         <hibernate.version>5.2.10.Final</hibernate.version>
         <openjpa.version>2.4.2</openjpa.version>
         <jersey.version>2.25.1</jersey.version>
-        <mockito-core.version>2.8.47</mockito-core.version>
+        <mockito-core.version>2.9.0</mockito-core.version>
         <HikariCP.version>2.6.3</HikariCP.version>
         <h2.version>1.4.196</h2.version>
         <flyway.version>4.2.0</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
-        <eclipselink.version>2.6.4</eclipselink.version>
+        <eclipselink.version>2.7.0</eclipselink.version>
         <activemq.artemis.version>1.5.4</activemq.artemis.version>
         <rabbitmq-amqp-client.version>4.2.0</rabbitmq-amqp-client.version>
         <javax.annotation-api.version>1.3</javax.annotation-api.version>
         <openwebbeans2.version>2.0.1-SNAPSHOT</openwebbeans2.version>
         <camel.version>2.19.2</camel.version>
         <log4j.version>2.8.2</log4j.version>
-        <hibernate-validator.version>6.0.1.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.0.2.Final</hibernate-validator.version>
         <javax.el.version>3.0.1-b08</javax.el.version>
         <zipkin-brave.version>4.5.2</zipkin-brave.version>
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
-        <nimbus-jose-jwt.version>4.41.1</nimbus-jose-jwt.version>
+        <nimbus-jose-jwt.version>5.1</nimbus-jose-jwt.version>
         <keycloak.version>3.2.1.Final</keycloak.version>
         <geronimo-config.version>1.0-SNAPSHOT</geronimo-config.version>
         <microprofile.config.version>1.1-RC1</microprofile.config.version>
