@@ -46,8 +46,6 @@ public class HealthCheckServlet extends HttpServlet {
         } else {
             resp.setStatus(503);
         }
-        if (!healthCheckModel.getChecks().isEmpty()) {
-            jsonb.toJson(healthCheckModel, resp.getOutputStream());
-        }
+        jsonb.toJson(healthCheckModel, resp.getOutputStream());
     }
 }
