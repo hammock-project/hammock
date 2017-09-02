@@ -36,6 +36,12 @@ public class JWTIdentityHolder {
         return jwtIdentity;
     }
 
+    @Produces
+    @RequestScoped
+    public JWTPrincipal getPrincipal() {
+        return jwtIdentity.getPrincipal();
+    }
+
     public void setJwtIdentity(JWTIdentity jwtIdentity) {
         this.jwtIdentity = jwtIdentity;
     }

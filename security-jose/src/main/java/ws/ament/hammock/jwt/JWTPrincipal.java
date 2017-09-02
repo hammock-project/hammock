@@ -33,6 +33,10 @@ public class JWTPrincipal implements JsonWebToken {
     private final String stringForm;
     private final List<String> roles;
 
+    public JWTPrincipal() {
+        this(emptyMap(), "");
+    }
+
     public JWTPrincipal(Map<String,Object> jwt, String stringForm) {
         this.jwt = jwt;
         this.stringForm = stringForm;
@@ -112,8 +116,8 @@ public class JWTPrincipal implements JsonWebToken {
     }
 
     @Override
-    public Object getClaim(String s) {
-        return jwt.get(s);
+    public <T> T getClaim(String s) {
+        return (T)jwt.get(s);
     }
 
     public boolean isUserInRole(String role) {
