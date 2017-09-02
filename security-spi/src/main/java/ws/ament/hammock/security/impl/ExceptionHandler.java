@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.security.impl;
 
+import ws.ament.hammock.security.api.MissingRolesException;
 import ws.ament.hammock.security.api.NotLoggedInException;
 
 import javax.enterprise.context.RequestScoped;
@@ -26,10 +27,26 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-@Provider
 @RequestScoped
-public class NotLoggedInExceptionMapper implements ExceptionMapper<NotLoggedInException> {
+@Provider
+public class ExceptionHandler implements ExceptionMapper<Exception>{
     @Override
+    public Response toResponse(Exception e) {
+        e.printStackTrace();
+        if(e instanceof MissingRolesException) {
+            return toResponse((MissingRolesException)e);
+        }
+        else if(e instanceof NotLoggedInException) {
+            return toResponse((NotLoggedInException)e);
+        }
+        return Response.noContent().build();
+    }
+
+    public Response toResponse(MissingRolesException e) {
+        return Response.status(Response.Status.FORBIDDEN)
+                .build();
+    }
+
     public Response toResponse(NotLoggedInException e) {
         return Response.status(Response.Status.UNAUTHORIZED)
                 .header(HttpHeaders.WWW_AUTHENTICATE,"Bearer")
