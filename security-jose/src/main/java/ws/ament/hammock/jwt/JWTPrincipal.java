@@ -21,6 +21,7 @@ package ws.ament.hammock.jwt;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import javax.enterprise.inject.Vetoed;
 import javax.json.*;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 import static java.util.stream.Collectors.toList;
 
+@Vetoed
 public class JWTPrincipal implements JsonWebToken {
     private final JsonObject jwt;
     private final String stringForm;

@@ -20,21 +20,18 @@ package ws.ament.hammock.jwt.bean;
 
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.ClaimValue;
-import ws.ament.hammock.jwt.HammockClaimValue;
 import ws.ament.hammock.jwt.JWTPrincipal;
 import ws.ament.hammock.utils.BiFunctionBean;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.*;
 import javax.inject.Provider;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
@@ -69,17 +66,20 @@ public class JWTExtension implements Extension {
         claimDefinitions.addAll(providers);
 
         claimDefinitions.forEach(claimDefinition -> {
-            abd.addBean(new BiFunctionBean<>(BiFunctionBean.class, claimDefinition.rawType,
+            abd.addBean(new BiFunctionBean<>(BiFunctionBean.class, claimDefinition.returnType,
                     claimDefinition, singleton(claimDefinition.claim),
-                    RequestScoped.class, ClaimProducer.INSTANCE));
+                    Dependent.class, ClaimProducer.INSTANCE));
         });
     }
 
     private static ClaimDefinition toDefinition(InjectionPoint ip) {
-        Type rawType = ip.getType();
-        Type type = (ip.getType() instanceof ParameterizedType) ?
-                ((ParameterizedType) ip.getType()).getActualTypeArguments()[0] : ip.getType();
-        return new ClaimDefinition(getClaim(ip.getQualifiers()), rawType, type);
+        return createClaimDefinition(ip.getType(), ip);
+    }
+
+    private static ClaimDefinition createClaimDefinition(Type returnType, InjectionPoint ip) {
+        Type typeArgument = (returnType instanceof ParameterizedType) ?
+                ((ParameterizedType) returnType).getActualTypeArguments()[0] : returnType;
+        return new ClaimDefinition(getClaim(ip.getQualifiers()), returnType, typeArgument);
     }
 
     private static Claim getClaim(Set<Annotation> annotations) {
@@ -97,57 +97,16 @@ public class JWTExtension implements Extension {
 
         @Override
         public Object apply(CreationalContext<Object> cc, ClaimDefinition claimDefinition) {
-            Claim claim = claimDefinition.claim;
             JWTPrincipal jwtPrincipal = CDI.current().select(JWTPrincipal.class).get();
-            if (claimDefinition.rawType == Optional.class) {
-                return Optional.ofNullable(jwtPrincipal.getClaim(claim.value()));
-            } else if (claimDefinition.rawType instanceof ParameterizedType &&
-                    ((Class)((ParameterizedType)claimDefinition.rawType).getRawType()).isAssignableFrom(ClaimValue.class)) {
-                return new HammockClaimValue<>(claimDefinition.claim.value(), jwtPrincipal.getClaim(claim.value()));
-            } else {
-                Object value = jwtPrincipal.getClaim(claim.value());
+            HammockClaimValue value = new HammockClaimValue<>(jwtPrincipal, claimDefinition);
+            if (claimDefinition.returnType instanceof ParameterizedType &&
+                    ((Class)((ParameterizedType)claimDefinition.returnType).getRawType()).isAssignableFrom(ClaimValue.class)) {
                 return value;
+            }
+            else {
+                return value.getValue();
             }
         }
     }
 
-    private static class ClaimDefinition {
-        private final Claim claim;
-        private final Type rawType;
-        private final Type type;
-
-        ClaimDefinition(Claim claim, Type rawType, Type type) {
-            this.claim = claim;
-            this.rawType = rawType;
-            this.type = type;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ClaimDefinition that = (ClaimDefinition) o;
-
-            if (claim != null ? !claim.equals(that.claim) : that.claim != null) return false;
-            if (rawType != null ? !rawType.equals(that.rawType) : that.rawType != null) return false;
-            return type != null ? type.equals(that.type) : that.type == null;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = claim != null ? claim.hashCode() : 0;
-            result = 31 * result + (rawType != null ? rawType.hashCode() : 0);
-            result = 31 * result + (type != null ? type.hashCode() : 0);
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "ClaimDefinition{" + "claim=" + claim +
-                    ", rawType=" + rawType +
-                    ", type=" + type +
-                    '}';
-        }
-    }
 }
