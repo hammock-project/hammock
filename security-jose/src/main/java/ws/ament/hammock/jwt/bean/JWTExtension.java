@@ -51,7 +51,6 @@ public class JWTExtension implements Extension {
     public void locateClaims(@Observes ProcessInjectionPoint<?, ?> pip) {
         Claim claim = pip.getInjectionPoint().getAnnotated().getAnnotation(Claim.class);
         if (claim != null) {
-            System.out.println("found claim " + claim + " for type " + pip.getInjectionPoint().getType());
             injectionPoints.add(pip.getInjectionPoint());
         }
     }
@@ -70,7 +69,6 @@ public class JWTExtension implements Extension {
         claimDefinitions.addAll(providers);
 
         claimDefinitions.forEach(claimDefinition -> {
-            System.out.println("Registering definition " + claimDefinition);
             abd.addBean(new BiFunctionBean<>(BiFunctionBean.class, claimDefinition.rawType,
                     claimDefinition, singleton(claimDefinition.claim),
                     RequestScoped.class, ClaimProducer.INSTANCE));
@@ -108,10 +106,6 @@ public class JWTExtension implements Extension {
                 return new HammockClaimValue<>(claimDefinition.claim.value(), jwtPrincipal.getClaim(claim.value()));
             } else {
                 Object value = jwtPrincipal.getClaim(claim.value());
-                if (value != null) {
-                    System.out.println("returning value " + value + " and expecting type " + claimDefinition.rawType +
-                            " with actual type " + claimDefinition.type);
-                }
                 return value;
             }
         }
