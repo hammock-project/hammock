@@ -47,17 +47,14 @@
             <artifactId>hammock-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.johnzon</groupId>
-            <artifactId>johnzon-jaxrs</artifactId>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>johnzon</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>util-health</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-json_1.1_spec</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.config</groupId>
