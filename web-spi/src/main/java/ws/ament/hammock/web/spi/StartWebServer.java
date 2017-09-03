@@ -57,15 +57,7 @@ public class StartWebServer {
     public static final String PREFIX_REGEX = "\\$\\{";
     public static final String SUFFIX = "}";
     @Inject
-    @Any
-    private Instance<HttpServlet> servlets;
-
-    @Inject
-    @Any
-    private Instance<Filter> filters;
-    @Inject
     private BeanManager beanManager;
-
     @Inject
     private WebServerExtension extension;
 
@@ -119,28 +111,30 @@ public class StartWebServer {
     }
 
     private void processFilters() {
-        filters.forEach(filter -> {
-            WebFilter webFilter = ClassUtils.getAnnotation(filter.getClass(), WebFilter.class);
+        Consumer<Class<? extends Filter>> c = filter -> {
+            WebFilter webFilter = ClassUtils.getAnnotation(filter, WebFilter.class);
             if(webFilter != null) {
                 FilterDescriptor filterDescriptor = new FilterDescriptor(webFilter.filterName(),
                         webFilter.value(), mapUrls(webFilter.urlPatterns()), webFilter.dispatcherTypes(),
                         webFilter.initParams(), webFilter.asyncSupported(), webFilter.servletNames(),
-                        filter.getClass());
+                        filter);
                 webServer.addFilter(filterDescriptor);
             }
-        });
+        };
+        extension.processFilters(c);
     }
 
     private void procesServlets() {
-        servlets.forEach(servlet -> {
-            WebServlet webServlet = ClassUtils.getAnnotation(servlet.getClass(), WebServlet.class);
+        Consumer<Class<? extends HttpServlet>> c = servlet -> {
+            WebServlet webServlet = ClassUtils.getAnnotation(servlet, WebServlet.class);
             if(webServlet != null) {
                 ServletDescriptor servletDescriptor = new ServletDescriptor(webServlet.name(),
                         webServlet.value(), mapUrls(webServlet.urlPatterns()), webServlet.loadOnStartup(),
-                        webServlet.initParams(),webServlet.asyncSupported(),servlet.getClass());
+                        webServlet.initParams(),webServlet.asyncSupported(),servlet);
                 webServer.addServlet(servletDescriptor);
             }
-        });
+        };
+        extension.processServlets(c);
     }
 
     private static String[] mapUrls(String[] urls) {
