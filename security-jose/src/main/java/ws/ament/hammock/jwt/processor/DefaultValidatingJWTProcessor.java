@@ -36,11 +36,13 @@ import ws.ament.hammock.jwt.JWTException;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.Map;
 
 @ApplicationScoped
 public class DefaultValidatingJWTProcessor implements JWTProcessor{
@@ -62,9 +64,10 @@ public class DefaultValidatingJWTProcessor implements JWTProcessor{
     }
 
     @Override
-    public Map<String, Object> process(String jwt) throws JWTException {
+    public JsonObject process(String jwt) throws JWTException {
         try {
-            return delegate.process(jwt, null).toJSONObject();
+            String rawJwt = delegate.process(jwt, null).toString();
+            return Json.createReader(new StringReader(rawJwt)).readObject();
         } catch (ParseException | BadJOSEException | JOSEException e) {
             throw new JWTException("Unable to parse jwt", e);
         }

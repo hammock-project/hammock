@@ -28,7 +28,7 @@ import java.util.Collections;
 @RequestScoped
 public class JWTIdentityHolder {
 
-    private JWTIdentity jwtIdentity = new JWTIdentity(new JWTPrincipal(Collections.emptyMap(), null));
+    private JWTIdentity jwtIdentity = new JWTIdentity(new JWTPrincipal());
 
     @Produces
     @RequestScoped

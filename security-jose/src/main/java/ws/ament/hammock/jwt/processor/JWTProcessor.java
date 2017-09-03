@@ -20,8 +20,9 @@ package ws.ament.hammock.jwt.processor;
 
 import ws.ament.hammock.jwt.JWTException;
 
+import javax.json.JsonObject;
 import java.util.Map;
 
 public interface JWTProcessor {
-    Map<String, Object> process(String jwt) throws JWTException;
+    JsonObject process(String jwt) throws JWTException;
 }

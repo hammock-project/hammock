@@ -23,20 +23,23 @@ import com.nimbusds.jose.util.Base64URL;
 import ws.ament.hammock.jwt.JWTException;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.json.Json;
+import javax.json.JsonObject;
+import java.io.StringReader;
 import java.text.ParseException;
-import java.util.Map;
 
 @ApplicationScoped
 public class SimpleJWTProcessor implements JWTProcessor{
     @Override
-    public Map<String, Object> process(String jwt) throws JWTException {
+    public JsonObject process(String jwt) throws JWTException {
         String[] parts = jwt.split("\\.");
         if(parts.length == 3) {
             Base64URL first = new Base64URL(parts[0]);
             Base64URL second = new Base64URL(parts[1]);
             Base64URL third = new Base64URL(parts[2]);
             try {
-                return new JWSObject(first, second, third).getPayload().toJSONObject();
+                String rawJwt = new JWSObject(first, second, third).getPayload().toString();
+                return Json.createReader(new StringReader(rawJwt)).readObject();
             }
             catch (ParseException e) {
                 throw new JWTException("Unable to parse JWT", e);

@@ -91,6 +91,11 @@
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-json_1.1_spec</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>johnzon</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>

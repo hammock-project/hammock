@@ -23,16 +23,13 @@ import ws.ament.hammock.jwt.JWTIdentity;
 import ws.ament.hammock.jwt.JWTPrincipal;
 import ws.ament.hammock.jwt.bean.JWTIdentityHolder;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 @WebFilter(urlPatterns = {"${jwt.filter.uris}"},filterName = "JWT")
 @Dependent
@@ -66,7 +63,7 @@ public class JWTFilter implements Filter {
             }
 
             if(jwt != null) {
-                Map<String, Object> jwtBody = jwtConfiguration.getJwtProcessor().process(jwt);
+                JsonObject jwtBody = jwtConfiguration.getJwtProcessor().process(jwt);
                 JWTPrincipal principal = new JWTPrincipal(jwtBody, jwt);
                 jwtIdentityHolder.setJwtIdentity(new JWTIdentity(principal));
                 servletRequest = new JWTRequest(principal, httpServletRequest);

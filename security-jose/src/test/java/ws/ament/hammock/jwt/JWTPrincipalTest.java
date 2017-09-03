@@ -18,30 +18,34 @@
 
 package ws.ament.hammock.jwt;
 
-import net.minidev.json.JSONObject;
 import org.eclipse.microprofile.jwt.Claims;
 import org.junit.Test;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JWTPrincipalTest {
     @Test
     public void shouldBeValid() throws Exception{
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(Claims.preferred_username.name(), "secure_user");
-        jsonObject.put(Claims.iss.name(),"http;//issuer.com");
-        jsonObject.put(Claims.sub.name(),"24400320");
-        jsonObject.put(Claims.aud.name(),"s6BhdRkqt3");
-        jsonObject.put("nonce","n-0S6_WzA2Mj");
-        jsonObject.put("exp",1311281970l);
-        jsonObject.put("iat",1311280970l);
-        jsonObject.put("auth_time",1311280970l);
-        jsonObject.put("given_name","Bob");
-        jsonObject.put("family_name","Admin");
-        jsonObject.put("email","bob.admin@company.com");
-        jsonObject.put("realm_access", singletonMap("roles", asList("role1","role2")));
+        JsonObjectBuilder roles = Json.createObjectBuilder().add("roles", Json.createArrayBuilder(asList("role1","role2")));
+        JsonObject jsonObject = Json.createObjectBuilder()
+        .add(Claims.preferred_username.name(), "secure_user")
+        .add(Claims.iss.name(),"http;//issuer.com")
+        .add(Claims.sub.name(),"24400320")
+        .add(Claims.aud.name(),"s6BhdRkqt3")
+        .add("nonce","n-0S6_WzA2Mj")
+        .add("exp",1311281970l)
+        .add("iat",1311280970l)
+        .add("auth_time",1311280970l)
+        .add("given_name","Bob")
+        .add("family_name","Admin")
+        .add("email","bob.admin@company.com")
+        .add("realm_access", roles)
+        .build();
 
         JWTPrincipal jwtPrincipal = new JWTPrincipal(jsonObject, null);
         assertThat(jwtPrincipal.getName()).isEqualTo("secure_user");
@@ -56,7 +60,7 @@ public class JWTPrincipalTest {
 
     @Test
     public void handlesNoRealmAccess() {
-        JWTPrincipal JWTPrincipal = new JWTPrincipal(new JSONObject(), null);
+        JWTPrincipal JWTPrincipal = new JWTPrincipal(Json.createObjectBuilder().build(), null);
         assertThat(JWTPrincipal.isUserInRole("role3")).isFalse();
     }
 }
