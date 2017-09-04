@@ -77,6 +77,9 @@ public class JWTExtension implements Extension {
     }
 
     private static ClaimDefinition createClaimDefinition(Type returnType, InjectionPoint ip) {
+        if(returnType instanceof ParameterizedType && ((ParameterizedType) returnType).getRawType() == Provider.class) {
+            returnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+        }
         Type typeArgument = (returnType instanceof ParameterizedType) ?
                 ((ParameterizedType) returnType).getActualTypeArguments()[0] : returnType;
         return new ClaimDefinition(getClaim(ip.getQualifiers()), returnType, typeArgument);

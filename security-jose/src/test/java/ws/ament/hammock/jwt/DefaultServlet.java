@@ -24,6 +24,7 @@ import ws.ament.hammock.security.api.NotLoggedInException;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.json.JsonArray;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +40,7 @@ public class DefaultServlet extends HttpServlet{
     private RequiredLoggedIn requiredLoggedIn;
     @Inject
     @Claim(standard = Claims.aud)
-    private Optional<String> optString;
+    private JsonArray aud;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {

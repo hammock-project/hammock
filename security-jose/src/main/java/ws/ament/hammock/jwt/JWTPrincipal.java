@@ -24,19 +24,18 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import javax.enterprise.inject.Vetoed;
 import javax.json.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
-import static java.util.stream.Collectors.toList;
 
 @Vetoed
 public class JWTPrincipal implements JsonWebToken {
     private final JsonObject jwt;
     private final String stringForm;
-    private final List<String> roles;
-
+    private final Set<String> roles;
+    private final Set<String> groups;
     public JWTPrincipal() {
         this(Json.createObjectBuilder().build(), "");
     }
@@ -44,27 +43,13 @@ public class JWTPrincipal implements JsonWebToken {
     public JWTPrincipal(JsonObject jwt, String stringForm) {
         this.jwt = jwt;
         this.stringForm = stringForm;
-        JsonObject realmAccess = jwt.getJsonObject("realm_access");
-        if (realmAccess == null) {
-            roles = emptyList();
-        }
-        else {
-            JsonArray roles = realmAccess.getJsonArray("roles");
-            if(roles == null) {
-                this.roles = emptyList();
-            }
-            else {
-                this.roles = roles.getValuesAs(JsonString.class)
-                        .stream()
-                        .map(JsonString::getString)
-                        .collect(toList());
-            }
-        }
+        this.groups = parseClaimAsSet(Claims.groups.name());
+        this.roles = parseClaimAsSet("roles");
     }
 
     @Override
     public String getName() {
-        return jwt.getString(Claims.preferred_username.name(), null);
+        return jwt.getString(Claims.upn.name(), null);
     }
 
     @Override
@@ -104,20 +89,7 @@ public class JWTPrincipal implements JsonWebToken {
 
     @Override
     public Set<String> getGroups() {
-        JsonValue groups = jwt.get(Claims.groups.name());
-        if(groups == null) {
-            return null;
-        }
-        if(groups instanceof JsonString) {
-            return singleton(((JsonString) groups).getString());
-        }
-        else if(groups instanceof JsonArray) {
-            JsonArray jsonArray = (JsonArray)groups;
-            return new HashSet<>(jsonArray.getValuesAs(jsonValue -> jsonValue == null ? null : jsonValue.toString()));
-        }
-        else {
-            throw new IllegalStateException("Unable to parse groups "+groups);
-        }
+        return groups;
     }
 
     @Override
@@ -127,11 +99,11 @@ public class JWTPrincipal implements JsonWebToken {
 
     @Override
     public <T> T getClaim(String s) {
-        return (T)jwt.get(s);
+        return (T) jwt.get(s);
     }
 
     public boolean isUserInRole(String role) {
-        return roles.contains(role);
+        return roles.contains(role) || groups.contains(role);
     }
 
     public JsonObject getJwt() {
@@ -148,5 +120,20 @@ public class JWTPrincipal implements JsonWebToken {
 
     public String getEmail() {
         return jwt.getString("email");
+    }
+
+    private Set<String> parseClaimAsSet(String claim) {
+        JsonValue claimValue = jwt.get(claim);
+        if (claimValue == null) {
+            return emptySet();
+        }
+        if (claimValue instanceof JsonString) {
+            return singleton(((JsonString) claimValue).getString());
+        } else if (claimValue instanceof JsonArray) {
+            JsonArray jsonArray = (JsonArray) claimValue;
+            return new HashSet<>(jsonArray.getValuesAs(JsonString.class).stream().map(JsonString::getString).collect(Collectors.toSet()));
+        } else {
+            return emptySet();
+        }
     }
 }

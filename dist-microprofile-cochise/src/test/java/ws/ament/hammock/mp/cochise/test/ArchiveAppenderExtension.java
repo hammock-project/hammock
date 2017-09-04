@@ -19,6 +19,7 @@
 package ws.ament.hammock.mp.cochise.test;
 
 import org.jboss.arquillian.container.test.impl.enricher.resource.URIResourceProvider;
+import org.jboss.arquillian.container.test.impl.enricher.resource.URLResourceProvider;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
@@ -28,6 +29,7 @@ public class ArchiveAppenderExtension implements LoadableExtension {
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder
             .override(ResourceProvider.class, URIResourceProvider.class, HammockURIProvider.class)
+            .override(ResourceProvider.class, URLResourceProvider.class, HammockURLProvider.class)
             .service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class)
             .service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class)
             .service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);

@@ -129,6 +129,7 @@
         <microprofile.jwt.version>1.0-SNAPSHOT</microprofile.jwt.version>
         <microprofile.health.version>1.0-SNAPSHOT</microprofile.health.version>
         <geronimo-jsonb_1.0_spec.version>1.0</geronimo-jsonb_1.0_spec.version>
+        <geronimo-jcdi_2.0_spec.version>1.0.1</geronimo-jcdi_2.0_spec.version>
     </properties>
     <modules>
         <module>core</module>
@@ -186,7 +187,7 @@
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-jcdi_2.0_spec</artifactId>
-                <version>1.0</version>
+                <version>${geronimo-jcdi_2.0_spec.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>

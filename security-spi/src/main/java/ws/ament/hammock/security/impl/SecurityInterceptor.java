@@ -22,6 +22,7 @@ import ws.ament.hammock.security.api.*;
 import ws.ament.hammock.security.internal.AnnotationUtil;
 
 import javax.annotation.Priority;
+import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
@@ -49,8 +50,9 @@ public class SecurityInterceptor {
     }
 
     private void checkLoggedIn(InvocationContext invocationContext) {
-        if (invocationContext.getMethod().isAnnotationPresent(LoggedIn.class) ||
-                invocationContext.getMethod().getDeclaringClass().isAnnotationPresent(LoggedIn.class)) {
+        LoggedIn loggedIn = AnnotationUtil.getAnnotation(invocationContext, LoggedIn.class);
+        DenyAll denyAll = AnnotationUtil.getAnnotation(invocationContext, DenyAll.class);
+        if (loggedIn != null || denyAll != null) {
             if(!identity.isLoggedIn()) {
                 throw new NotLoggedInException(identity+" Not logged in");
             }
@@ -67,7 +69,7 @@ public class SecurityInterceptor {
         if(rolesAllowed != null) {
             roles.addAll(asList(rolesAllowed.value()));
         }
-        if(hasAllRoles != null) {
+        if(!roles.isEmpty()) {
             String missingRoles = roles.stream()
                     .filter(this::notHasRole)
                     .collect(Collectors.joining(", "));

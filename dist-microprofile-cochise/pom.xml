@@ -73,12 +73,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.microprofile.health</groupId>
-            <artifactId>microprofile-health-tck</artifactId>
-            <version>${microprofile.health.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.9.9</version>
@@ -94,6 +88,19 @@
             <groupId>org.apache.openwebbeans.arquillian</groupId>
             <artifactId>owb-arquillian-standalone</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.jwt</groupId>
+            <artifactId>microprofile-jwt-auth-tck</artifactId>
+            <version>${microprofile.jwt.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.jwt</groupId>
+            <artifactId>microprofile-jwt-auth-tck</artifactId>
+            <version>${microprofile.jwt.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -102,10 +109,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20</version>
                 <configuration>
-                    <dependenciesToScan>
-                        <dependency>org.eclipse.microprofile.config:microprofile-config-tck</dependency>
-                        <dependency>org.eclipse.microprofile.health:microprofile-health-tck</dependency>
-                    </dependenciesToScan>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>hammock-tck-tests.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                     <systemPropertyVariables>
                         <org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>false</org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>
                     </systemPropertyVariables>

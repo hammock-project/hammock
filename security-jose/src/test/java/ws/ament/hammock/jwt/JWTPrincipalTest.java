@@ -31,9 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JWTPrincipalTest {
     @Test
     public void shouldBeValid() throws Exception{
-        JsonObjectBuilder roles = Json.createObjectBuilder().add("roles", Json.createArrayBuilder(asList("role1","role2")));
         JsonObject jsonObject = Json.createObjectBuilder()
-        .add(Claims.preferred_username.name(), "secure_user")
+        .add(Claims.upn.name(), "secure_user")
         .add(Claims.iss.name(),"http;//issuer.com")
         .add(Claims.sub.name(),"24400320")
         .add(Claims.aud.name(),"s6BhdRkqt3")
@@ -44,7 +43,7 @@ public class JWTPrincipalTest {
         .add("given_name","Bob")
         .add("family_name","Admin")
         .add("email","bob.admin@company.com")
-        .add("realm_access", roles)
+        .add("roles", Json.createArrayBuilder(asList("role1","role2")))
         .build();
 
         JWTPrincipal jwtPrincipal = new JWTPrincipal(jsonObject, null);
