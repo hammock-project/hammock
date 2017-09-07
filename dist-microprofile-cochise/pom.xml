@@ -114,6 +114,7 @@
                     </suiteXmlFiles>
                     <systemPropertyVariables>
                         <org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>false</org.apache.geronimo.config.configsource.SystemPropertyConfigSource.copy>
+                        <org.eclipse.microprofile.config.tck.CDIPlainInjectionTest.DefaultPropertyBean.configProperty>pathConfigValue</org.eclipse.microprofile.config.tck.CDIPlainInjectionTest.DefaultPropertyBean.configProperty>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
