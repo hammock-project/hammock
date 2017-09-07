@@ -27,24 +27,21 @@ import java.util.Set;
 import java.util.function.BiFunction;
 
 import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
 
 public class BiFunctionBean<T> implements Bean<Object> {
     private final Set<Annotation> qualifiers;
     private final Class<? extends Annotation> scope;
     private final Class<?> beanType;
     private final Set<Type> types;
-    private final T metadata;
-    private final BiFunction<CreationalContext<Object>, T, Object> biFunction;
+    private final BiFunction<CreationalContext<Object>, BiFunctionBean<?>, Object> biFunction;
 
-    public BiFunctionBean(Class<?> beanType, Type type, T metadata, Set<Annotation> qualifiers,
+    public BiFunctionBean(Class<?> beanType, Set<Type> types, Set<Annotation> qualifiers,
                           Class<? extends Annotation> scope,
-                          BiFunction<CreationalContext<Object>, T, Object> biFunction) {
+                          BiFunction<CreationalContext<Object>, BiFunctionBean<?>, Object> biFunction) {
         this.qualifiers = qualifiers;
         this.scope = scope;
-        this.metadata = metadata;
         this.biFunction = biFunction;
-        this.types = singleton(type);
+        this.types = types;
         this.beanType = beanType;
     }
 
@@ -65,7 +62,7 @@ public class BiFunctionBean<T> implements Bean<Object> {
 
     @Override
     public Object create(CreationalContext<Object> context) {
-        return biFunction.apply(context, metadata);
+        return biFunction.apply(context, this);
     }
 
     @Override

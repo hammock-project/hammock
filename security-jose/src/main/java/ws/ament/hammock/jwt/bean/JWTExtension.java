@@ -22,10 +22,12 @@ import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.ClaimValue;
 import ws.ament.hammock.jwt.JWTPrincipal;
 import ws.ament.hammock.utils.BiFunctionBean;
+import ws.ament.hammock.utils.EmptyInjectionPoint;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.*;
 import javax.inject.Provider;
 import java.lang.annotation.Annotation;
@@ -34,14 +36,11 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singleton;
 
 public class JWTExtension implements Extension {
-
-    private static final Predicate<InjectionPoint> NOT_PROVIDERS = ip -> (ip.getType() instanceof Class) || (ip.getType() instanceof ParameterizedType && ((ParameterizedType) ip.getType()).getRawType() != Provider.class);
 
     private Set<InjectionPoint> injectionPoints = new HashSet<>();
 
@@ -53,23 +52,23 @@ public class JWTExtension implements Extension {
     }
 
     public void registerConfigProducer(@Observes AfterBeanDiscovery abd) {
-        Set<ClaimDefinition> claimDefinitions = injectionPoints.stream()
-                .filter(NOT_PROVIDERS)
-                .map(JWTExtension::toDefinition)
-                .collect(Collectors.toSet());
+        if(!injectionPoints.isEmpty()) {
+            Set<Type> types = injectionPoints.stream()
+                    .map(InjectionPoint::getType)
+                    .map(JWTExtension::extractReturnType)
+                    .collect(Collectors.toSet());
+            abd.addBean(new BiFunctionBean<>(BiFunctionBean.class, types,
+                    singleton(new ClaimLiteral()), Dependent.class, ClaimProducer.INSTANCE));
+        }
+    }
 
-        Set<ClaimDefinition> providers = injectionPoints.stream()
-                .filter(NOT_PROVIDERS.negate())
-                .map(JWTExtension::toDefinition)
-                .collect(Collectors.toSet());
-
-        claimDefinitions.addAll(providers);
-
-        claimDefinitions.forEach(claimDefinition -> {
-            abd.addBean(new BiFunctionBean<>(BiFunctionBean.class, claimDefinition.returnType,
-                    claimDefinition, singleton(claimDefinition.claim),
-                    Dependent.class, ClaimProducer.INSTANCE));
-        });
+    private static Type extractReturnType(Type returnType) {
+        if(returnType instanceof ParameterizedType &&
+                (((ParameterizedType) returnType).getRawType() == Provider.class ||
+                        ((ParameterizedType) returnType).getRawType() == Instance.class)) {
+            returnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+        }
+        return returnType;
     }
 
     private static ClaimDefinition toDefinition(InjectionPoint ip) {
@@ -95,11 +94,14 @@ public class JWTExtension implements Extension {
     }
 
     private static final class ClaimProducer implements BiFunction<CreationalContext<Object>,
-            ClaimDefinition, Object> {
+            BiFunctionBean<?>, Object> {
         static ClaimProducer INSTANCE = new ClaimProducer();
 
         @Override
-        public Object apply(CreationalContext<Object> cc, ClaimDefinition claimDefinition) {
+        public Object apply(CreationalContext<Object> cc, BiFunctionBean<?> bean) {
+            BeanManager beanManager = CDI.current().getBeanManager();
+            InjectionPoint ip = (InjectionPoint) beanManager.getInjectableReference(new EmptyInjectionPoint(bean), cc);
+            ClaimDefinition claimDefinition = toDefinition(ip);
             JWTPrincipal jwtPrincipal = CDI.current().select(JWTPrincipal.class).get();
             HammockClaimValue value = new HammockClaimValue<>(jwtPrincipal, claimDefinition);
             if (claimDefinition.returnType instanceof ParameterizedType &&
