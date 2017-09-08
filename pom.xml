@@ -114,7 +114,7 @@
         <javax.persistence.version>2.1.1</javax.persistence.version>
         <hibernate.version>5.2.10.Final</hibernate.version>
         <openjpa.version>2.4.2</openjpa.version>
-        <jersey.version>2.25.1</jersey.version>
+        <jersey.version>2.26</jersey.version>
         <mockito-core.version>2.9.0</mockito-core.version>
         <HikariCP.version>2.7.0</HikariCP.version>
         <h2.version>1.4.196</h2.version>
@@ -561,6 +561,11 @@
             <dependency>
                 <groupId>org.glassfish.jersey.ext.cdi</groupId>
                 <artifactId>jersey-cdi1x-servlet</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
                 <version>${jersey.version}</version>
             </dependency>
             <dependency>

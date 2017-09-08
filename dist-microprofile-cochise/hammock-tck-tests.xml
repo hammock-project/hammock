@@ -48,7 +48,7 @@
                 </methods>
             </class>
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ClaimValueInjectionTest"/>
-            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ProviderInjectionTest"/>
+            <!--<class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ProviderInjectionTest"/>-->
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.UnsecuredPingTest"/>
         </classes>
     </test>

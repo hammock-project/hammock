@@ -46,6 +46,10 @@
             <artifactId>jersey-cdi1x-servlet</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>web-spi</artifactId>
             <version>${project.version}</version>
