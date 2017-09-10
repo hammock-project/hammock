@@ -157,7 +157,7 @@ public class HammockClaimValue<T> implements ClaimValue<T> {
         } else if (type == Set.class && result instanceof JsonString) {
             return singleton(((JsonString) result).getString());
         } else {
-            throw new IllegalArgumentException("Unsupported conversion of " + result + " based to type " + type);
+            throw new IllegalArgumentException("Unsupported conversion of " + result + " based on type " + type);
         }
     }
 }

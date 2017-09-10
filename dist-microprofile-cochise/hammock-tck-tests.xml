@@ -48,7 +48,13 @@
                 </methods>
             </class>
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ClaimValueInjectionTest"/>
-            <!--<class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ProviderInjectionTest"/>-->
+            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ProviderInjectionTest">
+                <methods>
+                    <exclude name="verifyInjectedOptionalCustomMissing"/>
+                    <exclude name="verifyInjectedCustomDouble2"/>
+                    <exclude name="verifyInjectedCustomDouble"/>
+                </methods>
+            </class>
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.UnsecuredPingTest"/>
         </classes>
     </test>
