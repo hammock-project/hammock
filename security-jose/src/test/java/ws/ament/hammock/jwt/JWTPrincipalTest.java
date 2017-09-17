@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +46,7 @@ public class JWTPrincipalTest {
         .add("roles", Json.createArrayBuilder(asList("role1","role2")))
         .build();
 
-        JWTPrincipal jwtPrincipal = new JWTPrincipal(jsonObject, null);
+        JWTPrincipal jwtPrincipal = new JWTPrincipal(jsonObject, null, new RoleProcessor(Collections.emptySet()));
         assertThat(jwtPrincipal.getName()).isEqualTo("secure_user");
         assertThat(jwtPrincipal.isUserInRole("role1")).isTrue();
         assertThat(jwtPrincipal.isUserInRole("role2")).isTrue();
@@ -59,7 +59,7 @@ public class JWTPrincipalTest {
 
     @Test
     public void handlesNoRealmAccess() {
-        JWTPrincipal JWTPrincipal = new JWTPrincipal(Json.createObjectBuilder().build(), null);
+        JWTPrincipal JWTPrincipal = new JWTPrincipal(Json.createObjectBuilder().build(), null, new RoleProcessor(Collections.emptySet()));
         assertThat(JWTPrincipal.isUserInRole("role3")).isFalse();
     }
 }

@@ -140,9 +140,9 @@ public class HammockClaimValue<T> implements ClaimValue<T> {
             } else {
                 return result;
             }
-        } else if (type == Boolean.class) {
+        } else if (type == Boolean.class || type == boolean.class) {
             return JsonValue.TRUE.equals(result);
-        } else if (type == Long.class && result instanceof JsonNumber) {
+        } else if ((type == Long.class || type == long.class) && result instanceof JsonNumber) {
             return JsonNumber.class.cast(result).longValue();
         } else if (type == String.class && result instanceof JsonString) {
             return JsonString.class.cast(result).getString();

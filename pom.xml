@@ -45,48 +45,6 @@
         <url>https://github.com/hammock-project/hammock</url>
         <connection>scm:git:https://github.com/hammock-project/hammock.git</connection>
     </scm>
-    <repositories>
-        <repository>
-            <id>cxf-32</id>
-            <url>https://repository.apache.org/content/repositories/orgapachecxf-1102/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>apache-snapshot-repository</id>
-            <url>http://repository.apache.org/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>microprofile-snapshots</id>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <url>https://repo.eclipse.org/content/groups/microprofile/</url>
-        </repository>
-        <repository>
-            <id>microprofile-releases</id>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <url>https://repo.eclipse.org/content/repositories/microprofile-releases</url>
-        </repository>
-    </repositories>
     <properties>
         <weld3.version>3.0.1.Final</weld3.version>
         <resteasy.version>3.1.4.Final</resteasy.version>
@@ -134,10 +92,10 @@
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
         <nimbus-jose-jwt.version>5.1</nimbus-jose-jwt.version>
         <keycloak.version>3.2.1.Final</keycloak.version>
-        <geronimo-config.version>1.0-SNAPSHOT</geronimo-config.version>
-        <microprofile.config.version>1.1-SNAPSHOT</microprofile.config.version>
-        <microprofile.jwt.version>1.0-SNAPSHOT</microprofile.jwt.version>
-        <microprofile.health.version>1.0-SNAPSHOT</microprofile.health.version>
+        <geronimo-config.version>1.0</geronimo-config.version>
+        <microprofile.config.version>1.1</microprofile.config.version>
+        <microprofile.jwt.version>1.0</microprofile.jwt.version>
+        <microprofile.health.version>1.0</microprofile.health.version>
         <geronimo-jsonb_1.0_spec.version>1.0</geronimo-jsonb_1.0_spec.version>
         <geronimo-jcdi_2.0_spec.version>1.0.1</geronimo-jcdi_2.0_spec.version>
     </properties>

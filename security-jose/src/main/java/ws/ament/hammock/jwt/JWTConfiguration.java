@@ -49,6 +49,10 @@ public class JWTConfiguration {
     private String algorithm;
 
     @Inject
+    @ConfigProperty(name = "jwt.jwk.resource", defaultValue = UNSET_VALUE)
+    private String jwkResource;
+
+    @Inject
     @ConfigProperty(name = "jwt.jwk.source.url", defaultValue = UNSET_VALUE)
     private String jwkSourceUrl;
 
@@ -78,6 +82,10 @@ public class JWTConfiguration {
 
     public String getJwkSourceUrl() {
         return jwkSourceUrl.equals(UNSET_VALUE) ? "" : jwkSourceUrl;
+    }
+
+    public String getJwkResource() {
+        return jwkResource.equals(UNSET_VALUE) ? "" : jwkResource;
     }
 
     public String getJwkSourceFile() {

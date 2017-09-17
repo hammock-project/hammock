@@ -74,7 +74,7 @@ public class SecurityInterceptor {
                     .filter(this::notHasRole)
                     .collect(Collectors.joining(", "));
             if (!missingRoles.isEmpty()) {
-                throw new MissingRolesException(missingRoles);
+                throw new MissingRolesException("Missing Roles: "+missingRoles);
             }
         }
     }

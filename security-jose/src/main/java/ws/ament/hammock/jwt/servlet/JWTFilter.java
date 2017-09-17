@@ -21,15 +21,22 @@ package ws.ament.hammock.jwt.servlet;
 import ws.ament.hammock.jwt.JWTConfiguration;
 import ws.ament.hammock.jwt.JWTIdentity;
 import ws.ament.hammock.jwt.JWTPrincipal;
+import ws.ament.hammock.jwt.RoleProcessor;
 import ws.ament.hammock.jwt.bean.JWTIdentityHolder;
+import ws.ament.hammock.security.api.GroupRolesMapper;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @WebFilter(urlPatterns = {"${jwt.filter.uris}"},filterName = "JWT")
 @Dependent
@@ -40,6 +47,10 @@ public class JWTFilter implements Filter {
 
     @Inject
     private JWTIdentityHolder jwtIdentityHolder;
+
+    @Inject
+    @Any
+    private Instance<GroupRolesMapper> groupRolesMappers;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -64,7 +75,8 @@ public class JWTFilter implements Filter {
 
             if(jwt != null) {
                 JsonObject jwtBody = jwtConfiguration.getJwtProcessor().process(jwt);
-                JWTPrincipal principal = new JWTPrincipal(jwtBody, jwt);
+                List<GroupRolesMapper> mappers = groupRolesMappers.stream().collect(toList());
+                JWTPrincipal principal = new JWTPrincipal(jwtBody, jwt, new RoleProcessor(mappers));
                 jwtIdentityHolder.setJwtIdentity(new JWTIdentity(principal));
                 servletRequest = new JWTRequest(principal, httpServletRequest);
             }

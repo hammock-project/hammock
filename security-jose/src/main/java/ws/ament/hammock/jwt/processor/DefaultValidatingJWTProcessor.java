@@ -40,8 +40,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 
 @ApplicationScoped
@@ -74,7 +76,15 @@ public class DefaultValidatingJWTProcessor implements JWTProcessor{
     }
 
     private JWKSource<SecurityContext> lookupJWKSource() throws IOException, ParseException {
-        if(jwtConfiguration.getJwkSourceUrl() != null &&
+        if(jwtConfiguration.getJwkResource() != null &&
+                !"".equals(jwtConfiguration.getJwkResource())) {
+            URL resource = DefaultValidatingJWTProcessor.class.getResource(jwtConfiguration.getJwkResource());
+            try(InputStream stream = resource.openStream()) {
+                String key = com.nimbusds.jose.util.IOUtils.readInputStreamToString(stream, Charset.defaultCharset());
+                return new ImmutableJWKSet<>(JWKSet.parse(key));
+            }
+        }
+        else if(jwtConfiguration.getJwkSourceUrl() != null &&
                 !"".equals(jwtConfiguration.getJwkSourceUrl())) {
             return new RemoteJWKSet<>(new URL(jwtConfiguration.getJwkSourceUrl()));
         }

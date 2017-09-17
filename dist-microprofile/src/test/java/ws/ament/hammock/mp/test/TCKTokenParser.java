@@ -21,6 +21,7 @@ package ws.ament.hammock.mp.test;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.jwt.tck.util.ITokenParser;
 import ws.ament.hammock.jwt.JWTPrincipal;
+import ws.ament.hammock.jwt.RoleProcessor;
 import ws.ament.hammock.jwt.processor.DefaultValidatingJWTProcessor;
 
 import javax.enterprise.inject.Vetoed;
@@ -28,12 +29,14 @@ import javax.enterprise.inject.spi.CDI;
 import javax.json.JsonObject;
 import java.security.PublicKey;
 
+import static java.util.Collections.emptyList;
+
 @Vetoed
 public class TCKTokenParser implements ITokenParser{
     @Override
     public JsonWebToken parse(String bearerToken, String issuer, PublicKey signedBy) throws Exception {
         DefaultValidatingJWTProcessor processor = CDI.current().select(DefaultValidatingJWTProcessor.class).get();
         JsonObject jsonObject = processor.process(bearerToken);
-        return new JWTPrincipal(jsonObject, bearerToken);
+        return new JWTPrincipal(jsonObject, bearerToken, new RoleProcessor(emptyList()));
     }
 }

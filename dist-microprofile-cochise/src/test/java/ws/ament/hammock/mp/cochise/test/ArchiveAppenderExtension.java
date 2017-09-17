@@ -28,10 +28,10 @@ public class ArchiveAppenderExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder
-            .override(ResourceProvider.class, URIResourceProvider.class, HammockURIProvider.class)
+                .service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class)
+                .service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class)
+                .override(ResourceProvider.class, URIResourceProvider.class, HammockURIProvider.class)
             .override(ResourceProvider.class, URLResourceProvider.class, HammockURLProvider.class)
-            .service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class)
-            .service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class)
-            .service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
+            ;
     }
 }

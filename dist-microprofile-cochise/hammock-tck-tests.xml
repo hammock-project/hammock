@@ -31,23 +31,19 @@
     </test>
     <test name="MicroProfile JWT Auth TCK">
         <classes>
+            <!-- https://issues.jboss.org/browse/ARQ-2143 -->
+            <!--<class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.AppScopedTest"/>-->
+            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ClaimValueInjectionTest"/>
+            <!--https://github.com/eclipse/microprofile-jwt-auth/issues/47-->
+            <!--<class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.InvalidTokenTest"/>-->
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.JsonValueInjectionTest">
                 <methods>
                     <exclude name="verifyInjectedCustomDoubleArray"/>
                     <exclude name="verifyInjectedCustomIntegerArray"/>
                     <exclude name="verifyInjectedCustomStringArray"/>
                 </methods>
-            </class> 
-            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RolesAllowedTest">
-                <methods>
-                    <exclude name="testNeedsGroup1Mapping"/>
-                    <exclude name="callEcho2"/>
-                    <exclude name="callEchoBASIC"/>
-                    <exclude name="callEchoNoAuth"/>
-                    <exclude name="echoWithToken2"/>
-                </methods>
             </class>
-            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ClaimValueInjectionTest"/>
+            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.PrimitiveInjectionTest"/>
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.ProviderInjectionTest">
                 <methods>
                     <exclude name="verifyInjectedOptionalCustomMissing"/>
@@ -55,6 +51,8 @@
                     <exclude name="verifyInjectedCustomDouble"/>
                 </methods>
             </class>
+            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RequiredClaimsTest"/>
+            <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.RolesAllowedTest"/>
             <class name="org.eclipse.microprofile.jwt.tck.container.jaxrs.UnsecuredPingTest"/>
         </classes>
     </test>

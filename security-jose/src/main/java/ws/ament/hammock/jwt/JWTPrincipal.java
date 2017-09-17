@@ -24,11 +24,12 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import javax.enterprise.inject.Vetoed;
 import javax.json.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toSet;
 
 @Vetoed
 public class JWTPrincipal implements JsonWebToken {
@@ -37,14 +38,15 @@ public class JWTPrincipal implements JsonWebToken {
     private final Set<String> roles;
     private final Set<String> groups;
     public JWTPrincipal() {
-        this(Json.createObjectBuilder().build(), "");
+        this(Json.createObjectBuilder().build(), "", new RoleProcessor(emptySet()));
     }
 
-    public JWTPrincipal(JsonObject jwt, String stringForm) {
+    public JWTPrincipal(JsonObject jwt, String stringForm, RoleProcessor roleProcessor) {
         this.jwt = jwt;
         this.stringForm = stringForm;
         this.groups = parseClaimAsSet(Claims.groups.name());
-        this.roles = parseClaimAsSet("roles");
+        Set<String> roles = parseClaimAsSet("roles");
+        this.roles = roleProcessor.parseRoles(roles, this.groups);
     }
 
     @Override
@@ -64,7 +66,20 @@ public class JWTPrincipal implements JsonWebToken {
 
     @Override
     public Set<String> getAudience() {
-        return singleton(jwt.getString(Claims.aud.name()));
+        JsonValue audValue = jwt.get(Claims.aud.name());
+        if(audValue == null) {
+            return null;
+        }
+        else if(audValue instanceof JsonString) {
+            return singleton(((JsonString) audValue).getString());
+        }
+        else if(audValue instanceof JsonArray) {
+            List<JsonString> jsonStrings = ((JsonArray) audValue).getValuesAs(JsonString.class);
+            return jsonStrings.stream().map(JsonString::getString).collect(toSet());
+        }
+        else {
+            throw new IllegalStateException("Invalid aud "+audValue);
+        }
     }
 
     @Override
@@ -131,7 +146,7 @@ public class JWTPrincipal implements JsonWebToken {
             return singleton(((JsonString) claimValue).getString());
         } else if (claimValue instanceof JsonArray) {
             JsonArray jsonArray = (JsonArray) claimValue;
-            return new HashSet<>(jsonArray.getValuesAs(JsonString.class).stream().map(JsonString::getString).collect(Collectors.toSet()));
+            return new HashSet<>(jsonArray.getValuesAs(JsonString.class).stream().map(JsonString::getString).collect(toSet()));
         } else {
             return emptySet();
         }
