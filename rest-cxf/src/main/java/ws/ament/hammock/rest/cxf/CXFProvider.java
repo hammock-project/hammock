@@ -20,6 +20,7 @@ package ws.ament.hammock.rest.cxf;
 
 import org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet;
 import org.apache.cxf.transport.sse.SseHttpTransportFactory;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.RestServerConfiguration;
 import ws.ament.hammock.web.spi.WebParam;
@@ -27,15 +28,26 @@ import ws.ament.hammock.web.spi.WebParam;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.servlet.annotation.WebInitParam;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class CXFProvider {
+    @Inject
+    @ConfigProperty(name = "cxf.enable.sse.transport", defaultValue = "false")
+    private boolean enableSseTransport;
+
     @Produces
     @Dependent
     public ServletDescriptor cxfServlet(RestServerConfiguration restServerConfiguration) {
         String servletMapping = restServerConfiguration.getRestServletMapping();
-        WebInitParam[] initParams = new WebInitParam[]{new WebParam(CXFNonSpringJaxrsServlet.TRANSPORT_ID, SseHttpTransportFactory.TRANSPORT_ID)};
+        List<WebInitParam> params = new ArrayList<>();
+        if(enableSseTransport) {
+            params.add(new WebParam(CXFNonSpringJaxrsServlet.TRANSPORT_ID, SseHttpTransportFactory.TRANSPORT_ID));
+        }
+        WebInitParam[] initParams = params.toArray(new WebInitParam[params.size()]);
         return new ServletDescriptor("CXF",null, new String[]{servletMapping},1, initParams,true,HammockCXFServlet.class);
     }
 }
