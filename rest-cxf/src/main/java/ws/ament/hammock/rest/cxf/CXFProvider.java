@@ -18,18 +18,24 @@
 
 package ws.ament.hammock.rest.cxf;
 
-import org.apache.cxf.cdi.CXFCdiServlet;
+import org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet;
+import org.apache.cxf.transport.sse.SseHttpTransportFactory;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.RestServerConfiguration;
+import ws.ament.hammock.web.spi.WebParam;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
+import javax.servlet.annotation.WebInitParam;
 
 @ApplicationScoped
 public class CXFProvider {
     @Produces
+    @Dependent
     public ServletDescriptor cxfServlet(RestServerConfiguration restServerConfiguration) {
         String servletMapping = restServerConfiguration.getRestServletMapping();
-        return new ServletDescriptor("CXF",null, new String[]{servletMapping},1,null,true,CXFCdiServlet.class);
+        WebInitParam[] initParams = new WebInitParam[]{new WebParam(CXFNonSpringJaxrsServlet.TRANSPORT_ID, SseHttpTransportFactory.TRANSPORT_ID)};
+        return new ServletDescriptor("CXF",null, new String[]{servletMapping},1, initParams,true,HammockCXFServlet.class);
     }
 }
