@@ -23,8 +23,10 @@ import org.apache.johnzon.jaxrs.*;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
+import javax.ws.rs.ext.Provider;
 
 @ApplicationScoped
+@Provider
 public class JohnzonExtension implements Feature {
 
     @Override

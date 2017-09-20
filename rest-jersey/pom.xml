@@ -46,6 +46,16 @@
             <artifactId>jersey-cdi1x-servlet</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-sse</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>johnzon</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
         </dependency>
