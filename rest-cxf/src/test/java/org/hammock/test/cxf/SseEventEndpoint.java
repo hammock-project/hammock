@@ -16,32 +16,30 @@
  * limitations under the License.
  */
 
-package org.hammock.test.jersey.sse;
+package org.hammock.test.cxf;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.sse.OutboundSseEvent;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.Sse;
 import javax.ws.rs.sse.SseEventSink;
 
-import static javax.ws.rs.core.MediaType.SERVER_SENT_EVENTS;
-
+@Path("/sse")
 @RequestScoped
-@Path("/sse/")
-public class SseEndpoint {
+public class SseEventEndpoint {
+    @Inject
+    private Event<SseEvent> event;
+
     @GET
-    @Path("/{uuid}")
-    @Produces(SERVER_SENT_EVENTS)
-    public void doSseCall(@PathParam("uuid") String uuid, @Context SseEventSink sink, @Context Sse sse) {
-        final OutboundSseEvent.Builder builder = sse.newEventBuilder();
-        OutboundSseEvent event = builder.id(uuid)
-                .data(SseModel.class, new SseModel("some model "+uuid))
-                .build();
-        sink.send(event);
-        sink.close();
+    @Path("{connectionId}")
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    public void onEvent(@Context SseEventSink sink, @PathParam("connectionId") final String id, @Context Sse sse) {
+        event.fire(new SseEvent(sink, sse, id));
     }
 }

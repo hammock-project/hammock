@@ -16,23 +16,19 @@
  * limitations under the License.
  */
 
-package org.hammock.test.jersey.sse;
+package org.hammock.test.cxf;
 
-public class SseModel {
-    private String name;
+import javax.ws.rs.sse.Sse;
+import javax.ws.rs.sse.SseEventSink;
 
-    public SseModel() {
-    }
+public class SseEvent {
+    final SseEventSink sink;
+    final Sse sse;
+    final String id;
 
-    public SseModel(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public SseEvent(SseEventSink sink, Sse sse, String id) {
+        this.sink = sink;
+        this.sse = sse;
+        this.id = id;
     }
 }

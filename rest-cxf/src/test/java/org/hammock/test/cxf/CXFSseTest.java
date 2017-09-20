@@ -16,58 +16,70 @@
  * limitations under the License.
  */
 
-package org.hammock.test.jersey;
+package org.hammock.test.cxf;
 
-import org.hammock.test.jersey.sse.SseEndpoint;
-import org.hammock.test.jersey.sse.SseModel;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ws.ament.hammock.johnzon.JohnzonExtension;
+import ws.ament.hammock.rest.cxf.CXFSseFeature;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.test.support.HammockArchive;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.sse.InboundSseEvent;
 import javax.ws.rs.sse.SseEventSource;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import static org.junit.Assert.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 @EnableRandomWebServerPort
-public class SseTest {
-
+@Ignore
+public class CXFSseTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().classes(SseEndpoint.class, JohnzonExtension.class).jar();
+        return new HammockArchive().classes(SseEventHandler.class, SseEventEndpoint.class, CXFSseFeature.class).jar();
     }
 
     @ArquillianResource
     private URI uri;
 
     @Test
-    public void shouldBeAbleToRetrieveRestEndpoint() throws Exception {
-        WebTarget target = ClientBuilder.newClient().register(JohnzonExtension.class).target(uri+"/sse/{uuid}").resolveTemplate("uuid", UUID.randomUUID().toString());
-        List<SseModel> receivedModels = new ArrayList<>();
+    public void testFireSseEventsAsync() throws InterruptedException {
+        final WebTarget target = createWebTarget("/sse/" + UUID.randomUUID());
+        final Collection<String> messages = new ArrayList<>();
+
         try (SseEventSource eventSource = SseEventSource.target(target).build()) {
-            eventSource.register(event -> {
-                SseModel body = event.readData(SseModel.class, MediaType.APPLICATION_JSON_TYPE);
-                System.out.println("Received "+body.getName());
-                receivedModels.add(body);
+            eventSource.register(new Consumer<InboundSseEvent>() {
+                @Override
+                public void accept(InboundSseEvent e) {
+                    System.out.println("New event...");
+                    messages.add(e.readData());
+                }
             }, System.out::println);
             eventSource.open();
-            // Give the SSE stream some time to collect all events
-            Thread.sleep(1000);
         }
-        assertFalse(receivedModels.isEmpty());
+
+        // wait for messages to come in
+        Thread.sleep(8000);
+
+        messages.forEach(System.out::println);
+        assertThat(messages).hasSize(4);
     }
 
+    private WebTarget createWebTarget(final String url) {
+        return ClientBuilder
+                .newClient()
+                .property("http.receive.timeout", 8000)
+                .target(uri + url);
+    }
 }

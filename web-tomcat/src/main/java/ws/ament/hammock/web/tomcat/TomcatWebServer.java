@@ -89,7 +89,8 @@ public class TomcatWebServer extends AbstractWebServer{
         List<FilterDescriptor> filterDescriptors = getFilterDescriptors();
         if(!filterDescriptors.isEmpty() && servletDescriptors.isEmpty()) {
             String servletName = "TomcatDefault";
-            Tomcat.addServlet(ctx, servletName, DefaultServlet.class.getName());
+            Wrapper wrapper = Tomcat.addServlet(ctx, servletName, DefaultServlet.class.getName());
+            wrapper.setAsyncSupported(true);
             ctx.addServletMappingDecoded("/*", servletName);
         }
         servletDescriptors.forEach(servletDescriptor -> {
@@ -99,6 +100,7 @@ public class TomcatWebServer extends AbstractWebServer{
                 Arrays.stream(servletDescriptor.initParams())
                         .forEach(p -> wrapper.addInitParameter(p.name(), p.value()));
             }
+            wrapper.setAsyncSupported(true);
             stream(servletDescriptor.urlPatterns()).forEach(s -> ctx.addServletMappingDecoded(s, servletName));
         });
         filterDescriptors.forEach(filterDescriptor -> {
@@ -106,6 +108,7 @@ public class TomcatWebServer extends AbstractWebServer{
             FilterDef filterDef = new FilterDef();
             filterDef.setFilterName(filterName);
             filterDef.setFilterClass(filterDescriptor.getClazz().getName());
+            filterDef.setAsyncSupported("true");
             ctx.addFilterDef(filterDef);
 
             FilterMap mapping = new FilterMap();

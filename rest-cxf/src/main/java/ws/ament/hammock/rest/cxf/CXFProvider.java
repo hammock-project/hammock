@@ -18,6 +18,7 @@
 
 package ws.ament.hammock.rest.cxf;
 
+import org.apache.cxf.cdi.CXFCdiServlet;
 import org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet;
 import org.apache.cxf.transport.sse.SseHttpTransportFactory;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -48,6 +49,6 @@ public class CXFProvider {
             params.add(new WebParam(CXFNonSpringJaxrsServlet.TRANSPORT_ID, SseHttpTransportFactory.TRANSPORT_ID));
         }
         WebInitParam[] initParams = params.toArray(new WebInitParam[params.size()]);
-        return new ServletDescriptor("CXF",null, new String[]{servletMapping},1, initParams,true,HammockCXFServlet.class);
+        return new ServletDescriptor("CXF",null, new String[]{servletMapping},1, initParams,true,CXFCdiServlet.class);
     }
 }

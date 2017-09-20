@@ -16,23 +16,12 @@
  * limitations under the License.
  */
 
-package org.hammock.test.jersey.sse;
+package ws.ament.hammock.rest.cxf;
 
-public class SseModel {
-    private String name;
+import org.apache.cxf.jaxrs.sse.SseFeature;
 
-    public SseModel() {
-    }
+import javax.enterprise.context.ApplicationScoped;
 
-    public SseModel(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+@ApplicationScoped
+public class CXFSseFeature extends SseFeature {
 }

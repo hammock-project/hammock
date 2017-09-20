@@ -19,22 +19,29 @@
 package ws.ament.hammock.rest.cxf;
 
 import org.apache.cxf.Bus;
-import org.apache.cxf.cdi.CXFCdiServlet;
+import org.apache.cxf.bus.extension.ExtensionManagerBus;
 import org.apache.cxf.common.util.ClassUnwrapper;
 
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
+import javax.inject.Named;
+import javax.ws.rs.Produces;
 
-public class HammockCXFServlet extends CXFCdiServlet {
-    @Override
-    @Inject
-    public void setBus(Bus bus) {
+@ApplicationScoped
+public class CXFCdiBusBean {
+    @Produces
+    @Alternative
+    @Named("cxf")
+    @ApplicationScoped
+    public Bus createBus() {
+        ExtensionManagerBus bus = new ExtensionManagerBus();
         bus.setProperty(ClassUnwrapper.class.getName(), (ClassUnwrapper) o -> {
             Class<?> aClass = o.getClass();
-            if(aClass.getName().contains("OwbNormalScopeProxy") || aClass.getName().contains("WeldClientProxy")) {
+            if(aClass.getName().contains("OwbNormalScopeProxy") || aClass.getName().contains("ClientProxyd")) {
                 return aClass.getSuperclass();
             }
             return aClass;
         });
-        super.setBus(bus);
+        return bus;
     }
 }

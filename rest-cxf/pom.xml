@@ -55,6 +55,10 @@
         </dependency>
         <!-- test dependencies -->
         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>jaxrs-rest-tck</artifactId>
             <version>${project.version}</version>
