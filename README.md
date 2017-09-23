@@ -28,7 +28,7 @@ Containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>dist-microprofile</artifactId>
-    <version>1.5</version>
+    <version>2.0</version>
 </dependency>
 ```
 
@@ -38,7 +38,7 @@ Containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>dist-microprofile-cochise</artifactId>
-    <version>1.5</version>
+    <version>2.0</version>
 </dependency>
 ```
 
@@ -92,7 +92,7 @@ To add the security runtime to your app, just include this dependency.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>security-spi</artifactId>
-    <version>1.5</version>
+    <version>2.0</version>
 </dependency>
 ```
 
