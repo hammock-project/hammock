@@ -27,13 +27,17 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyMap;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 
 @ApplicationScoped
 public class HealthCheckManager {
-    public static final String REQUIRE_ANNOTATION = "hammock.health.require.annotation";
+    private static final String REQUIRE_ANNOTATION = "hammock.health.require.annotation";
+    private static final String OUTPUT_FORMAT = "hammock.health.output.format";
     @Inject
     @Any
     private Instance<HealthCheck> healthChecks;
@@ -41,6 +45,10 @@ public class HealthCheckManager {
     @Inject
     @ConfigProperty(name = REQUIRE_ANNOTATION, defaultValue = "false")
     private boolean requireAnnotation;
+
+    @Inject
+    @ConfigProperty(name = OUTPUT_FORMAT, defaultValue = "array")
+    private String outputFormat;
 
     public HealthCheckModel performHealthChecks() {
         Instance<HealthCheck> healthChecks = this.healthChecks;
@@ -57,9 +65,9 @@ public class HealthCheckManager {
         boolean anyDown = results.stream().anyMatch(r -> r.getState().equalsIgnoreCase(HealthCheckResponse.State.DOWN.name()));
         try {
             if (anyDown) {
-                return new HealthCheckModel(HealthCheckResponse.State.DOWN.name(), results);
+                return toModel(HealthCheckResponse.State.DOWN, results);
             } else {
-                return new HealthCheckModel(HealthCheckResponse.State.UP.name(), results);
+                return toModel(HealthCheckResponse.State.UP, results);
             }
         }
         finally {
@@ -67,4 +75,14 @@ public class HealthCheckManager {
         }
     }
 
+    private HealthCheckModel toModel(HealthCheckResponse.State state, List<HealthResultModel> healthResultModels) {
+        if(outputFormat.equals("map")) {
+            Map<String,HealthResultModel> data = healthResultModels.stream()
+                    .collect(Collectors.toMap(HealthResultModel::getName, identity()));
+            return new ObjectHealthCheckModel(state.name(),data);
+        }
+        else {
+            return new ArrayHealthCheckModel(state.name(), healthResultModels);
+        }
+    }
 }

@@ -18,11 +18,30 @@
 
 package ws.ament.hammock.health;
 
-import org.apache.johnzon.mapper.JohnzonIgnore;
-
-import java.util.Collections;
 import java.util.List;
 
-public interface HealthCheckModel {
-    String getOutcome();
+public class ArrayHealthCheckModel implements HealthCheckModel {
+    private final String outcome;
+    private final List<HealthResultModel> checks;
+
+    public ArrayHealthCheckModel(String outcome, List<HealthResultModel> checks) {
+        this.outcome = outcome;
+        this.checks = checks;
+    }
+
+    @Override
+    public String getOutcome() {
+        return outcome;
+    }
+
+    public List<HealthResultModel> getChecks() {
+        return checks;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayHealthCheckModel{" + "outcome='" + outcome + '\'' +
+                ", checks=" + checks +
+                '}';
+    }
 }

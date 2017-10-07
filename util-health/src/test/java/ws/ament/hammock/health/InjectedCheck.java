@@ -18,11 +18,19 @@
 
 package ws.ament.hammock.health;
 
-import org.apache.johnzon.mapper.JohnzonIgnore;
+import org.eclipse.microprofile.health.HealthCheck;
+import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 
-import java.util.Collections;
-import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
-public interface HealthCheckModel {
-    String getOutcome();
+@Dependent
+public class InjectedCheck implements HealthCheck {
+    @Inject
+    private HealthCheckResponseBuilder responseBuilder;
+    @Override
+    public HealthCheckResponse call() {
+        return responseBuilder.up().build();
+    }
 }
