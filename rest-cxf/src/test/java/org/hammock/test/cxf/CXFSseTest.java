@@ -21,6 +21,7 @@ package org.hammock.test.cxf;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -43,11 +44,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 @EnableRandomWebServerPort
-@Ignore
 public class CXFSseTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().classes(SseEventHandler.class, SseEventEndpoint.class, CXFSseFeature.class).jar();
+        return new HammockArchive().classes(SseEventHandler.class, SseEventEndpoint.class, CXFSseFeature.class)
+                .jar()
+                .addAsManifestResource(new StringAsset("cxf.enable.sse.transport=true"),"microprofile-config.properties");
     }
 
     @ArquillianResource
