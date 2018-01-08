@@ -18,6 +18,8 @@
 
 package ws.ament.hammock.bootstrap.weld3;
 
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.weld.bean.builtin.BeanManagerProxy;
 import org.jboss.weld.environment.servlet.Listener;
 import org.jboss.weld.environment.servlet.WeldServletLifecycle;
@@ -29,19 +31,31 @@ import javax.enterprise.inject.se.SeContainer;
 import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.enterprise.inject.spi.CDI;
 
+import static org.jboss.weld.environment.se.Weld.*;
 import static org.jboss.weld.environment.servlet.Container.CONTEXT_PARAM_CONTAINER_CLASS;
 
 public class Weld3Bootstrapper implements Bootstrapper{
     private SeContainer seContainer;
     private SeContainerInitializer seContainerInitializer;
+    private Config config;
 
     public Weld3Bootstrapper() {
         seContainerInitializer = SeContainerInitializer.newInstance();
+        config = ConfigProvider.getConfig();
     }
 
     @Override
     public void start() {
-        seContainer = seContainerInitializer.initialize();
+        boolean isolation = getBoolean(ARCHIVE_ISOLATION_SYSTEM_PROPERTY, false);
+        boolean devMode = getBoolean(DEV_MODE_SYSTEM_PROPERTY, false);
+        boolean shutdownHook = getBoolean(SHUTDOWN_HOOK_SYSTEM_PROPERTY, true);
+        boolean implicit = getBoolean(JAVAX_ENTERPRISE_INJECT_SCAN_IMPLICIT, false);
+        seContainer = seContainerInitializer
+                .addProperty(ARCHIVE_ISOLATION_SYSTEM_PROPERTY, isolation)
+                .addProperty(DEV_MODE_SYSTEM_PROPERTY, devMode)
+                .addProperty(SHUTDOWN_HOOK_SYSTEM_PROPERTY, shutdownHook)
+                .addProperty(JAVAX_ENTERPRISE_INJECT_SCAN_IMPLICIT, implicit)
+                .initialize();
     }
 
     @Override
@@ -56,5 +70,17 @@ public class Weld3Bootstrapper implements Bootstrapper{
         webServer.addServletContextAttribute(org.jboss.weld.Container.CONTEXT_ID_KEY, beanManagerImpl.getContextId());
         webServer.addInitParameter(CONTEXT_PARAM_CONTAINER_CLASS, HammockContainer.class.getName());
         webServer.addListener(Listener.class);
+    }
+
+    private boolean getBoolean(String key, boolean defaultValue) {
+        return config.getOptionalValue(key, Boolean.class).orElse(defaultValue);
+    }
+
+    public SeContainer getSeContainer() {
+        return seContainer;
+    }
+
+    public SeContainerInitializer getSeContainerInitializer() {
+        return seContainerInitializer;
     }
 }
