@@ -38,31 +38,33 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.jpa.DataSourceDefinitionBuilder;
 import ws.ament.hammock.jpa.DataSourceExtension;
 import ws.ament.hammock.jpa.Database;
+import ws.ament.hammock.jpa.EntityManagerFactoryProvider;
 
 @RunWith(Arquillian.class)
-@DataSourceDefinition(name="__default",className = "",url="jdbc:h2:./target/hammocktest")
+@DataSourceDefinition(name = "__default", className = "", url = "jdbc:h2:./target/hammocktest")
 public class FlywayTest {
-   @Deployment
-   public static JavaArchive createDeployment() {
-      return ShrinkWrap.create(JavaArchive.class)
-         .addClasses(DataSourceDefinitionBuilder.class)
-         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-         .addAsServiceProvider(Extension.class, DataSourceExtension.class, FlywayExtension.class);
-   }
+    @Deployment
+    public static JavaArchive createDeployment() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClasses(DataSourceDefinitionBuilder.class)
+                .addPackage(EntityManagerFactoryProvider.class.getPackage())
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsServiceProvider(Extension.class, DataSourceExtension.class, FlywayExtension.class);
+    }
 
-   @Inject
-   @Database("__default")
-   private DataSource testds;
+    @Inject
+    @Database("__default")
+    private DataSource testds;
 
-   @Test
-   public void shouldApplyMigrations() throws Exception{
-      Connection connection = testds.getConnection();
-      try(PreparedStatement preparedStatement = connection.prepareStatement("select count(*) from \"schema_version\"");
-          ResultSet rs = preparedStatement.executeQuery()) {
-         rs.next();
-         int anInt = rs.getInt(1);
-         Assertions.assertThat(anInt).isEqualTo(1);
-      }
+    @Test
+    public void shouldApplyMigrations() throws Exception {
+        Connection connection = testds.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select count(*) from \"schema_version\"");
+             ResultSet rs = preparedStatement.executeQuery()) {
+            rs.next();
+            int anInt = rs.getInt(1);
+            Assertions.assertThat(anInt).isEqualTo(1);
+        }
 
-   }
+    }
 }

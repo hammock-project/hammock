@@ -32,10 +32,13 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceProviderResolverHolder;
 import javax.persistence.spi.PersistenceUnitInfo;
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 import static ws.ament.hammock.jpa.Database.DatabaseLiteral.database;
 
@@ -50,16 +53,14 @@ public class EntityManagerFactoryProvider {
     private String defaultDataSourceName;
 
     @Inject
+    @ConfigProperty(name = "hammock.jpa.__default.entities", defaultValue = "")
+    private String entityClasses;
+
+    @Inject
     private JPAExtension jpaExtension;
 
     @Inject
     private PersistenceUnitBuilder builder;
-    private PersistenceProvider persistenceProvider;
-
-    @PostConstruct
-    private void locatePersistenceProvider() {
-        this.persistenceProvider = PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders().get(0);
-    }
 
     public EntityManagerFactory lookupEntityManagerFactory(String name) {
         return entityManagerFactoryMap.computeIfAbsent(name, s -> {
@@ -68,7 +69,7 @@ public class EntityManagerFactoryProvider {
                 persistenceUnitInfo = getDefaultPersistenceUnitInfo();
             }
             if (persistenceUnitInfo != null) {
-                PersistenceProvider provider = this.persistenceProvider;
+                PersistenceProvider provider = getPersistenceProvider();
                 return provider.createContainerEntityManagerFactory(persistenceUnitInfo, emptyMap());
             } else {
                 Map<String, String> properties = ConfigLoader.loadAllProperties(createPrefix(s), true);
@@ -77,11 +78,16 @@ public class EntityManagerFactoryProvider {
         });
     }
 
-    private PersistenceUnitInfo getDefaultPersistenceUnitInfo() {
+    PersistenceUnitInfo getDefaultPersistenceUnitInfo() {
         DataSource dataSource = CDI.current().select(DataSource.class).select(database(defaultDataSourceName)).get();
-
+        List<String> extraClasses = new ArrayList<>();
+        if(entityClasses.length() > 0) {
+            String[] parts = entityClasses.split(",");
+            extraClasses = asList(parts);
+        }
         return builder
                 .withClasses(jpaExtension.getEntityClasses())
+                .withClasses(extraClasses)
                 .withDataSource(dataSource)
                 .loadAllProperties(createPrefix(DEFAULT_EMF), true)
                 .build();
@@ -90,7 +96,7 @@ public class EntityManagerFactoryProvider {
     @Produces
     @ApplicationScoped
     public PersistenceProvider getPersistenceProvider() {
-        return persistenceProvider;
+        return PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders().get(0);
     }
 
     static String createPrefix(String puName) {

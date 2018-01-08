@@ -63,7 +63,7 @@ public class JPAExtension implements Extension {
         persistenceUnits.stream().map(EntityManagerBean::new).forEach(afterBeanDiscovery::addBean);
         final String defaultDataSourceName = ConfigProvider.getConfig().getOptionalValue("hammock.jpa.__default.datasource", String.class).orElse(DEFAULT_EMF);
         if(!persistenceUnits.contains(defaultDataSourceName)) {
-            afterBeanDiscovery.addBean(new DefaultPersistenceUnitBean(this,defaultDataSourceName));
+            afterBeanDiscovery.addBean(new DefaultPersistenceUnitBean(defaultDataSourceName));
             afterBeanDiscovery.addBean(new EntityManagerBean(defaultDataSourceName));
         }
     }

@@ -24,7 +24,6 @@ import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.persistence.spi.PersistenceUnitInfo;
-import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -32,14 +31,11 @@ import java.util.Set;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static ws.ament.hammock.jpa.Database.DatabaseLiteral.database;
-import static ws.ament.hammock.jpa.EntityManagerFactoryProvider.createPrefix;
 
 public class DefaultPersistenceUnitBean implements Bean<PersistenceUnitInfo> {
-    private final JPAExtension jpaExtension;
     private final String defaultDataSourceName;
 
-    public DefaultPersistenceUnitBean(JPAExtension jpaExtension, String defaultDataSourceName) {
-        this.jpaExtension = jpaExtension;
+    public DefaultPersistenceUnitBean(String defaultDataSourceName) {
         this.defaultDataSourceName = defaultDataSourceName;
     }
     @Override
@@ -59,13 +55,8 @@ public class DefaultPersistenceUnitBean implements Bean<PersistenceUnitInfo> {
 
     @Override
     public PersistenceUnitInfo create(CreationalContext<PersistenceUnitInfo> creationalContext) {
-        DataSource dataSource = CDI.current().select(DataSource.class).select(database(defaultDataSourceName)).get();
-
-        return new PersistenceUnitBuilder()
-                .withClasses(jpaExtension.getEntityClasses())
-                .withDataSource(dataSource)
-                .loadAllProperties(createPrefix(defaultDataSourceName), true)
-                .build();
+        EntityManagerFactoryProvider entityManagerFactoryProvider = CDI.current().select(EntityManagerFactoryProvider.class).get();
+        return entityManagerFactoryProvider.getDefaultPersistenceUnitInfo();
     }
 
     @Override
