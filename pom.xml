@@ -91,8 +91,8 @@
         <geronimo-jaxrs_2.0_spec.version>1.0-alpha-1</geronimo-jaxrs_2.0_spec.version>
         <nimbus-jose-jwt.version>5.2</nimbus-jose-jwt.version>
         <keycloak.version>3.2.1.Final</keycloak.version>
-        <geronimo-config.version>1.0</geronimo-config.version>
-        <microprofile.config.version>1.1</microprofile.config.version>
+        <geronimo-config.version>1.1</geronimo-config.version>
+        <microprofile.config.version>1.2</microprofile.config.version>
         <microprofile.jwt.version>1.0</microprofile.jwt.version>
         <microprofile.health.version>1.0</microprofile.health.version>
         <geronimo-jsonb_1.0_spec.version>1.0</geronimo-jsonb_1.0_spec.version>
