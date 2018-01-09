@@ -30,27 +30,17 @@ import ws.ament.hammock.jpa.JPAExtension;
 
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test Hibernate bootstraping with simple request
- *
- * @author Antoine Sabot-Durand
- */
 @RunWith(Arquillian.class)
-public class HibernateTest {
-
-    @Inject
-    private EmployeeService service;
-
-    @Inject
-    private SimpleEmployeeService simpleEmployeeService;
-
+public class PackageRegisterTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addPackage(HibernateTest.class.getPackage())
+                .addPackage(Employee.class.getPackage())
                 .addAsServiceProviderAndClasses(Extension.class, DataSourceExtension.class, JPAExtension.class)
                 .addPackage(EntityManagerProducer.class.getPackage())
                 .addAsManifestResource("META-INF/beans.xml", "beans.xml")
@@ -58,10 +48,17 @@ public class HibernateTest {
                 .addAsManifestResource("META-INF/persistence.xml");
     }
 
-    @Test
-    public void shouldBeNotEmpty() {
-        assertThat(service.getAll()).isNotEmpty();
-        assertThat(simpleEmployeeService.getAll()).isNotEmpty();
-    }
+    @Inject
+    private EntityManager entityManager;
 
+    @Test
+    public void insertsUUIDColumnRegistered() {
+        entityManager.getTransaction().begin();
+        entityManager.persist(new UUIDEntity());
+        entityManager.getTransaction().commit();
+
+        List<UUIDEntity> entities = entityManager.createNamedQuery("UUIDPKG.find", UUIDEntity.class).getResultList();
+        assertThat(entities).hasSize(1);
+        assertThat(entities.get(0).getUuid()).isNotNull();
+    }
 }
