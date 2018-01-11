@@ -97,6 +97,7 @@
         <microprofile.health.version>1.0</microprofile.health.version>
         <geronimo-jsonb_1.0_spec.version>1.0</geronimo-jsonb_1.0_spec.version>
         <geronimo-jcdi_2.0_spec.version>1.0.1</geronimo-jcdi_2.0_spec.version>
+        <microprofile-opentracing-api.version>1.0</microprofile-opentracing-api.version>
     </properties>
     <modules>
         <module>core</module>
@@ -119,6 +120,7 @@
         <module>util-camel</module>
         <module>util-beanvalidation</module>
         <module>util-brave</module>
+        <module>rest-cxf-opentracing</module>
         <module>security-spi</module>
         <module>dist-microprofile</module>
         <module>dist-microprofile-cochise</module>
@@ -380,6 +382,16 @@
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.microprofile.opentracing</groupId>
+                <artifactId>microprofile-opentracing-api</artifactId>
+                <version>${microprofile-opentracing-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-integration-tracing-opentracing</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
             <dependency>

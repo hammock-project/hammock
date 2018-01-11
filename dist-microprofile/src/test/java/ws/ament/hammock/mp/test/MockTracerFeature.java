@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Hammock and its contributors
+ * Copyright 2018 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,25 @@
 
 package ws.ament.hammock.mp.test;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.spi.LoadableExtension;
+import io.opentracing.Tracer;
+import io.opentracing.mock.MockTracer;
+import ws.ament.hammock.rest.cxf.opentracing.TracerFeature;
 
-public class ArchiveAppenderExtension implements LoadableExtension {
+import javax.annotation.Priority;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Produces;
+
+@ApplicationScoped
+@Alternative
+@Priority(1000)
+public class MockTracerFeature extends TracerFeature {
     @Override
-    public void register(ExtensionBuilder extensionBuilder) {
-        extensionBuilder.service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, OpenTracingAppender.class);
+    @Produces
+    @Dependent
+    @Alternative
+    public Tracer createTracer() {
+        return new MockTracer();
     }
 }

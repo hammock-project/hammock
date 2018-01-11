@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Hammock and its contributors
+ * Copyright 2018 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,16 @@
 package ws.ament.hammock.mp.test;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.test.spi.TestClass;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import ws.ament.hammock.rest.cxf.opentracing.TracerFeature;
 
-public class ArchiveAppenderExtension implements LoadableExtension {
+public class OpenTracingAppender implements ApplicationArchiveProcessor {
     @Override
-    public void register(ExtensionBuilder extensionBuilder) {
-        extensionBuilder.service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, OpenTracingAppender.class);
+    public void process(Archive<?> archive, TestClass testClass) {
+        archive.as(JavaArchive.class)
+                .addClass(MockTracerFeature.class)
+                .addPackages(true, TracerFeature.class.getPackage());
     }
 }
