@@ -23,15 +23,31 @@ import io.opentracing.util.GlobalTracer;
 import org.apache.cxf.tracing.opentracing.jaxrs.OpenTracingFeature;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
 
 @ApplicationScoped
 public class TracerFeature extends OpenTracingFeature {
+    private static Tracer instance = null;
+
+    public TracerFeature() {
+        super(getInstance());
+    }
 
     @Produces
-    @Dependent
+    @Singleton
     public Tracer createTracer() {
-        return GlobalTracer.get();
+        return instance;
+    }
+
+    private static Tracer getInstance() {
+        if(instance == null) {
+            instance = GlobalTracer.get();
+        }
+        return instance;
+    }
+
+    public static void setInstance(Tracer instance) {
+        TracerFeature.instance = instance;
     }
 }
