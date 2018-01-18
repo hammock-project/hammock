@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
-            <artifactId>rest-cxf-opentracing</artifactId>
+            <artifactId>rest-cxf</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -88,18 +88,6 @@
             <artifactId>microprofile-jwt-auth-tck</artifactId>
             <version>${microprofile.jwt.version}</version>
             <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.microprofile.opentracing</groupId>
-            <artifactId>microprofile-opentracing-tck</artifactId>
-            <version>${microprofile-opentracing-api.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.opentracing</groupId>
-            <artifactId>opentracing-mock</artifactId>
-            <version>0.30.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

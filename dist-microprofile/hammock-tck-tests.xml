@@ -18,7 +18,6 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Hammock-Test-Suite" verbose="2" configfailurepolicy="continue">
-
     <test name="Microprofile Config TCK">
         <packages>
             <package name="org.eclipse.microprofile.config.tck.*"/>

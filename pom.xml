@@ -120,7 +120,6 @@
         <module>util-camel</module>
         <module>util-beanvalidation</module>
         <module>util-brave</module>
-        <module>rest-cxf-opentracing</module>
         <module>security-spi</module>
         <module>dist-microprofile</module>
         <module>dist-microprofile-cochise</module>
