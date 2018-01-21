@@ -53,6 +53,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.geronimo.safeguard</groupId>
+            <artifactId>safeguard-impl</artifactId>
+            <version>${safeguard.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.geronimo.config</groupId>
             <artifactId>geronimo-config-impl</artifactId>
         </dependency>

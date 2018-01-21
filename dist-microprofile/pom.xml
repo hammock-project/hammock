@@ -66,6 +66,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.geronimo.safeguard</groupId>
+            <artifactId>safeguard-impl</artifactId>
+            <version>${safeguard.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-tck</artifactId>
             <version>${microprofile.config.version}</version>
