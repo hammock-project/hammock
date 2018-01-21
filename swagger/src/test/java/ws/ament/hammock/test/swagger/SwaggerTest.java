@@ -44,8 +44,8 @@ public class SwaggerTest {
     private URI uri;
 
     @Test
-    public void shouldBeAbleToRetrieveOpenApiDefinitions() {
-        given().accept("application.json").
+    public void shouldBeAbleToRetrieveOpenApiDefinitions() throws InterruptedException {
+        given().accept("application/json").
         when().get(uri + "/openapi").
         then().contentType("application/json")
                 .assertThat().statusCode(200)
