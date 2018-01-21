@@ -59,7 +59,7 @@
         <tomcat.version>9.0.2</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
         <johnzon.version>1.1.5</johnzon.version>
-        <metrics.version>3.2.5</metrics.version>
+        <metrics.version>4.0.2</metrics.version>
         <metrics.cdi.verison>1.4.0</metrics.cdi.verison>
         <geronimo-json_1.1_spec.version>1.0</geronimo-json_1.1_spec.version>
         <geronimo-jta_1.2_spec.version>1.0-alpha-1</geronimo-jta_1.2_spec.version>
