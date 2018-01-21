@@ -98,6 +98,7 @@
         <geronimo-jsonb_1.0_spec.version>1.0</geronimo-jsonb_1.0_spec.version>
         <geronimo-jcdi_2.0_spec.version>1.0.1</geronimo-jcdi_2.0_spec.version>
         <microprofile-opentracing-api.version>1.0</microprofile-opentracing-api.version>
+        <swagger.version>2.0.0-rc3</swagger.version>
     </properties>
     <modules>
         <module>core</module>
@@ -133,6 +134,7 @@
         <module>security-keycloak</module>
         <module>util-health</module>
         <module>johnzon</module>
+        <module>swagger</module>
     </modules>
     <dependencyManagement>
         <dependencies>
