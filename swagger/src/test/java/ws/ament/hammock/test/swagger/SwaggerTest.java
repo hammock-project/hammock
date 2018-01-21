@@ -29,7 +29,7 @@ import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 
 import java.net.URI;
 
-import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(Arquillian.class)
@@ -45,8 +45,9 @@ public class SwaggerTest {
 
     @Test
     public void shouldBeAbleToRetrieveOpenApiDefinitions() {
-        get(uri + "/openapi")
-                .then().contentType("application/json")
+        given().accept("application.json").
+        when().get(uri + "/openapi").
+        then().contentType("application/json")
                 .assertThat().statusCode(200)
                 .body("openapi", is("3.0.0"));
     }
