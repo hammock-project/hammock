@@ -25,5 +25,5 @@ import javax.ws.rs.Path;
 
 @Path("/openapi")
 @RequestScoped
-public class HammockOpenApiResource extends AcceptHeaderOpenApiResource {
+public class HammockOpenApiHeaderResource extends AcceptHeaderOpenApiResource {
 }

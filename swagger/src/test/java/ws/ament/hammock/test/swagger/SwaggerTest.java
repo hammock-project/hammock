@@ -44,11 +44,36 @@ public class SwaggerTest {
     private URI uri;
 
     @Test
-    public void shouldBeAbleToRetrieveOpenApiDefinitions() throws InterruptedException {
+    public void shouldBeAbleToRetrieveOpenApiDefinitionsHeaderJson() throws InterruptedException {
         given().accept("application/json").
         when().get(uri + "/openapi").
         then().contentType("application/json")
                 .assertThat().statusCode(200)
                 .body("openapi", is("3.0.0"));
+    }
+
+    @Test
+    public void shouldBeAbleToRetrieveOpenApiDefinitionsHeaderYaml() throws InterruptedException {
+        given().accept("application/yaml").
+        when().get(uri + "/openapi").
+        then().contentType("application/yaml")
+            .assertThat().statusCode(200);
+    }
+
+    @Test
+    public void shouldBeAbleToRetrieveOpenApiDefinitionsPathJson() throws InterruptedException {
+        given().
+                when().get(uri + "/openapi.json").
+                then().contentType("application/json")
+                .assertThat().statusCode(200)
+                .body("openapi", is("3.0.0"));
+    }
+
+    @Test
+    public void shouldBeAbleToRetrieveOpenApiDefinitionsPathYaml() throws InterruptedException {
+        given().
+                when().get(uri + "/openapi.yaml").
+                then().contentType("application/yaml")
+                .assertThat().statusCode(200);
     }
 }
