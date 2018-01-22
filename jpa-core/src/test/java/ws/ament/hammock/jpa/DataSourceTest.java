@@ -38,7 +38,7 @@ public class DataSourceTest {
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(BeanWithDataSource.class, BuilderBackedBean.class,
-                        DataSourceDefinitionBuilder.class)
+                        DataSourceDefinitionBuilder.class, SimpleWrapper.class)
                 .addPackage(DataSourceDelegateBean.class.getPackage())
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(Extension.class, DataSourceExtension.class);
@@ -52,9 +52,22 @@ public class DataSourceTest {
     @Database("test2")
     private DataSource test2;
 
+    @Inject
+    private SimpleWrapper simpleWrapper;
+
+    @Inject
+    private DataSourceDefinitionBuilder builder;
+
     @Test
     public void shouldInjectDataSource() {
         assertThat(testds).isNotNull();
         assertThat(test2).isNotNull();
+    }
+
+    @Test
+    public void shouldInvokeWrapper() {
+        builder.url("jdbc:h2:mem:test_mem").name("testds").build().getDataSource();
+
+        assertThat(simpleWrapper.isInvoked()).isTrue();
     }
 }

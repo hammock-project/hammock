@@ -31,7 +31,6 @@ public class DefaultDataSourceBean extends DataSourceDelegateBean{
                 .user(getConfig().getOptionalValue("hammock.datasource.__default.user", String.class).orElse(null))
                 .password(getConfig().getOptionalValue("hammock.datasource.__default.password", String.class).orElse(null))
                 .name(getConfig().getOptionalValue("hammock.jpa.__default.datasource", String.class).orElse(DEFAULT_EMF))
-                .build()
-                .getDataSource());
+                .build());
     }
 }

@@ -21,17 +21,17 @@ package ws.ament.hammock.jpa;
 import javax.enterprise.util.AnnotationLiteral;
 
 public class DataSourceDefinition {
-    private final HammockDataSource dataSource;
+    private final DataSourceDefinitionBuilder builder;
     private final String name;
 
     DataSourceDefinition(DataSourceDefinitionBuilder builder) {
-        DataSourceDefinitionLiteral dataSourceDefinition = new DataSourceDefinitionLiteral(builder);
-        this.dataSource = new HammockDataSource(dataSourceDefinition);
-        this.name = dataSourceDefinition.name();
+        this.name = builder.getName();
+        this.builder = builder;
     }
 
     public HammockDataSource getDataSource() {
-        return dataSource;
+        DataSourceDefinitionLiteral dataSourceDefinition = new DataSourceDefinitionLiteral(builder);
+        return new HammockDataSource(dataSourceDefinition);
     }
 
     public String getName() {

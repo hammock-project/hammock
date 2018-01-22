@@ -25,6 +25,7 @@ import javax.enterprise.inject.spi.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
 import static ws.ament.hammock.jpa.Database.DatabaseLiteral.database;
@@ -64,19 +65,22 @@ public class DataSourceExtension implements Extension {
                 .findFirst()
                 .orElse(null);
         dataSourceDefinitions.stream().map(dataSourceDefinitionDataSourceDefinitionFunction)
-                .map(ds -> new DataSourceDelegateBean(ds.getName(), ds::getDataSource))
+                .map(dataSourceDefinition ->  new DataSourceDelegateBean(dataSourceDefinition.getName(),
+                        () -> dataSourceDefinition))
                 .forEach(afterBeanDiscovery::addBean);
-        beanDelegates.stream().map(bean -> new DataSourceDelegateBean(bean.getName(),()  -> bean.create(null).getDataSource()))
+        beanDelegates.stream().map(bean -> new DataSourceDelegateBean(bean.getName(), () -> bean.create(null)))
                 .forEach(afterBeanDiscovery::addBean);
-        databaseProducers.stream().map(producer -> new DataSourceDelegateBean(producer, () -> {
-            ws.ament.hammock.jpa.DataSourceDefinition dataSourceDefinition = CDI.current().select(ws.ament.hammock.jpa.DataSourceDefinition.class)
-                    .select(database(producer))
-                    .get();
-            return dataSourceDefinition.getDataSource();
-        })).forEach(afterBeanDiscovery::addBean);
+        databaseProducers.stream().map(producer -> new DataSourceDelegateBean(producer, create(producer)))
+                .forEach(afterBeanDiscovery::addBean);
         if (defaultBean == null && defaultDataSource == null) {
             afterBeanDiscovery.addBean(new DefaultDataSourceBean());
         }
+    }
+
+    private Supplier<ws.ament.hammock.jpa.DataSourceDefinition> create(String name) {
+        return () -> CDI.current().select(ws.ament.hammock.jpa.DataSourceDefinition.class)
+                .select(database(name))
+                .get();
     }
 
     private Function<DataSourceDefinition, ws.ament.hammock.jpa.DataSourceDefinition>

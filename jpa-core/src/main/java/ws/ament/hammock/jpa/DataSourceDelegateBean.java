@@ -33,12 +33,12 @@ import static java.util.Collections.singleton;
 import static ws.ament.hammock.jpa.Database.DatabaseLiteral.database;
 
 public class DataSourceDelegateBean implements Bean<DataSource> {
-    private final Supplier<HammockDataSource> dataSourceSupplier;
+    private final Supplier<DataSourceDefinition> dsSupplier;
     private String name;
 
-    DataSourceDelegateBean(String name, Supplier<HammockDataSource> supplier) {
+    public DataSourceDelegateBean(String name, Supplier<DataSourceDefinition> dsSupplier) {
         this.name = name;
-        this.dataSourceSupplier = supplier;
+        this.dsSupplier = dsSupplier;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DataSourceDelegateBean implements Bean<DataSource> {
 
     @Override
     public DataSource create(CreationalContext<DataSource> creationalContext) {
-        return dataSourceSupplier.get();
+        return dsSupplier.get().getDataSource();
     }
 
     @Override

@@ -18,7 +18,12 @@
 
 package ws.ament.hammock.jpa;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import javax.annotation.sql.DataSourceDefinition;
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.CDI;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -26,19 +31,16 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 public class HammockDataSource implements DataSource {
     private final String name;
     private final DataSource delegate;
 
     public HammockDataSource(DataSourceDefinition dataSourceDefinition) {
-        this.delegate = createDelegate(dataSourceDefinition);
         this.name = dataSourceDefinition.name();
+        this.delegate = createDelegate(dataSourceDefinition);
     }
 
-    private static DataSource createDelegate(DataSourceDefinition dataSourceDefinition) {
+    private DataSource createDelegate(DataSourceDefinition dataSourceDefinition) {
         HikariConfig config = new HikariConfig();
         if (dataSourceDefinition.url() != null) {
             config.setJdbcUrl(dataSourceDefinition.url());
@@ -53,7 +55,15 @@ public class HammockDataSource implements DataSource {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        return new HikariDataSource(config);
+        return wrap(new HikariDataSource(config));
+    }
+
+    private DataSource wrap(DataSource dataSource) {
+        Instance<DataSourceWrapper> wrappers = CDI.current().select(DataSourceWrapper.class);
+        for(DataSourceWrapper wrapper : wrappers) {
+            dataSource = wrapper.wrap(name, dataSource);
+        }
+        return dataSource;
     }
 
     @Override

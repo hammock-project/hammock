@@ -136,4 +136,7 @@ public class DataSourceDefinitionBuilder {
       return this;
    }
 
+   public String getName() {
+      return name;
+   }
 }
