@@ -29,6 +29,7 @@ import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import ws.ament.hammock.core.config.ConfigLoader;
 import ws.ament.hammock.utils.ClassUtils;
 import ws.ament.hammock.web.spi.RestServerConfiguration;
 import ws.ament.hammock.web.spi.ServletContextAttributeProvider;
@@ -80,6 +81,8 @@ public class JerseyContainerConfigurator implements ServletContextAttributeProvi
                     .registerClasses(jerseyCdiExtension.getProviders())
                     .registerClasses(jerseyCdiExtension.getResources());
         }
+
+        resourceConfig.setProperties(ConfigLoader.loadAllProperties("jersey", false));
 
         final String attributeName = RESOURCE_CONFIG + SERVLET_NAME;
         return singletonMap(attributeName, resourceConfig);
