@@ -26,7 +26,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dist-microprofile-cochise</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
@@ -104,6 +103,12 @@
             <artifactId>microprofile-jwt-auth-tck</artifactId>
             <version>${microprofile.jwt.version}</version>
             <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.microprofile.rest.client</groupId>
+            <artifactId>microprofile-rest-client-tck</artifactId>
+            <version>1.0.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

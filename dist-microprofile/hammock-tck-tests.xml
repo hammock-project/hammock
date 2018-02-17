@@ -28,6 +28,11 @@
             <package name="org.eclipse.microprofile.health.tck.*"/>
         </packages>
     </test>
+    <test name="MicroProfile Rest Client TCK">
+        <packages>
+            <package name="org.eclipse.microprofile.rest.client.tck.*"/>
+        </packages>
+    </test>
     <test name="MicroProfile JWT Auth TCK">
         <classes>
             <!-- https://issues.jboss.org/browse/ARQ-2143 -->

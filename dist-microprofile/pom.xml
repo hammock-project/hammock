@@ -24,7 +24,9 @@
         <version>2.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <wiremock.params>--port=8765</wiremock.params>
+    </properties>
     <artifactId>dist-microprofile</artifactId>
     <dependencies>
         <dependency>
@@ -96,6 +98,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.microprofile.rest.client</groupId>
+            <artifactId>microprofile-rest-client-tck</artifactId>
+            <version>1.0.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.9.9</version>
@@ -133,6 +141,23 @@
                         <org.eclipse.microprofile.config.tck.CDIPlainInjectionTest.DefaultPropertyBean.configProperty>pathConfigValue</org.eclipse.microprofile.config.tck.CDIPlainInjectionTest.DefaultPropertyBean.configProperty>
                     </systemPropertyVariables>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>uk.co.deliverymind</groupId>
+                <artifactId>wiremock-maven-plugin</artifactId>
+                <version>2.7.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <dir>target/classes</dir>
+                            <params>${wiremock.params}</params>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
