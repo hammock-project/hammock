@@ -45,6 +45,10 @@
             <artifactId>cxf-rt-transports-http</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-mp-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>web-spi</artifactId>
             <version>${project.version}</version>

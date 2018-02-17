@@ -388,6 +388,11 @@
                 <version>${cxf.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-mp-client</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.astefanutti.metrics.cdi</groupId>
                 <artifactId>metrics-cdi</artifactId>
                 <version>${metrics.cdi.verison}</version>
