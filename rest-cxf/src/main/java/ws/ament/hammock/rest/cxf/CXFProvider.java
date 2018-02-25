@@ -19,6 +19,8 @@
 package ws.ament.hammock.rest.cxf;
 
 import org.apache.cxf.cdi.CXFCdiServlet;
+import org.apache.cxf.cdi.extension.JAXRSServerFactoryCustomizationExtension;
+import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet;
 import org.apache.cxf.transport.sse.SseHttpTransportFactory;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class CXFProvider {
+public class CXFProvider implements JAXRSServerFactoryCustomizationExtension {
     @Inject
     @ConfigProperty(name = "cxf.enable.sse.transport", defaultValue = "false")
     private boolean enableSseTransport;
@@ -50,5 +52,12 @@ public class CXFProvider {
         }
         WebInitParam[] initParams = params.toArray(new WebInitParam[params.size()]);
         return new ServletDescriptor("CXF",null, new String[]{servletMapping},1, initParams,true,CXFCdiServlet.class);
+    }
+
+    @Override
+    public void customize(JAXRSServerFactoryBean bean) {
+        if(enableSseTransport) {
+            bean.setTransportId(SseHttpTransportFactory.TRANSPORT_ID);
+        }
     }
 }

@@ -18,10 +18,23 @@
 
 package ws.ament.hammock.rest.cxf;
 
+import org.apache.cxf.Bus;
+import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.sse.SseFeature;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CXFSseFeature extends SseFeature {
+    @Inject
+    @ConfigProperty(name = "cxf.enable.sse.transport", defaultValue = "false")
+    private boolean enableSseTransport;
+    @Override
+    public void initialize(Server server, Bus bus) {
+        if(enableSseTransport) {
+            super.initialize(server, bus);
+        }
+    }
 }
