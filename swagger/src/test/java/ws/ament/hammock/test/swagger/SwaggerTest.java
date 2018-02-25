@@ -49,7 +49,7 @@ public class SwaggerTest {
         when().get(uri + "/openapi").
         then().contentType("application/json")
                 .assertThat().statusCode(200)
-                .body("openapi", is("3.0.0"));
+                .body("openapi", is("3.0.1"));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class SwaggerTest {
                 when().get(uri + "/openapi.json").
                 then().contentType("application/json")
                 .assertThat().statusCode(200)
-                .body("openapi", is("3.0.0"));
+                .body("openapi", is("3.0.1"));
     }
 
     @Test
