@@ -51,9 +51,9 @@
     </distributionManagement>
     <properties>
         <weld3.version>3.0.3.Final</weld3.version>
-        <resteasy.version>3.1.4.Final</resteasy.version>
+        <resteasy.version>3.5.0.Final</resteasy.version>
         <arquillian.version>1.2.0.Final</arquillian.version>
-        <undertow.version>1.4.21.Final</undertow.version>
+        <undertow.version>1.4.22.Final</undertow.version>
         <jetty.version>9.4.8.v20171121</jetty.version>
         <arquillian.weld.version>2.0.0.Final</arquillian.weld.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -63,7 +63,7 @@
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <tomcat.version>9.0.5</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
-        <johnzon.version>1.1.5</johnzon.version>
+        <johnzon.version>1.1.6</johnzon.version>
         <metrics.version>4.0.2</metrics.version>
         <metrics.cdi.verison>1.4.0</metrics.cdi.verison>
         <geronimo-json_1.1_spec.version>1.0</geronimo-json_1.1_spec.version>
@@ -74,7 +74,7 @@
         <spark.version>2.7.1</spark.version>
         <jboss-logging.version>3.3.1.Final</jboss-logging.version>
         <javax.persistence.version>2.1.1</javax.persistence.version>
-        <hibernate.version>5.2.12.Final</hibernate.version>
+        <hibernate.version>5.2.13.Final</hibernate.version>
         <openjpa.version>2.4.2</openjpa.version>
         <jersey.version>2.26</jersey.version>
         <mockito-core.version>2.13.0</mockito-core.version>
