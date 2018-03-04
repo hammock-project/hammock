@@ -22,10 +22,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ws.ament.hammock.rest.cxf.CXFSseFeature;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.test.support.HammockArchive;
 
@@ -43,11 +41,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
 @EnableRandomWebServerPort
-@Ignore
 public class CXFSseTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().classes(SseEventHandler.class, SseEventEndpoint.class, CXFSseFeature.class).jar();
+        return new HammockArchive().classes(SseEventHandler.class, SseEventEndpoint.class).jar();
     }
 
     @ArquillianResource
@@ -57,20 +54,18 @@ public class CXFSseTest {
     public void testFireSseEventsAsync() throws InterruptedException {
         final WebTarget target = createWebTarget("/sse/" + UUID.randomUUID());
         final Collection<String> messages = new ArrayList<>();
-
         try (SseEventSource eventSource = SseEventSource.target(target).build()) {
-            eventSource.register(new Consumer<InboundSseEvent>() {
-                @Override
-                public void accept(InboundSseEvent e) {
-                    System.out.println("New event...");
-                    messages.add(e.readData());
-                }
+            eventSource.register(e -> {
+                System.out.println("New event...");
+                messages.add(e.readData());
             }, System.out::println);
             eventSource.open();
-        }
+            // wait for messages to come in
 
-        // wait for messages to come in
-        Thread.sleep(8000);
+            if(messages.size() <= 4) {
+                Thread.sleep(1000);
+            }
+        }
 
         messages.forEach(System.out::println);
         assertThat(messages).hasSize(4);

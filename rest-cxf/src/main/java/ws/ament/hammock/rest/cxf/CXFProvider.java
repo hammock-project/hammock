@@ -18,10 +18,13 @@
 
 package ws.ament.hammock.rest.cxf;
 
+import org.apache.cxf.Bus;
 import org.apache.cxf.cdi.CXFCdiServlet;
 import org.apache.cxf.cdi.extension.JAXRSServerFactoryCustomizationExtension;
+import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet;
+import org.apache.cxf.jaxrs.sse.SseFeature;
 import org.apache.cxf.transport.sse.SseHttpTransportFactory;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.web.api.ServletDescriptor;
@@ -37,9 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class CXFProvider implements JAXRSServerFactoryCustomizationExtension {
+public class CXFProvider extends SseFeature implements JAXRSServerFactoryCustomizationExtension {
     @Inject
-    @ConfigProperty(name = "cxf.enable.sse.transport", defaultValue = "false")
+    @ConfigProperty(name = "cxf.enable.sse.transport", defaultValue = "true")
     private boolean enableSseTransport;
 
     @Produces
@@ -58,6 +61,13 @@ public class CXFProvider implements JAXRSServerFactoryCustomizationExtension {
     public void customize(JAXRSServerFactoryBean bean) {
         if(enableSseTransport) {
             bean.setTransportId(SseHttpTransportFactory.TRANSPORT_ID);
+        }
+    }
+
+    @Override
+    public void initialize(Server server, Bus bus) {
+        if(enableSseTransport) {
+            super.initialize(server, bus);
         }
     }
 }
