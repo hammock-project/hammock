@@ -22,7 +22,7 @@
     <artifactId>hammock</artifactId>
     <packaging>pom</packaging>
     <url>https://github.com/hammock-project/hammock/wiki</url>
-    <version>2.1</version>
+    <version>2.2-SNAPSHOT</version>
     <licenses>
         <license>
             <name>Apache-2.0</name>
@@ -38,7 +38,7 @@
         <developerConnection>scm:git:git@github.com:hammock-project/hammock.git</developerConnection>
         <url>https://github.com/hammock-project/hammock</url>
         <connection>scm:git:https://github.com/hammock-project/hammock.git</connection>
-      <tag>2.1</tag>
+      <tag>HEAD</tag>
   </scm>
     <distributionManagement>
         <snapshotRepository>
