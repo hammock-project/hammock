@@ -21,7 +21,6 @@ package ws.ament.hammock.jpa;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import ws.ament.hammock.core.config.ConfigLoader;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.CDI;

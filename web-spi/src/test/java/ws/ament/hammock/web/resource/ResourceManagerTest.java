@@ -18,8 +18,6 @@
 
 package ws.ament.hammock.web.resource;
 
-import java.io.InputStream;
-
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

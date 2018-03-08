@@ -18,11 +18,6 @@
 
 package ws.ament.hammock.health;
 
-import org.apache.johnzon.mapper.JohnzonIgnore;
-
-import java.util.Collections;
-import java.util.List;
-
 public interface HealthCheckModel {
     String getOutcome();
 }
