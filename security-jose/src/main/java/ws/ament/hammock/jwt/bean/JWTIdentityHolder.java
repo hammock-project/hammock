@@ -23,7 +23,6 @@ import ws.ament.hammock.jwt.JWTPrincipal;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
-import java.util.Collections;
 
 @RequestScoped
 public class JWTIdentityHolder {

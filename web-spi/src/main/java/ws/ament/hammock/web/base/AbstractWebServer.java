@@ -21,7 +21,6 @@ package ws.ament.hammock.web.base;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.api.WebServer;
-import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.servlet.ServletContextListener;
 import java.util.*;

@@ -25,7 +25,6 @@ import ws.ament.hammock.HammockRuntime;
 import javax.enterprise.inject.spi.CDI;
 import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 
 public class HammockURLProvider implements ResourceProvider {
