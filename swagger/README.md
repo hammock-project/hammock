@@ -1,3 +1,15 @@
 # Swagger OpenAPI Integration
 
-This module adds OpenAPI integration.  Note that this should be used on Jersey and RestEasy, CXF handles this internally.
+This module adds OpenAPI v3 integration.
+
+## Usage
+
+- add hammock _swagger_ artifact
+- add annotions like @OpenAPIDefinition and @Operation
+- add "/openapi-configuration.json" to classpath resources;
+
+	{
+	    "resourcePackages": [
+	        "com.example.project"
+	    ]
+	}
