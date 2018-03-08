@@ -41,7 +41,6 @@
                 <dependency>
                     <groupId>javax.enterprise</groupId>
                     <artifactId>cdi-api</artifactId>
-                    <version>${cdi2.version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
