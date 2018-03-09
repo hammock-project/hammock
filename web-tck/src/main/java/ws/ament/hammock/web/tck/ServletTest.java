@@ -18,7 +18,6 @@
 
 package ws.ament.hammock.web.tck;
 
-import org.apache.commons.io.IOUtils;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
@@ -27,20 +26,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.bootstrap.Bootstrapper;
+import ws.ament.hammock.bootstrap.weld3.Weld3Bootstrapper;
 import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import javax.servlet.http.HttpServletResponse;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
 public abstract class ServletTest {
     public static JavaArchive createArchive(Class<?>... classes) {
-        SSLBypass.disableSSLChecks();
-        String property = System.getProperty(Bootstrapper.class.getName());
+        String property = System.getProperty(Bootstrapper.class.getName(), Weld3Bootstrapper.class.getName());
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, MessageProvider.class, HammockRuntime.class,
                         WebServerConfiguration.class, StartWebServer.class)
@@ -51,15 +51,24 @@ public abstract class ServletTest {
 
     @Test
     public void shouldBootWebServer() throws Exception {
-        try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
-            String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA + "\n, value");
-        }
-
-        try (InputStream stream = new URL("https://localhost:8443/").openStream()) {
-            String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo(MessageProvider.DATA + "\n, value");
-        }
+        given()
+            .baseUri("http://localhost:8080/")
+        .expect()
+            .statusCode(HttpServletResponse.SC_OK)
+            .body(is(MessageProvider.DATA + ", value"))
+        .when()
+            .get("/");
     }
 
+    @Test
+    public void shouldBootWebServerSecure() throws Exception {
+        given()
+            .baseUri("https://localhost:8443")
+            .relaxedHTTPSValidation()
+        .expect()
+            .statusCode(HttpServletResponse.SC_OK)
+            .body(is(MessageProvider.DATA + ", value"))
+        .when()
+            .get("/");
+    }
 }

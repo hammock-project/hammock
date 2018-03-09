@@ -54,8 +54,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>
