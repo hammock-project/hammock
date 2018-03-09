@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.bootstrap.Bootstrapper;
-import ws.ament.hammock.bootstrap.weld3.Weld3Bootstrapper;
 import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
@@ -40,7 +39,7 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(Arquillian.class)
 public abstract class ServletTest {
     public static JavaArchive createArchive(Class<?>... classes) {
-        String property = System.getProperty(Bootstrapper.class.getName(), Weld3Bootstrapper.class.getName());
+        String property = System.getProperty(Bootstrapper.class.getName(), "ws.ament.hammock.bootstrap.weld3.Weld3Bootstrapper");
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, MessageProvider.class, HammockRuntime.class,
                         WebServerConfiguration.class, StartWebServer.class)
