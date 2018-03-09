@@ -153,6 +153,7 @@
         <module>johnzon</module>
         <module>swagger</module>
         <module>util-flexypool</module>
+        <module>swagger-ui</module>
     </modules>
     <dependencyManagement>
         <dependencies>
