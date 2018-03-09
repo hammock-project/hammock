@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.test.swagger;
+package ws.ament.hammock.swagger;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
