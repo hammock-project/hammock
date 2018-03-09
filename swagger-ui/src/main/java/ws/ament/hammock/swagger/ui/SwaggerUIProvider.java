@@ -60,6 +60,7 @@ public class SwaggerUIProvider {
 
         private String uiBaseForward;
 
+        @Override
         public void init() throws ServletException {
             uiBootRedirect = config.getSwaggerUIUrl() + UI_REDIRECT_LINK + config.getSwaggerUIApi();
             uiBaseForward = UI_WEBJARS_BASE + config.getSwaggerUIVersion();
