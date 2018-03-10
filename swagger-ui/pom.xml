@@ -37,10 +37,6 @@
             <artifactId>hammock-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
@@ -65,6 +61,19 @@
         </dependency>
     </dependencies>
     <profiles>
+        <profile>
+            <id>none-test</id>
+            <activation>
+                <!-- Workaround to have no reference to servlet-api when testing with tomcat -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>undertow-test</id>
             <activation>
@@ -97,7 +106,7 @@
                     <groupId>ws.ament.hammock</groupId>
                     <artifactId>web-tomcat</artifactId>
                     <version>${project.version}</version>
-                    <scope>test</scope>
+                    <scope>provided</scope>
                 </dependency>
             </dependencies>
         </profile>
