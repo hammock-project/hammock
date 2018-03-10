@@ -62,7 +62,7 @@ public class WebServerConfiguration {
     private String truststorePassword;
 
     @Inject
-    @ConfigProperty(name="file.dir",defaultValue = "/tmp")
+    @ConfigProperty(name="file.dir", defaultValue = ".")
     private String fileDir;
 
     public int getPort() {
