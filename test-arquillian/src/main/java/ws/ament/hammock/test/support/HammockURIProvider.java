@@ -21,7 +21,6 @@ package ws.ament.hammock.test.support;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
 import ws.ament.hammock.HammockRuntime;
-import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.inject.spi.CDI;
 import java.lang.annotation.Annotation;

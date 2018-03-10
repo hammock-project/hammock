@@ -33,7 +33,6 @@ import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.File;

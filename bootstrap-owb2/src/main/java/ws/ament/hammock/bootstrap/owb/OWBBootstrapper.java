@@ -18,8 +18,6 @@
 
 package ws.ament.hammock.bootstrap.owb;
 
-import org.apache.webbeans.config.WebBeansContext;
-import org.apache.webbeans.spi.ContainerLifecycle;
 import ws.ament.hammock.bootstrap.Bootstrapper;
 import ws.ament.hammock.web.api.WebServer;
 

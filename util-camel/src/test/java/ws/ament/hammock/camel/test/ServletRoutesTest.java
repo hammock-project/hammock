@@ -18,7 +18,6 @@
 
 package ws.ament.hammock.camel.test;
 
-import io.restassured.RestAssured;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
