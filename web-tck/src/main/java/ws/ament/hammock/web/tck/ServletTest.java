@@ -39,7 +39,7 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(Arquillian.class)
 public abstract class ServletTest {
     public static JavaArchive createArchive(Class<?>... classes) {
-        String property = System.getProperty(Bootstrapper.class.getName(), "ws.ament.hammock.bootstrap.weld3.Weld3Bootstrapper");
+        String property = System.getProperty(Bootstrapper.class.getName());
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, MessageProvider.class, HammockRuntime.class,
                         WebServerConfiguration.class, StartWebServer.class)
@@ -60,7 +60,7 @@ public abstract class ServletTest {
     }
 
     @Test
-    public void shouldBootWebServerSecure() throws Exception {
+    public void shouldBootWebServerHttps() throws Exception {
         given()
             .baseUri("https://localhost:8443")
             .relaxedHTTPSValidation()
