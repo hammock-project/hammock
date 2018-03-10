@@ -60,7 +60,7 @@ public abstract class ServletTest {
     }
 
     @Test
-    public void shouldBootWebServerSecure() throws Exception {
+    public void shouldBootWebServerHttps() throws Exception {
         given()
             .baseUri("https://localhost:8443")
             .relaxedHTTPSValidation()
