@@ -73,14 +73,36 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>jersey-test</id>
+            <id>undertow-test</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <dependencies>
                 <dependency>
                     <groupId>ws.ament.hammock</groupId>
-                    <artifactId>rest-jersey</artifactId>
+                    <artifactId>web-undertow</artifactId>
+                    <version>${project.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>jetty-test</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ws.ament.hammock</groupId>
+                    <artifactId>web-jetty</artifactId>
+                    <version>${project.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>tomcat-test</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ws.ament.hammock</groupId>
+                    <artifactId>web-tomcat</artifactId>
                     <version>${project.version}</version>
                     <scope>test</scope>
                 </dependency>
