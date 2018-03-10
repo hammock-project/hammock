@@ -44,7 +44,7 @@ public abstract class FilterTest {
     }
 
     @Test
-    public void shouldBootAndOnlyFilter() throws Exception {
+    public void shouldBootWebServerWithOnlyFilter() throws Exception {
         given()
             .baseUri("http://localhost:8080/")
         .expect()
@@ -55,7 +55,7 @@ public abstract class FilterTest {
     }
 
     @Test
-    public void shouldBootAndOnlyFilterSecure() throws Exception {
+    public void shouldBootWebServerWithOnlyFilterHttps() throws Exception {
         given()
             .baseUri("https://localhost:8443/")
             .relaxedHTTPSValidation()
