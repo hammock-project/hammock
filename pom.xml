@@ -116,6 +116,7 @@
         <swagger.version>2.0.0-rc4</swagger.version>
         <safeguard.version>1.0</safeguard.version>
         <flexy-pool.version>1.3.0</flexy-pool.version>
+        <swagger-ui.version>3.10.0</swagger-ui.version>
     </properties>
     <modules>
         <module>core</module>
@@ -663,6 +664,11 @@
                 <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-authz-client</artifactId>
                 <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>swagger-ui</artifactId>
+                <version>${swagger-ui.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
