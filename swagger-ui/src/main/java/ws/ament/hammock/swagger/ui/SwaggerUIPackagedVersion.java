@@ -23,14 +23,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Optional;
-import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 public class SwaggerUIPackagedVersion {
 
     private static final String MANIFEST_RESOURCES = "META-INF/MANIFEST.MF";
-    private static final String MANIFEST_SECTION = "Hammock-Swagger-UI";
-    private static final String PACKAGED_VERSION = "PackagedVersion";
+    private static final String BUNDLE_NAME_VALUE = "Swagger UI";
+    private static final String BUNDLE_NAME = "Bundle-Name";
+    private static final String BUNDLE_VERSION = "Bundle-Version";
     private static final String UNKNOWN_VERSION = "0.0.0";
 
     public static String find() {
@@ -72,11 +72,11 @@ public class SwaggerUIPackagedVersion {
             } finally {
                 in.close();
             }
-            Attributes sectionAttributes = m.getEntries().get(MANIFEST_SECTION);
-            if (sectionAttributes == null) {
+            String bundleName = m.getMainAttributes().getValue(BUNDLE_NAME);
+            if (!BUNDLE_NAME_VALUE.equals(bundleName)) {
                 return Optional.empty();
             }
-            return Optional.ofNullable(sectionAttributes.getValue(PACKAGED_VERSION));
+            return Optional.ofNullable(m.getMainAttributes().getValue(BUNDLE_VERSION));
         } catch (IOException e) {
             return Optional.empty();
         }

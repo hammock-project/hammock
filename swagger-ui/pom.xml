@@ -70,24 +70,6 @@
             <artifactId>rest-assured</artifactId>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestSection>
-                            <name>Hammock-Swagger-UI</name>
-                            <manifestEntries>
-                                <PackagedVersion>${swagger-ui.version}</PackagedVersion>
-                            </manifestEntries>
-                        </manifestSection>
-                    </archive>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <profiles>
         <profile>
             <id>undertow-test</id>
