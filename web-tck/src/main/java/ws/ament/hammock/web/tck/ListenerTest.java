@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class ListenerTest {
 
     public static JavaArchive createArchive(Class<?>... classes) {
-        SSLBypass.disableSSLChecks();
         String property = System.getProperty(Bootstrapper.class.getName());
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultServlet.class, HammockRuntime.class, MessageProvider.class, DefaultListener.class,

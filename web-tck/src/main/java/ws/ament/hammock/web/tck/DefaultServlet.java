@@ -36,7 +36,7 @@ public class DefaultServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println(messageProvider.getMessage());
-        resp.getWriter().println(", "+getInitParameter("name"));
+        resp.getWriter().print(messageProvider.getMessage());
+        resp.getWriter().print(", "+getInitParameter("name"));
     }
 }
