@@ -18,26 +18,48 @@
 
 package ws.ament.hammock.swagger.ui;
 
+import static java.util.Collections.singletonMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.jar.Manifest;
 
-public class SwaggerUIPackagedVersion {
+import org.eclipse.microprofile.config.spi.ConfigSource;
+
+public class SwaggerUIVersionConfigSource implements ConfigSource {
 
     private static final String MANIFEST_RESOURCES = "META-INF/MANIFEST.MF";
     private static final String BUNDLE_NAME_VALUE = "Swagger UI";
     private static final String BUNDLE_NAME = "Bundle-Name";
     private static final String BUNDLE_VERSION = "Bundle-Version";
     private static final String UNKNOWN_VERSION = "0.0.0";
+    private static final String CONFIG_KEY = "swagger-ui.version";
 
-    public static String find() {
-        return new SwaggerUIPackagedVersion().findPackagedVersion();
+    @Override
+    public int getOrdinal() {
+        return 1;
     }
 
-    public String findPackagedVersion() {
+    @Override
+    public Map<String, String> getProperties() {
+        return singletonMap(CONFIG_KEY, findPackagedVersion());
+    }
+
+    @Override
+    public String getValue(String key) {
+        return getProperties().get(key);
+    }
+
+    @Override
+    public String getName() {
+        return "packaged-swagger-ui-version";
+    }
+
+    private String findPackagedVersion() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         if (cl == null) {
             cl = this.getClass().getClassLoader();
