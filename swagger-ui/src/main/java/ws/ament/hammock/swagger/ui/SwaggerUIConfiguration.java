@@ -31,7 +31,7 @@ public class SwaggerUIConfiguration {
     private boolean swaggerUIEnable;
 
     @Inject
-    @ConfigProperty(name = "swagger-ui.version", defaultValue = "3.10.0")
+    @ConfigProperty(name = "swagger-ui.version", defaultValue = "")
     private String swaggerUIVersion;
 
     @Inject
@@ -47,6 +47,9 @@ public class SwaggerUIConfiguration {
     }
 
     public String getSwaggerUIVersion() {
+        if (swaggerUIVersion.isEmpty()) {
+            swaggerUIVersion = SwaggerUIPackagedVersion.find();
+        }
         return swaggerUIVersion;
     }
 
