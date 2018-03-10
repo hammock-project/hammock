@@ -4,7 +4,6 @@ Hammock
 [![Gitter chat](https://badges.gitter.im/hammock-project/gitter.png)](https://gitter.im/hammock-project/Lobby)
 [![Build Status](https://travis-ci.org/hammock-project/hammock.png)](https://travis-ci.org/hammock-project/hammock)
 [![Maven Central](https://img.shields.io/maven-central/v/ws.ament.hammock/hammock-core.svg)](http://search.maven.org/#search%7Cga%7C1%7Cws.ament.hammock)
-[![Dependency Status](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad/badge.svg?style=flat)](https://www.versioneye.com/user/projects/583af3ebe7cea00045b893ad)
 
 ![Hammock](https://hammock-project.github.io/img/src/Large.png)
 
@@ -28,7 +27,7 @@ Containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>dist-microprofile</artifactId>
-    <version>2.0</version>
+    <version>2.1</version>
 </dependency>
 ```
 
@@ -38,7 +37,7 @@ Containers bring in transitive dependencies to bring up your runtime.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>dist-microprofile-cochise</artifactId>
-    <version>2.0</version>
+    <version>2.1</version>
 </dependency>
 ```
 
@@ -92,7 +91,7 @@ To add the security runtime to your app, just include this dependency.
 <dependency>
     <groupId>ws.ament.hammock</groupId>
     <artifactId>security-spi</artifactId>
-    <version>2.0</version>
+    <version>2.1</version>
 </dependency>
 ```
 
