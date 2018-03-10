@@ -22,7 +22,6 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
-import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
@@ -75,8 +74,9 @@ public class TomcatWebServer extends AbstractWebServer{
         	tomcat.getService().addConnector(connector);	
         }
         
-        File base = new File(".");
-        Context ctx = tomcat.addContext("",base.getAbsolutePath());
+        File docBase = new File(webServerConfiguration.getFileDir());
+        Context ctx = tomcat.addContext("", docBase.getAbsolutePath());
+        Tomcat.initWebappDefaults(ctx);
         ctx.setInstanceManager(new HammockInstanceManager());
         super.getInitParams().forEach(ctx::addParameter);
         ServletContext servletContext = ctx.getServletContext();
@@ -86,12 +86,6 @@ public class TomcatWebServer extends AbstractWebServer{
         }
         List<ServletDescriptor> servletDescriptors = getServletDescriptors();
         List<FilterDescriptor> filterDescriptors = getFilterDescriptors();
-        if(!filterDescriptors.isEmpty() && servletDescriptors.isEmpty()) {
-            String servletName = "TomcatDefault";
-            Wrapper wrapper = Tomcat.addServlet(ctx, servletName, DefaultServlet.class.getName());
-            wrapper.setAsyncSupported(true);
-            ctx.addServletMappingDecoded("/*", servletName);
-        }
         servletDescriptors.forEach(servletDescriptor -> {
             String servletName = servletDescriptor.name();
             Wrapper wrapper = Tomcat.addServlet(ctx, servletName, servletDescriptor.servletClass().getName());
