@@ -24,13 +24,23 @@ import java.util.Map;
 
 import static java.util.Collections.singletonMap;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 public class HostFileDirTempConfigSource implements ConfigSource {
 
     private static final String FILE_DIR = "file.dir";
-    private final String value;
+    private static String tempDir;
 
-    public HostFileDirTempConfigSource() {
-        value = HostFileDirTest.getTempDir();
+    public static String getTempDir() {
+        if (tempDir == null) {
+            try {
+                tempDir = Files.createTempDirectory("junit-hammock").toString();
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+        return tempDir;
     }
 
     @Override
@@ -40,13 +50,13 @@ public class HostFileDirTempConfigSource implements ConfigSource {
 
     @Override
     public Map<String, String> getProperties() {
-        return singletonMap(FILE_DIR, value);
+        return singletonMap(FILE_DIR, getTempDir());
     }
 
     @Override
     public String getValue(String key) {
         if (key.equals(FILE_DIR)) {
-            return value;
+            return getTempDir();
         }
         return null;
     }

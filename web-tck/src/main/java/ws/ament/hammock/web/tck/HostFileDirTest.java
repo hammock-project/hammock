@@ -31,7 +31,6 @@ import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -45,7 +44,6 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(Arquillian.class)
 public abstract class HostFileDirTest {
 
-    private static String tempDir;
     private String testData;
 
     public static JavaArchive createArchive(Class<?>...classes) {
@@ -56,21 +54,11 @@ public abstract class HostFileDirTest {
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
 
-    public static String getTempDir() {
-        if (tempDir == null) {
-            try {
-                tempDir = Files.createTempDirectory("junit-hammock").toString();
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-        return tempDir;
-    }
-
     @Before
     public void setup() throws Exception {
         testData = UUID.randomUUID().toString();
-        Files.write(Paths.get(getTempDir(), "junit.txt"), testData.getBytes(StandardCharsets.UTF_8));
+        String tempDir = HostFileDirTempConfigSource.getTempDir();
+        Files.write(Paths.get(tempDir, "junit.txt"), testData.getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
