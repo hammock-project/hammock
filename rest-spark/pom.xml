@@ -33,6 +33,10 @@
             <artifactId>spark-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>web-spi</artifactId>
             <version>${project.version}</version>
