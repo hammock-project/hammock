@@ -116,7 +116,7 @@
         <swagger.version>2.0.0-rc4</swagger.version>
         <safeguard.version>1.0</safeguard.version>
         <flexy-pool.version>1.3.0</flexy-pool.version>
-        <swagger-ui.version>3.10.0</swagger-ui.version>
+        <swagger-ui.version>3.12.0</swagger-ui.version>
     </properties>
     <modules>
         <module>core</module>
