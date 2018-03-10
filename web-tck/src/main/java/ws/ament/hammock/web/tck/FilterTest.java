@@ -18,7 +18,6 @@
 
 package ws.ament.hammock.web.tck;
 
-import org.apache.commons.io.IOUtils;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
@@ -30,34 +29,40 @@ import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
+import javax.servlet.http.HttpServletResponse;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
 public abstract class FilterTest {
     public static JavaArchive createArchive(Class<?>...classes) {
-        SSLBypass.disableSSLChecks();
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(DefaultFilter.class, HammockRuntime.class, MessageProvider.class, WebServerConfiguration.class, StartWebServer.class)
                 .addClasses(classes)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
 
-
     @Test
     public void shouldBootWebServerWithOnlyFilter() throws Exception {
-        System.out.println("open http://localhost:8080/");
-//        Thread.sleep(20000);
-        try (InputStream stream = new URL("http://localhost:8080/").openStream()) {
-            String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo("Hello, world!");
-        }
+        given()
+            .baseUri("http://localhost:8080/")
+        .expect()
+            .statusCode(HttpServletResponse.SC_OK)
+            .body(is("Hello, world!"))
+        .when()
+            .get("/");
+    }
 
-        try (InputStream stream = new URL("https://localhost:8443/rest").openStream()) {
-            String data = IOUtils.toString(stream).trim();
-            assertThat(data).isEqualTo("Hello, world!");
-        }
+    @Test
+    public void shouldBootWebServerWithOnlyFilterHttps() throws Exception {
+        given()
+            .baseUri("https://localhost:8443/")
+            .relaxedHTTPSValidation()
+        .expect()
+            .statusCode(HttpServletResponse.SC_OK)
+            .body(is("Hello, world!"))
+        .when()
+            .get("/");
     }
 }
