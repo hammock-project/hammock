@@ -18,14 +18,17 @@
 
 package ws.ament.hammock.web.undertow;
 
-import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.server.handlers.resource.PathResourceManager;
+import io.undertow.server.handlers.resource.Resource;
+import io.undertow.server.handlers.resource.ResourceHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.*;
+import io.undertow.util.CanonicalPathUtils;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.api.ServletDescriptor;
@@ -40,8 +43,11 @@ import javax.net.ssl.*;
 import javax.servlet.DispatcherType;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.Collection;
@@ -49,7 +55,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import static io.undertow.Handlers.path;
 import static io.undertow.servlet.Servlets.filter;
 import static io.undertow.servlet.Servlets.listener;
 
@@ -111,11 +116,28 @@ public class UndertowWebServer extends AbstractWebServer {
         deploymentManager.deploy();
         try {
             HttpHandler servletHandler = deploymentManager.start();
-            PathHandler path = path(Handlers.redirect("/"))
-                    .addPrefixPath("/", servletHandler);
+            PathResourceManager fileDir = new PathResourceManager(Paths.get(webServerConfiguration.getFileDir()));
+            HttpHandler fileDirHandler = new ResourceHandler(fileDir).setDirectoryListingEnabled(false);
+            // TODO: This can't be the correct way of chaining the resource handler after the servlet handler.
+            // tried extending DefaultServlet but there the ResourceManager was private.
+            HttpHandler rootHandler = new HttpHandler() {
+                @Override
+                public void handleRequest(HttpServerExchange exchange) throws Exception {
+                    Resource resource = null;
+                    if (File.separatorChar == '/' || !exchange.getRelativePath().contains(File.separator)) {
+                        resource = fileDir.getResource(CanonicalPathUtils.canonicalize(exchange.getRelativePath()));
+                    }
+                    if (resource == null || "".equals(resource.getPath())) {
+                        servletHandler.handleRequest(exchange);
+                    } else {
+                        fileDirHandler.handleRequest(exchange);
+                    }
+                }
+            };
+            
             Builder undertowBuilder = Undertow.builder()
                     .addHttpListener(webServerConfiguration.getPort(), webServerConfiguration.getAddress())
-                    .setHandler(path);
+                    .setHandler(rootHandler);
             if (hammockRuntime.isSecuredConfigured()){
             	KeyManager[] keyManagers = loadKeyManager();
             	TrustManager[] trustManagers = loadTrustManager();
