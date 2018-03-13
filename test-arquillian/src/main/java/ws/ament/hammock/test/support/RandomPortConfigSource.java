@@ -21,41 +21,73 @@ package ws.ament.hammock.test.support;
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import static java.util.Collections.singletonMap;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+
 public class RandomPortConfigSource implements ConfigSource {
+    private static final String CONFIG_SOURCE_NAME = "random-server-port";
     private static final String WEBSERVER_PORT = "webserver.port";
+    private static final int PORT_START = 4000;
+    private static final int PORT_RANGE = 1000;
+    private static final int PORT_MAX_FAIL = 100;
+    private Map<String, String> properties = singletonMap(WEBSERVER_PORT, findServerPort());
 
-    private final String port;
+    private String findServerPort() {
+        int openPortTry = 0;
+        Optional<ServerSocket> serverPort = Optional.empty();
+        while (!serverPort.isPresent()) {
+            if (openPortTry++ > PORT_MAX_FAIL) {
+                throw new IllegalStateException("No openable server ports found, reached try limit; " + PORT_MAX_FAIL);
+            }
+            serverPort = openServerSocket(nextRandomServerPort());
+        }
+        try {
+            return Integer.toString(serverPort.get().getLocalPort());
+        } finally {
+            try {
+                serverPort.get().close();
+            } catch (IOException ex) {
+                // ignore
+            }
+            
+        }
+    }
 
-    public RandomPortConfigSource() {
-        Random random = new Random();
-        this.port = Integer.toString(4000 + random.nextInt(500));
+    private int nextRandomServerPort() {
+        int offset = new Random().nextInt(PORT_RANGE);
+        return PORT_START + offset;
+    }
+
+    private Optional<ServerSocket> openServerSocket(int port) {
+        try {
+            return Optional.of(new ServerSocket(port));
+        } catch (IOException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public int getOrdinal() {
-        return 10000;
+        return Short.MAX_VALUE;
     }
 
     @Override
     public Map<String, String> getProperties() {
-        return singletonMap(WEBSERVER_PORT, port);
+        return properties;
     }
 
     @Override
     public String getValue(String key) {
-        if (key.equals(WEBSERVER_PORT)) {
-            return port;
-        }
-        return null;
+        return properties.get(key);
     }
 
     @Override
     public String getName() {
-        return "random-port";
+        return CONFIG_SOURCE_NAME;
     }
-
 }
