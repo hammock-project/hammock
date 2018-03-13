@@ -31,13 +31,14 @@ import java.util.jar.Manifest;
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
 public class SwaggerUIVersionConfigSource implements ConfigSource {
-
+    private static final String CONFIG_SOURCE_NAME = "packaged-swagger-ui-version";
     private static final String MANIFEST_RESOURCES = "META-INF/MANIFEST.MF";
     private static final String BUNDLE_NAME_VALUE = "Swagger UI";
     private static final String BUNDLE_NAME = "Bundle-Name";
     private static final String BUNDLE_VERSION = "Bundle-Version";
     private static final String UNKNOWN_VERSION = "0.0.0";
-    private static final String CONFIG_KEY = "swagger-ui.version";
+    private static final String SWAGGER_UI_VERSION = "swagger-ui.version";
+    private final Map<String, String> properties = singletonMap(SWAGGER_UI_VERSION, findPackagedVersion());
 
     @Override
     public int getOrdinal() {
@@ -46,17 +47,17 @@ public class SwaggerUIVersionConfigSource implements ConfigSource {
 
     @Override
     public Map<String, String> getProperties() {
-        return singletonMap(CONFIG_KEY, findPackagedVersion());
+        return properties;
     }
 
     @Override
     public String getValue(String key) {
-        return getProperties().get(key);
+        return properties.get(key);
     }
 
     @Override
     public String getName() {
-        return "packaged-swagger-ui-version";
+        return CONFIG_SOURCE_NAME;
     }
 
     private String findPackagedVersion() {
