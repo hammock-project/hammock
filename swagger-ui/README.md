@@ -11,6 +11,7 @@ This module adds Swagger UI v3 integration.
 
 - Add hammock _swagger-ui_ artifact.
 - When not using hammock _swagger_ then provide the swagger api url.
+- To disable the online validator use; `swagger-ui.redirect=index.html?validatorUrl=`
 
 ## Config
 
@@ -33,6 +34,6 @@ swagger-ui.api | `/openapi.json` | The url location to start the swagger ui with
 There are a couple of options but most common would be a cloned index;
 
 - Make a copy of the original index.html
-- place it in static.resource.location like META-INF/resources/example/index.html
+- place it in `static.resource.location` like META-INF/resources/example/index.html
 - Modify the js/css resources paths to prefix with /openapi.ui
-- Change swagger-ui.redirect to /example/index.html
+- Change `swagger-ui.redirect` to /example/index.html
