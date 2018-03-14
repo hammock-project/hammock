@@ -19,11 +19,11 @@
 package ws.ament.hammock.swagger.ui;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
@@ -31,13 +31,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ws.ament.hammock.web.api.ServletDescriptor;
+import ws.ament.hammock.web.resource.IOUtils;
 
 @ApplicationScoped
 public class SwaggerUIProvider {
 
     static private final String UI_MATCH_FORWARD = "/*";
     static private final String UI_REDIRECT_LINK = "/index.html?url=";
-    static private final String UI_WEBJARS_BASE = "/webjars/swagger-ui/";
+    static private final String UI_WEBJARS_BASE = "/META-INF/resources/webjars/swagger-ui/";
 
     @Inject
     private SwaggerUIConfiguration config;
@@ -77,12 +78,12 @@ public class SwaggerUIProvider {
                 response.sendRedirect(uiBootRedirect);
                 return;
             }
-            RequestDispatcher disp = request.getRequestDispatcher(uiBaseForward + request.getPathInfo());
-            if (disp == null) {
-                response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+            InputStream data = getClass().getResourceAsStream(uiBaseForward + request.getPathInfo());
+            if (data == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            disp.forward(request, response);
+            IOUtils.copy(data, response.getOutputStream());
         }
     }
 }
