@@ -37,6 +37,10 @@
             <artifactId>hammock-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>web-spi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>

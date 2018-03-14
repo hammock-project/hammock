@@ -329,6 +329,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>ws.ament.hammock</groupId>
+                <artifactId>web-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
