@@ -35,8 +35,12 @@ public class SwaggerUIConfiguration {
     private String swaggerUIVersion;
 
     @Inject
-    @ConfigProperty(name = "swagger-ui.url", defaultValue = "/openapi.ui")
-    private String swaggerUIUrl;
+    @ConfigProperty(name = "swagger-ui.redirect", defaultValue = "index.html")
+    private String swaggerUIRedirect;
+    
+    @Inject
+    @ConfigProperty(name = "swagger-ui.path", defaultValue = "/openapi.ui")
+    private String swaggerUIPath;
 
     @Inject
     @ConfigProperty(name = "swagger-ui.api", defaultValue = "/openapi.json")
@@ -50,8 +54,12 @@ public class SwaggerUIConfiguration {
         return swaggerUIVersion;
     }
 
-    public String getSwaggerUIUrl() {
-        return swaggerUIUrl;
+    public String getSwaggerUIRedirect() {
+        return swaggerUIRedirect;
+    }
+
+    public String getSwaggerUIPath() {
+        return swaggerUIPath;
     }
 
     public String getSwaggerUIApi() {

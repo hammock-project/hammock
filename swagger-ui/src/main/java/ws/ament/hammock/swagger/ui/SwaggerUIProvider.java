@@ -37,7 +37,7 @@ import ws.ament.hammock.web.resource.IOUtils;
 public class SwaggerUIProvider {
 
     static private final String UI_MATCH_FORWARD = "/*";
-    static private final String UI_REDIRECT_LINK = "/index.html?url=";
+    static private final String UI_REDIRECT_QUERY = "?url=";
     static private final String UI_WEBJARS_BASE = "/META-INF/resources/webjars/swagger-ui/";
 
     @Inject
@@ -46,7 +46,7 @@ public class SwaggerUIProvider {
     @Produces
     public ServletDescriptor swaggerUIDispatcherServlet() {
         String name = SwaggerUIDispatcherServlet.class.getSimpleName();
-        String[] uris = new String[] { config.getSwaggerUIUrl(), config.getSwaggerUIUrl() + UI_MATCH_FORWARD };
+        String[] uris = new String[] { config.getSwaggerUIPath(), config.getSwaggerUIPath() + UI_MATCH_FORWARD };
         WebInitParam[] params = null;
         return new ServletDescriptor(name, uris, uris, 1, params, false, SwaggerUIDispatcherServlet.class);
     }
@@ -63,7 +63,10 @@ public class SwaggerUIProvider {
 
         @Override
         public void init() throws ServletException {
-            uiBootRedirect = config.getSwaggerUIUrl() + UI_REDIRECT_LINK + config.getSwaggerUIApi();
+            uiBootRedirect = config.getSwaggerUIRedirect() + UI_REDIRECT_QUERY + config.getSwaggerUIApi();
+            if (!uiBootRedirect.startsWith("/") && !uiBootRedirect.startsWith("http")) {
+                uiBootRedirect = config.getSwaggerUIPath() + "/" +uiBootRedirect;
+            }
             uiBaseForward = UI_WEBJARS_BASE + config.getSwaggerUIVersion();
         }
 
