@@ -60,6 +60,18 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+    <repositories>
+        <repository>
+            <id>cxf.release</id>
+            <url>https://repository.apache.org/content/repositories/orgapachecxf-1115/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <properties>
         <weld3.version>3.0.3.Final</weld3.version>
         <resteasy.version>3.5.0.Final</resteasy.version>
@@ -80,7 +92,7 @@
         <geronimo-json_1.1_spec.version>1.0</geronimo-json_1.1_spec.version>
         <geronimo-jta_1.2_spec.version>1.0-alpha-1</geronimo-jta_1.2_spec.version>
         <cdi2.version>2.0</cdi2.version>
-        <cxf.version>3.2.2</cxf.version>
+        <cxf.version>3.2.4</cxf.version>
         <rest-assured.version>3.0.6</rest-assured.version>
         <spark.version>2.7.1</spark.version>
         <jboss-logging.version>3.3.1.Final</jboss-logging.version>
