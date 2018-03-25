@@ -128,6 +128,7 @@
         <swagger.version>2.0.0-rc4</swagger.version>
         <safeguard.version>1.0</safeguard.version>
         <flexy-pool.version>1.3.0</flexy-pool.version>
+        <swagger-ui.version>3.12.0</swagger-ui.version>
     </properties>
     <modules>
         <module>core</module>
@@ -165,6 +166,7 @@
         <module>johnzon</module>
         <module>swagger</module>
         <module>util-flexypool</module>
+        <module>swagger-ui</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -339,6 +341,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>ws.ament.hammock</groupId>
+                <artifactId>web-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
@@ -348,6 +355,7 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${javax.servlet-api.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
@@ -674,6 +682,11 @@
                 <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-authz-client</artifactId>
                 <version>${keycloak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>swagger-ui</artifactId>
+                <version>${swagger-ui.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

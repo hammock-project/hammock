@@ -30,7 +30,7 @@ public final class IOUtils {
 
    }
 
-   static long copy(InputStream input, OutputStream output) throws IOException{
+   static public long copy(InputStream input, OutputStream output) throws IOException{
       byte[] buffer = new byte[4096];
       long count;
       int n;
