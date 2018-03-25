@@ -60,18 +60,6 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    <repositories>
-        <repository>
-            <id>cxf.release</id>
-            <url>https://repository.apache.org/content/repositories/orgapachecxf-1115/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <properties>
         <weld3.version>3.0.3.Final</weld3.version>
         <resteasy.version>3.5.0.Final</resteasy.version>
