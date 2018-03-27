@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2016 Hammock and its contributors
+  ~ Copyright 2018 Hammock and its contributors
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,31 +17,34 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>container-aware</artifactId>
         <groupId>ws.ament.hammock</groupId>
         <version>2.2-SNAPSHOT</version>
         <relativePath>../container-aware</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>rest-spark</artifactId>
+    <artifactId>swagger-ui</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.sparkjava</groupId>
-            <artifactId>spark-core</artifactId>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>ws.ament.hammock</groupId>
+            <artifactId>hammock-core</artifactId>
         </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>web-spi</artifactId>
-            <version>${project.version}</version>
         </dependency>
-        <!-- test dependencies -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>ws.ament.hammock</groupId>
             <artifactId>test-arquillian</artifactId>
@@ -60,12 +63,21 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jta_1.2_spec</artifactId>
-        </dependency>
     </dependencies>
     <profiles>
+        <profile>
+            <id>none-test</id>
+            <activation>
+                <!-- Workaround to have no reference to servlet-api when testing with tomcat -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>undertow-test</id>
             <activation>
@@ -98,7 +110,7 @@
                     <groupId>ws.ament.hammock</groupId>
                     <artifactId>web-tomcat</artifactId>
                     <version>${project.version}</version>
-                    <scope>test</scope>
+                    <scope>provided</scope>
                 </dependency>
             </dependencies>
         </profile>
