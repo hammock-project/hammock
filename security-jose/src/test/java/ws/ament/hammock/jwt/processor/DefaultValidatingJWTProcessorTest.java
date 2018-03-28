@@ -21,11 +21,13 @@ package ws.ament.hammock.jwt.processor;
 import org.apache.commons.io.IOUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import ws.ament.hammock.jwt.JWTException;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import javax.inject.Inject;
 import java.io.InputStream;
@@ -33,11 +35,12 @@ import java.io.InputStream;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class DefaultValidatingJWTProcessorTest {
 
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class);
+        return new HammockArchive().classes().jar();
     }
 
     @Inject

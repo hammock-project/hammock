@@ -22,11 +22,10 @@ import org.apache.geronimo.config.ConfigImpl;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import ws.ament.hammock.test.support.HammockArchive;
 import ws.ament.hammock.web.api.FilterDescriptor;
 import ws.ament.hammock.web.api.ServletDescriptor;
 import ws.ament.hammock.web.api.WebServer;
@@ -42,10 +41,11 @@ public class InjectedResponseBuilderTest {
 
     @Deployment
     public static Archive<?> jar() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(TestWebServer.class, InjectedCheck.class)
-                .addPackages(true, ConfigImpl.class.getPackage())
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+        return new HammockArchive()
+                .classes(TestWebServer.class, InjectedCheck.class)
+                .beansXmlEmpty()
+                .jar()
+                .addPackages(true, ConfigImpl.class.getPackage());
     }
 
     @Inject

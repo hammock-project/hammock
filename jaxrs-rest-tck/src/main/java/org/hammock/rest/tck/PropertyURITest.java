@@ -26,7 +26,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.test.support.HammockArchive;
-import ws.ament.hammock.test.support.RandomPortConfigSource;
+import ws.ament.hammock.test.support.RandomWebServerPort;
 
 import java.net.URI;
 
@@ -39,7 +39,7 @@ public class PropertyURITest {
     public static JavaArchive createArchive() {
         return new HammockArchive().classes(RestController.class).jar()
                 .addAsServiceProviderAndClasses(ConfigSource.class, URIConfigSource.class,
-                        RandomPortConfigSource .class);
+                        RandomWebServerPort .class);
     }
 
     @ArquillianResource

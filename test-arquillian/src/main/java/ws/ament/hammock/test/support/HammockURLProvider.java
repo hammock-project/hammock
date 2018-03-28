@@ -19,20 +19,18 @@
 package ws.ament.hammock.test.support;
 
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
-import ws.ament.hammock.HammockRuntime;
 
-import javax.enterprise.inject.spi.CDI;
 import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
-public class HammockURLProvider implements ResourceProvider {
+public class HammockURLProvider extends HammockURIProvider {
+
     @Override
     public Object lookup(ArquillianResource arquillianResource, Annotation... annotations) {
-        HammockRuntime hammockRuntime = CDI.current().select(HammockRuntime.class).get();
         try {
-            return new URL(hammockRuntime.getMachineURL());
+            return URI.class.cast(super.lookup(arquillianResource, annotations)).toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException("Unable to create URL", e);
         }
@@ -42,5 +40,4 @@ public class HammockURLProvider implements ResourceProvider {
     public boolean canProvide(Class<?> type) {
         return type.isAssignableFrom(URL.class);
     }
-
 }

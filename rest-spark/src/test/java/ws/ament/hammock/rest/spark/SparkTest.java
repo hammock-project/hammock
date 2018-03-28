@@ -21,11 +21,12 @@ package ws.ament.hammock.rest.spark;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import java.net.URI;
 
@@ -37,7 +38,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class SparkTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(RestApplication.class);
+        return new HammockArchive().classes(RestApplication.class).jar();
     }
 
     @ArquillianResource

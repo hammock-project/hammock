@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.bootstrap.Bootstrapper;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
@@ -34,6 +35,7 @@ import java.io.File;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public abstract class ListenerTest {
 
     public static JavaArchive createArchive(Class<?>... classes) {

@@ -26,6 +26,8 @@ import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.web.base.AbstractWebServer;
 import ws.ament.hammock.web.api.FilterDescriptor;
@@ -49,12 +51,19 @@ public class TomcatWebServer extends AbstractWebServer{
 
     @Inject
     private HammockRuntime hammockRuntime;
+    
+    @Inject
+    @ConfigProperty(name="tomcat.catalina.base", defaultValue="")
+    private String basedir;
 
     private Tomcat tomcat;
 
     @Override
     public void start() {
         tomcat = new Tomcat();
+        if (!basedir.isEmpty()) {
+            tomcat.setBaseDir(basedir); // auto fallback in Tomcat.initBaseDir
+        }
         tomcat.setPort(webServerConfiguration.getPort());
         //init http connector
         tomcat.getConnector();

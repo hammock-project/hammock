@@ -27,18 +27,23 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class HammockArchiveAppender implements ApplicationArchiveProcessor {
 
-    private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"all\"/>");
+    protected static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"all\"/>");
+    protected static final StringAsset TOMCAT_BASE = new StringAsset("tomcat.catalina.base=target/tomcat-work");
 
     @Override
     public void process(Archive<?> archive, TestClass testClass) {
         EnableRandomWebServerPort annotation = testClass.getJavaClass().getAnnotation(EnableRandomWebServerPort.class);
         JavaArchive jar = archive.as(JavaArchive.class)
-           .addPackages(true, "ws.ament.hammock")
            .addPackage("io.astefanutti.metrics.cdi")
+           .addAsResource(TOMCAT_BASE, "hammock.properties")
            .addAsManifestResource(BEANS_XML, "beans.xml");
 
         if(annotation != null) {
-            jar.addAsServiceProviderAndClasses(ConfigSource.class, RandomPortConfigSource.class);
+            if (annotation.enableSecure()) {
+                jar.addAsServiceProviderAndClasses(ConfigSource.class, RandomWebServerPort.class, RandomWebServerSecuredPort.class);
+            } else {
+                jar.addAsServiceProviderAndClasses(ConfigSource.class, RandomWebServerPort.class);
+            }
         }
     }
 }

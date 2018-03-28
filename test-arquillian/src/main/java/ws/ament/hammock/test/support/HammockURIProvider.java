@@ -27,15 +27,19 @@ import java.lang.annotation.Annotation;
 import java.net.URI;
 
 public class HammockURIProvider implements ResourceProvider {
+
     @Override
     public Object lookup(ArquillianResource arquillianResource, Annotation... annotations) {
         HammockRuntime hammockRuntime = CDI.current().select(HammockRuntime.class).get();
-        return URI.create(hammockRuntime.getMachineURL());
+        if (RandomWebServerSecuredPort.class.equals(arquillianResource.value())) {
+            return URI.create(hammockRuntime.getSecureURL());
+        } else {
+            return URI.create(hammockRuntime.getMachineURL());
+        }
     }
 
     @Override
     public boolean canProvide(Class<?> type) {
         return type.isAssignableFrom(URI.class);
     }
-
 }

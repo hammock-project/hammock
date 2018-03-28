@@ -16,11 +16,4 @@
 # limitations under the License.
 #
 
-webserver.keystore.path=/keystore.jks
-webserver.keystore.type=JKS
-webserver.keystore.password=123456
-webserver.truststore.path=/keystore.jks
-webserver.truststore.type=JKS
-webserver.truststore.password=123456
-org.apache.deltaspike.core.spi.activation.ClassDeactivator=org.apache.deltaspike.core.impl.activation.DefaultClassDeactivator
-deactivate.org.apache.deltaspike.core.impl.scope.DeltaSpikeContextExtension=true
+ws.ament.hammock.web.tomcat.SecureTomcatArquillianExtension

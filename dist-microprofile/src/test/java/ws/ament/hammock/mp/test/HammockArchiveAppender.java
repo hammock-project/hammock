@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Hammock and its contributors
+ * Copyright 2017 Hammock and its contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,16 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.test.support;
+package ws.ament.hammock.mp.test;
 
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.test.spi.TestClass;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-@Retention(RUNTIME)
-@Target(TYPE)
-@Inherited
-public @interface EnableRandomWebServerPort {
-
-    boolean enableSecure() default false;
+public class HammockArchiveAppender implements ApplicationArchiveProcessor {
+    @Override
+    public void process(Archive<?> archive, TestClass testClass) {
+        archive.as(JavaArchive.class).addPackages(true, "ws.ament.hammock");
+    }
 }
