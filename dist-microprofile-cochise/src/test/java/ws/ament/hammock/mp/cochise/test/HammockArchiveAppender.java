@@ -36,6 +36,8 @@ public class HammockArchiveAppender implements ApplicationArchiveProcessor {
                     .addPackage("io.astefanutti.metrics.cdi")
                     .addAsManifestResource(BEANS_XML, "beans.xml");
             archive.as(WebArchive.class).addAsLibrary(jar);
+        } else {
+            archive.as(JavaArchive.class).addPackages(true, "ws.ament.hammock");
         }
     }
 }

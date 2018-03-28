@@ -26,5 +26,6 @@ public class ArchiveAppenderExtension implements LoadableExtension {
     public void register(ExtensionBuilder extensionBuilder) {
         extensionBuilder.service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class);
         extensionBuilder.service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
+        extensionBuilder.service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class);
     }
 }
