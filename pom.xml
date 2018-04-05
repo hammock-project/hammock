@@ -155,6 +155,7 @@
         <module>swagger</module>
         <module>util-flexypool</module>
         <module>swagger-ui</module>
+        <module>util-weld-probe</module>
     </modules>
     <dependencyManagement>
         <dependencies>
