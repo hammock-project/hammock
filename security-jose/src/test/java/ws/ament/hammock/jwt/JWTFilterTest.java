@@ -21,17 +21,18 @@ package ws.ament.hammock.jwt;
 import org.apache.commons.io.IOUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ws.ament.hammock.test.support.EnableRandomWebServerPort;
-import ws.ament.hammock.web.spi.WebServerConfiguration;
 
-import javax.inject.Inject;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.Charset;
 
 import static io.restassured.RestAssured.given;
@@ -43,29 +44,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JWTFilterTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class);
+        return new HammockArchive().classes(DefaultServlet.class, RequiredLoggedIn.class).jar();
     }
 
-    @Inject
-    private WebServerConfiguration webServerConfiguration;
+    @ArquillianResource
+    private URI uri;
 
     @Test
     public void shouldFindJWTInHeader() throws Exception{
-        String body = given().auth().oauth2(createJWT()).get("http://localhost:"+webServerConfiguration.getPort())
+        String body = given().auth().oauth2(createJWT()).get(uri)
                 .then().statusCode(200).extract().body().asString().trim();
         assertThat(body).isEqualTo("admin");
     }
 
     @Test
     public void shouldFindJWTInQueryParam() throws Exception{
-        String body = given().get("http://localhost:"+webServerConfiguration.getPort()+"/?access_token="+createJWT())
+        String body = given().baseUri(uri.toString()).queryParam("access_token", createJWT()).get()
                 .then().statusCode(200).extract().body().asString().trim();
         assertThat(body).isEqualTo("admin");
     }
 
     @Test
     public void shouldReturnNon200WhenNotLoggedIn() throws Exception {
-        given().get("http://localhost:"+webServerConfiguration.getPort())
+        given().get(uri)
                 .then().statusCode(401);
     }
 

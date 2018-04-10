@@ -23,13 +23,11 @@ import org.assertj.core.groups.Tuple;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.HammockRuntime;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 import zipkin.Span;
 
 import javax.inject.Inject;
@@ -48,10 +46,11 @@ public class BraveIntegrationTest {
 
     @Deployment
     public static Archive<?> archive() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClasses(BraveTracingFeatureProvider.class, BraveProducers.class, SpanReporter.class,
-                        BraveServletContextListener.class);
+        return new HammockArchive()
+                .classes(BraveTracingFeatureProvider.class, BraveProducers.class, SpanReporter.class,
+                        BraveServletContextListener.class)
+                .beansXmlEmpty()
+                .jar();
     }
 
     @Test

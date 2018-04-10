@@ -19,34 +19,46 @@
 package ws.ament.hammock.web.tck;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.FileAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.HammockRuntime;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.RandomWebServerSecuredPort;
 import ws.ament.hammock.web.spi.StartWebServer;
 import ws.ament.hammock.web.spi.WebServerConfiguration;
 
 import java.io.File;
+import java.net.URI;
+
 import javax.servlet.http.HttpServletResponse;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort(enableSecure=true)
 public abstract class FilterTest {
     public static JavaArchive createArchive(Class<?>...classes) {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(DefaultFilter.class, HammockRuntime.class, MessageProvider.class, WebServerConfiguration.class, StartWebServer.class)
+                .addClasses(DefaultFilter.class, HammockRuntime.class, WebServerConfiguration.class, StartWebServer.class)
                 .addClasses(classes)
                 .addAsManifestResource(new FileAsset(new File("src/main/resources/META-INF/beans.xml")), "beans.xml");
     }
 
+    @ArquillianResource
+    private URI uri;
+
+    @ArquillianResource(value=RandomWebServerSecuredPort.class)
+    private URI uriSecure;
+
     @Test
     public void shouldBootWebServerWithOnlyFilter() throws Exception {
         given()
-            .baseUri("http://localhost:8080/")
+            .baseUri(uri.toString())
         .expect()
             .statusCode(HttpServletResponse.SC_OK)
             .body(is("Hello, world!"))
@@ -57,7 +69,7 @@ public abstract class FilterTest {
     @Test
     public void shouldBootWebServerWithOnlyFilterHttps() throws Exception {
         given()
-            .baseUri("https://localhost:8443/")
+            .baseUri(uriSecure.toString())
             .relaxedHTTPSValidation()
         .expect()
             .statusCode(HttpServletResponse.SC_OK)

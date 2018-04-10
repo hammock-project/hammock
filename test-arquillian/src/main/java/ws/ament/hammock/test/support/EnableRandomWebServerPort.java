@@ -30,4 +30,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Inherited
 public @interface EnableRandomWebServerPort {
 
+    boolean enableSecure() default false;
 }

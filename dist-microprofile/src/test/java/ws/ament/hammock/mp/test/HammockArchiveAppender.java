@@ -16,28 +16,16 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.mp.cochise.test;
+package ws.ament.hammock.mp.test;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 public class HammockArchiveAppender implements ApplicationArchiveProcessor {
-    private static final StringAsset BEANS_XML = new StringAsset("<beans version=\"1.1\" bean-discovery-mode=\"all\"/>");
     @Override
     public void process(Archive<?> archive, TestClass testClass) {
-        if (archive instanceof WebArchive) {
-            JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "hammock.jar")
-                    .addPackages(true, "ws.ament.hammock")
-                    .addPackage("io.astefanutti.metrics.cdi")
-                    .addAsManifestResource(BEANS_XML, "beans.xml");
-            archive.as(WebArchive.class).addAsLibrary(jar);
-        } else {
-            archive.as(JavaArchive.class).addPackages(true, "ws.ament.hammock");
-        }
+        archive.as(JavaArchive.class).addPackages(true, "ws.ament.hammock");
     }
 }

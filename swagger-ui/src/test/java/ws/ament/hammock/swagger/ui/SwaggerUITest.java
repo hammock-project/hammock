@@ -21,13 +21,13 @@ package ws.ament.hammock.swagger.ui;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.restassured.path.xml.XmlPath;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import java.net.URI;
 
@@ -43,7 +43,7 @@ public class SwaggerUITest {
 	
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class);
+        return new HammockArchive().jar();
     }
 
     @ArquillianResource

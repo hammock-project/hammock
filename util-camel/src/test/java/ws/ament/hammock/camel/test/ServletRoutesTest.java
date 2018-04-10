@@ -20,33 +20,42 @@ package ws.ament.hammock.camel.test;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import ws.ament.hammock.camel.servlet.HammockCamelServlet;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import javax.inject.Inject;
 
 import static io.restassured.RestAssured.get;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.URI;
+
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class ServletRoutesTest {
     @Deployment
     public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(HammockCamelServlet.class, ServletRoutesTest.class, TestCamelRoutes.class, BasicProcessor.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+        return new HammockArchive()
+                .classes(HammockCamelServlet.class, ServletRoutesTest.class, TestCamelRoutes.class, BasicProcessor.class)
+                .beansXmlEmpty()
+                .jar();
     }
+
+
+    @ArquillianResource
+    private URI uri;
 
     @Inject
     private BasicProcessor basicProcessor;
 
     @Test
     public void doSomething() throws Exception{
-        get("/camel/hello/").then().statusCode(200);
+        get(uri + "/camel/hello/").then().statusCode(200);
         assertThat(basicProcessor.getHits()).isEqualTo(1);
     }
 }

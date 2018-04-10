@@ -7,4 +7,3 @@ target
 .classpath
 .settings
 dependency-reduced-pom.xml
-**/tomcat.*

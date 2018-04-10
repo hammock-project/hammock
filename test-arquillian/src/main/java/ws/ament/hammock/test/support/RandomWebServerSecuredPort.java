@@ -16,16 +16,12 @@
  * limitations under the License.
  */
 
-package ws.ament.hammock.mp.test;
+package ws.ament.hammock.test.support;
 
-import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
-import org.jboss.arquillian.core.spi.LoadableExtension;
+public class RandomWebServerSecuredPort extends AbstractRandomPortConfigSource {
+    private static final String WEBSERVER_SECURED_PORT = "webserver.secured.port";
 
-public class ArchiveAppenderExtension implements LoadableExtension {
-    @Override
-    public void register(ExtensionBuilder extensionBuilder) {
-        extensionBuilder.service(ApplicationArchiveProcessor.class, ConfigArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, HealthArchiveAppender.class);
-        extensionBuilder.service(ApplicationArchiveProcessor.class, HammockArchiveAppender.class);
+    public RandomWebServerSecuredPort() {
+        super(WEBSERVER_SECURED_PORT);
     }
 }

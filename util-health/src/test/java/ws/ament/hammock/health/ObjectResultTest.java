@@ -23,12 +23,11 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import ws.ament.hammock.test.support.HammockArchive;
 
 import javax.inject.Inject;
 
@@ -38,11 +37,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ObjectResultTest {
     @Deployment
     public static Archive<?> jar() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(InjectedResponseBuilderTest.TestWebServer.class, InjectedCheck.class)
+        return new HammockArchive()
+                .classes(InjectedResponseBuilderTest.TestWebServer.class, InjectedCheck.class)
+                .beansXmlEmpty()
+                .jar()
                 .addPackages(true, ConfigImpl.class.getPackage())
-                .addAsManifestResource(new StringAsset("hammock.health.output.format=map"), "microprofile-config.properties")
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsManifestResource(new StringAsset("hammock.health.output.format=map"), "microprofile-config.properties");
     }
 
     @Inject

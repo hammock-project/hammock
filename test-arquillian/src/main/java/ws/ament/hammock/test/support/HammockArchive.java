@@ -23,10 +23,20 @@ import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class HammockArchive {
-    private final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class);
+    private final JavaArchive javaArchive;
+
+    public HammockArchive() {
+        javaArchive = ShrinkWrap.create(JavaArchive.class)
+                .addPackages(true, "ws.ament.hammock");
+    }
 
     public HammockArchive classes(Class<?>... classes) {
         javaArchive.addClasses(classes);
+        return this;
+    }
+
+    public HammockArchive beansXmlEmpty() {
+        javaArchive.addAsManifestResource(HammockArchiveAppender.BEANS_XML, "beans.xml");
         return this;
     }
 

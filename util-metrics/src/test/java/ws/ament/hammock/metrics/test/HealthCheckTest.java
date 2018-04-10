@@ -23,7 +23,6 @@ import com.codahale.metrics.health.HealthCheckRegistry;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,7 @@ import org.junit.runner.RunWith;
 import ws.ament.hammock.metrics.MetricsConfig;
 import ws.ament.hammock.metrics.MetricsServletProvider;
 import ws.ament.hammock.test.support.EnableRandomWebServerPort;
+import ws.ament.hammock.test.support.HammockArchive;
 
 import javax.enterprise.inject.spi.CDI;
 import java.net.URI;
@@ -43,7 +43,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class HealthCheckTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return ShrinkWrap.create(JavaArchive.class).addClasses(MetricsConfig.class, MetricsServletProvider.class);
+        return new HammockArchive().classes(MetricsConfig.class, MetricsServletProvider.class).jar();
     }
 
     @ArquillianResource

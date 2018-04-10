@@ -33,9 +33,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ws.ament.hammock.rest.jersey.JerseyContainerConfigurator;
+import ws.ament.hammock.test.support.EnableRandomWebServerPort;
 import ws.ament.hammock.test.support.HammockArchive;
 
 @RunWith(Arquillian.class)
+@EnableRandomWebServerPort
 public class JerseyPropertiesTest {
 
     @Inject
