@@ -74,5 +74,9 @@
             <version>4.0.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jaxrs_2.0_spec</artifactId>
+        </dependency>
     </dependencies>
 </project>
