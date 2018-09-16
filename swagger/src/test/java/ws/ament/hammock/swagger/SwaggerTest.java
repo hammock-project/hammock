@@ -38,7 +38,8 @@ import static org.hamcrest.Matchers.is;
 public class SwaggerTest {
     @Deployment
     public static JavaArchive createArchive() {
-        return new HammockArchive().jar();
+        return new HammockArchive().jar()
+                .addPackages(true, "io.swagger.v3.jaxrs2");
     }
 
     @ArquillianResource
