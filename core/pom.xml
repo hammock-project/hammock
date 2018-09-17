@@ -27,6 +27,9 @@
         <version>2.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <properties>
+        <module.name>hammock.core</module.name>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>javax.inject</groupId>

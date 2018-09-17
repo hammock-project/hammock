@@ -129,6 +129,8 @@
         <safeguard.version>1.0</safeguard.version>
         <flexy-pool.version>1.3.0</flexy-pool.version>
         <swagger-ui.version>3.12.0</swagger-ui.version>
+        <module.group.name>hammock</module.group.name>
+        <module.name>${generated.module.name}</module.name>
     </properties>
     <modules>
         <module>core</module>
@@ -727,6 +729,17 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.20.1</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Automatic-Module-Name>${module.name}</Automatic-Module-Name>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -740,6 +753,27 @@
                     <releaseProfiles>release</releaseProfiles>
                     <goals>deploy</goals>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
+                                project.properties.setProperty(
+                                    "generated.module.name",
+                                    "${module.group.name}." + "${project.artifactId}".replaceAll('-', '.')
+                                )
+                            </source>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
