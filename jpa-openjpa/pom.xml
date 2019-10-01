@@ -82,6 +82,7 @@
                 <!-- Use the openjpa maven plugin to enhance the domain model classes -->
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa-maven-plugin</artifactId>
+                <version>${openjpa.version}</version>
                 <configuration>
                     <includes>ws/ament/hammock/jpa/openjpa/Employee.class</includes>
                     <addDefaultConstructor>true</addDefaultConstructor>
