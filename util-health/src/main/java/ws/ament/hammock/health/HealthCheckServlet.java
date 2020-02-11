@@ -42,13 +42,20 @@ public class HealthCheckServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType(MediaType.APPLICATION_JSON);
-        Jsonb jsonb = JsonbBuilder.newBuilder().build();
         HealthCheckModel healthCheckModel = healthCheckManager.performHealthChecks();
         if (healthCheckModel.getOutcome().equalsIgnoreCase(HealthCheckResponse.State.UP.name())) {
             resp.setStatus(200);
         } else {
             resp.setStatus(503);
         }
-        jsonb.toJson(healthCheckModel, resp.getOutputStream());
+        try (Jsonb jsonb = JsonbBuilder.newBuilder().build()) {
+            jsonb.toJson(healthCheckModel, resp.getOutputStream());
+        } catch (IOException ex) {
+            // Re-throw IOException specifically to maintain existing functionality
+            throw ex;
+        } catch (Exception ex) {
+            // Convert other exceptions thrown by close() into a runtime exception
+            throw new RuntimeException(ex);
+        }
     }
 }
