@@ -74,7 +74,7 @@
     </repositories>
     <properties>
         <weld3.version>3.0.3.Final</weld3.version>
-        <resteasy.version>3.5.0.Final</resteasy.version>
+        <resteasy.version>4.5.7.Final</resteasy.version>
         <arquillian.version>1.2.0.Final</arquillian.version>
         <undertow.version>1.4.23.Final</undertow.version>
         <jetty.version>9.4.9.v20180320</jetty.version>
