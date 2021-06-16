@@ -84,7 +84,7 @@
         <assertj.version>3.8.0</assertj.version>
         <commons-io.version>2.6</commons-io.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-        <tomcat.version>9.0.7</tomcat.version>
+        <tomcat.version>9.0.41</tomcat.version>
         <jacoco.version>0.7.9</jacoco.version>
         <johnzon.version>1.1.7</johnzon.version>
         <metrics.version>4.0.2</metrics.version>
