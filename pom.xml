@@ -111,7 +111,7 @@
         <javax.annotation-api.version>1.3.1</javax.annotation-api.version>
         <openwebbeans2.version>2.0.4</openwebbeans2.version>
         <camel.version>2.20.3</camel.version>
-        <log4j.version>2.11.0</log4j.version>
+        <log4j.version>2.16.0</log4j.version>
         <hibernate-validator.version>6.0.9.Final</hibernate-validator.version>
         <javax.el.version>3.0.1-b08</javax.el.version>
         <zipkin-brave.version>4.6.0</zipkin-brave.version>
