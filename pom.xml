@@ -102,7 +102,7 @@
         <jersey.version>2.26</jersey.version>
         <mockito-core.version>2.13.0</mockito-core.version>
         <HikariCP.version>2.7.9</HikariCP.version>
-        <h2.version>1.4.196</h2.version>
+        <h2.version>2.0.206</h2.version>
         <flyway.version>4.2.0</flyway.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <eclipselink.version>2.7.1</eclipselink.version>
