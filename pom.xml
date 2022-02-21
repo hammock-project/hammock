@@ -726,6 +726,9 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.20.1</version>
+                    <configuration>
+                    	<forkCount>1.5C</forkCount>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
