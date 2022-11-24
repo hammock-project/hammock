@@ -97,7 +97,7 @@
         <spark.version>2.7.1</spark.version>
         <jboss-logging.version>3.3.1.Final</jboss-logging.version>
         <javax.persistence.version>2.1.1</javax.persistence.version>
-        <hibernate.version>5.2.13.Final</hibernate.version>
+        <hibernate.version>5.3.20.Final</hibernate.version>
         <openjpa.version>2.4.2</openjpa.version>
         <jersey.version>2.26</jersey.version>
         <mockito-core.version>2.13.0</mockito-core.version>
